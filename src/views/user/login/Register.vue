@@ -1,6 +1,7 @@
 <template>
-  <span class="login-tile">登&nbsp;&nbsp;录</span>
+<span class="login-tile">注&nbsp;&nbsp;册</span>
   <div class="login-main">
+
     <div class="login-main-item">
       <span class="title">用户名</span>
         <div class="input-wrap shine">
@@ -15,16 +16,21 @@
       </div>
     </div>
 
-    <button type="submit" class="pretty-btn go">go!</button>
+    <div class="login-main-item">
+      <span class="title">确认密码</span>
+        <div class="input-wrap shine">
+        <input type="text" class=" user-input password-input">
+      </div>
+    </div>
+
+    <button type="submit" class="pretty-btn go">ok!</button>
 
     <div class="login-footer-wrap">
-      <button type="button" class="pretty-btn">微信登录</button>
-      <button type="button" class="pretty-btn">短信登录</button>
+      <button type="button" class="pretty-btn">微信注册</button>
+      <button type="button" class="pretty-btn">短信注册</button>
   </div>
 
 </div>
-
-
 </template>
 
 <script setup lang="ts" name="">
@@ -32,8 +38,8 @@
 </script>
 
 <style lang="scss" scoped>
+
 .login-tile {
-  // padding-top: 10px;
   text-align: center;
   font-weight: bold;
   font-size: 18px;
@@ -54,7 +60,6 @@
   flex-direction: column;
   align-items: center;
 .input-wrap {
-  // position: relative;
   display: flex;
   flex-direction: column;
   width: 180px;               /* 盒子宽度 */
@@ -72,12 +77,6 @@
 .title {
   margin-left: -30%;
   font-size: 14px;
-  // position: absolute;         /* 绝对定位 */
-  // top: 0;                    /* 顶部对齐 */
-  // left: 0;                   /* 左侧对齐 */
-  // transform: translate(18%, -50%); /* 调整位置，使文本居中于边框 */
-  // padding: 5px;              /* 内边距，可选 */
-  // // background:rgb(144, 147, 179);
 }
 
 }
@@ -94,6 +93,4 @@
   margin-left: 40px;
   margin-top: 65px;
 }
-
-
 </style>

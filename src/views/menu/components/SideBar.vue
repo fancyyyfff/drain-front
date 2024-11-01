@@ -4,8 +4,57 @@
       <div class="close" @click="toggleSidebar">
         <img src="@/assets/close.svg" alt="">
       </div>
-      <div class="form-wrap">表单内容</div>
-      <p>这是一个侧边栏</p>
+      <div class="main-content">
+      <div class="details">
+        <div class="detail">
+          <span class="detail-img tick"></span>
+          <span>完成前端界面</span>
+          <span class="detail-button start"></span>
+          <div>+&nbsp;&nbsp;&nbsp;添加步骤</div>
+        </div>
+
+        <div class="detail">
+          <span class="detail-img"></span>
+          <span>添加到行动清单</span>
+          <span class="detail-button"></span>
+        </div>
+
+        <div class="detail">
+          <span class="detail-img"></span>
+          <span class="clock-title">提醒我</span>
+          <span></span>
+          <div>
+            <div class="detail">
+              <span class="detail-img"></span>
+              <span class="clock-title">今天到期</span>
+              <span class="detail-button"></span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-img"></span>
+              <span class="clock-title">每天</span>
+              <span class="detail-button"></span>
+            </div>
+
+            <div class="detail">
+              <span class="detail-img"></span>
+              <span class="clock-title">添加文件</span>
+              <span></span>
+            </div>
+
+            <div class="other">
+              添加备注
+            </div>
+
+          </div>
+        </div>
+        <div class="detail">
+
+        </div>
+        <div class="detail"></div>
+
+      </div>
+    </div>
 
     </aside>
 </template>
@@ -70,8 +119,23 @@ onBeforeUnmount(() => {
 
 /* 主内容样式 */
 .main-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
-  padding: 20px;
+  margin-top: 40px;
   background-color: #f0f0f0;
+
+  .details {
+    display: grid;
+    grid-gap: 10px;
+    .details>div {
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+    }
+
+
+  }
 }
 </style>
