@@ -1,6 +1,8 @@
 <template>
-<div class="new-task-wrap" @click="onClickNew">
-            <p class="new-task-text" v-if="showP">+&nbsp;&nbsp;&nbsp;新建任务</p>
+<div class="new-task-wrap shine" @click="onClickNew">
+            <div class="new-task-text" v-if="showP">
+              <p>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;新建任务</p>
+            </div>
             <div class="new-task-input-wrap" v-if="showInput">
               <img src="@/assets/task-circle.svg" alt="" class="task-circle">
               <el-input v-model="newTaskInputText" style="width: 240px" class="taskInput" @keyup.enter="createNewComponent"/>
@@ -32,11 +34,16 @@ const createNewComponent = ()=>{
       display: flex;
       width: 95%;
       height: 90%;
-      background-color: white;
+      /* background-color: white; */
       border-radius: 10px;
       .new-task-text {
-        height: 100%;
-        line-height: 90%;
+        display: flex;
+        align-items: center;
+        /* height: 100%; */
+        /* line-height: 100%; */
+        color: rgb(148, 158, 166);
+        font-size: 1.2rem;
+        text-align: center;
       }
 
       .new-task-input-wrap {
