@@ -17,3 +17,13 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), /* 外部阴影 */
   border-radius: 20px;
   color: white;
 }
+
+.clear-btn-wrap {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+}
+
+.no-btn {
+  margin-right: 50px;
+}

@@ -59,10 +59,7 @@
 
         <div class="left-footer">
           <div class="function-wrap">
-            <div class="brain-wrap" @click="showBrainDialog = true">
-              <div class="brain"></div>
-              <div class="brain-text" >头脑风暴</div>
-            </div>
+            <Clear></Clear>
             <div class="ai-wrap" @click="callAI">
               <img src="@/assets/ai.svg" alt="" class="ai">
               <div class="ai-text">ai帮我做计划</div>
@@ -152,18 +149,7 @@
   </div>
 
 <!-- 弹窗: -->
-<div v-if="showBrainDialog" class="dialog-wrap">
-      <div class="dialog shine" @click.stop>
-        <h4>欢迎进入头脑风暴</h4>
-        <p>现在即将进入清空工作篮的头脑风暴，<br>找个安静的时间，跟随我一起清空大脑吧！<br>
-          注意：中途不可以放弃哦!</p>
-        <div class="btn-wrap">
-        <button @click="closeBrainDialog" class="pretty-btn">不了</button>
-        <button @click="closeBrainDialog" class="pretty-btn">好！</button>
-      </div>
-
-      </div>
-</div>
+<Dialog v-if="brainDialogVisible"></Dialog>
 
 </template>
 
@@ -176,8 +162,10 @@ import { Search } from '@element-plus/icons-vue'
 import NewTask from "@/views/menu/components/NewTask.vue";
 import Task from "@/views/menu/components/Task.vue";
 import SideBar from "@/views/menu/components/SideBar.vue";
-import { tr } from 'element-plus/es/locales.mjs';
-
+import { fa, tr } from 'element-plus/es/locales.mjs';
+import Clear from "@/views/clear/Clear.vue";
+import Dialog from "@/views/clear/Dialog.vue";
+import emitter from "@/mitt";
 const router = useRouter();
 const route = useRoute();
 const searchText=ref('')
@@ -206,20 +194,20 @@ const isClicked = ref(false)
 const changeBackColor = ()=>{
   isClicked.value=!isClicked.value
 }
-// 开启
-const showBrainDialog =ref(false)
-const openBrainDialog = ()=>{
-  if(showBrainDialog.value===false) {
-    showBrainDialog.value=true
-  }
-}
-// 关闭
-const closeBrainDialog = ()=>{
-  if(showBrainDialog.value) {
-    showBrainDialog.value=false
-  }
-}
 
+// ===
+// 头脑风暴的弹窗
+const brainDialogVisible =ref(false)
+// 通过Clear来打开弹窗这个弹窗
+emitter.on('openBrainDialog',()=>{
+  brainDialogVisible.value=true
+})
+// 孙组件通知父组件关闭弹窗
+emitter.on('closeBrainDialog',()=>{
+  brainDialogVisible.value=false
+})
+
+// ===
 // 呼叫AI
 const callAI = ()=>{
   router.push('/ai')
@@ -254,25 +242,7 @@ const callAI = ()=>{
     flex:2;
     display: flex;
 
-    .brain-wrap {
-      flex:1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .brain {
-        flex:2;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%; /* 使其成为圆形 */
-        background: radial-gradient(circle, rgb(224, 204, 224) 0%, rgba(87, 71, 98, 0.8) 60%, rgba(106, 104, 104, 0) 100%); /* 紫色渐变 */
-        box-shadow: 0 0 30px rgba(83, 51, 83, 0.5), 0 0 60px rgba(73, 52, 87, 0.5); /* 紫色的模糊阴影 */
-      }
-      .brain-text {
-        flex:1;
-        font-size: 0.8rem;
-      }
-    }
+    //头脑风暴的样式
 
     .ai-wrap {
       flex:1;
@@ -476,36 +446,7 @@ color: white;
 
 }
 
-.dialog-wrap {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
-  display: flex;
-  justify-content: center;
-  align-items: center; /* 垂直居中 */
 
-}
 
-.dialog {
-  padding: 20px;
-  border-radius: 8px;
-  width: 600px; /* 弹窗宽度 */
-  text-align: center; /* 文字居中 */
-  color: #ccc;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
-.btn-wrap {
-  width: 60%;
-  display: flex;
-  justify-content: space-around;
-  gap: 50px;
-}
 </style>
