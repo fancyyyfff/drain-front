@@ -151,6 +151,7 @@
 <!-- 弹窗: -->
 <Dialog v-if="brainDialogVisible"></Dialog>
 
+
 </template>
 
 
@@ -166,6 +167,7 @@ import { fa, tr } from 'element-plus/es/locales.mjs';
 import Clear from "@/views/clear/Clear.vue";
 import Dialog from "@/views/clear/Dialog.vue";
 import emitter from "@/mitt";
+import { ElMessage } from 'element-plus'
 const router = useRouter();
 const route = useRoute();
 const searchText=ref('')
@@ -198,14 +200,33 @@ const changeBackColor = ()=>{
 // ===
 // 头脑风暴的弹窗
 const brainDialogVisible =ref(false)
+function closeDialog() {
+  brainDialogVisible.value=false
+}
+function successTips() {
+  ElMessage({
+    dangerouslyUseHTMLString: true,
+    // message: '<strong>This is <i>HTML</i> string</strong>',
+    message: ' <p>恭喜你！<br><br>又为你大脑减轻了负担！<br><br> 以更轻盈的姿态继续前进吧！</p>',
+    type: 'success',
+    plain: true,
+  })
+}
+
 // 通过Clear来打开弹窗这个弹窗
 emitter.on('openBrainDialog',()=>{
   brainDialogVisible.value=true
 })
 // 孙组件通知父组件关闭弹窗
-emitter.on('closeBrainDialog',()=>{
-  brainDialogVisible.value=false
+emitter.on('closeBrainDialog',closeDialog)
+
+
+emitter.on('closeAndTips',()=>{
+  closeDialog()
+  successTips()
 })
+
+
 
 // ===
 // 呼叫AI

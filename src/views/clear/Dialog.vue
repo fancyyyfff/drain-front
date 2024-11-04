@@ -18,6 +18,16 @@ import IsAction from "@/views/clear/components/IsAction.vue";
 import NoAtion from "./components/NoAtion.vue";
 import Thought from "@/views/clear/components/Thought.vue";
 import Rabbish from "@/views/clear/components/Rabbish.vue";
+import IsMultitask from "@/views/clear/components/IsMultitask.vue";
+import Project from "@/views/clear/components/Project.vue";
+import NextStep from "@/views/clear/components/NextStep.vue";
+import IsQuickFinish from "@/views/clear/components/IsQuickFinish.vue";
+import NowTodo from "@/views/clear/components/NowTodo.vue";
+import WhoTodo from "@/views/clear/components/WhoTodo.vue";
+import EntrustOther from "@/views/clear/components/EntrustOther.vue";
+import WhenTodo from "@/views/clear/components/WhenTodo.vue";
+import SheduleTodo from "@/views/clear/components/SheduleTodo.vue";
+import ToActionList from "@/views/clear/components/ToActionList.vue";
 const components = {
   enter:Enter,
   what:What,
@@ -25,6 +35,17 @@ const components = {
   noAction:NoAtion,
   thought:Thought,
   rubbish:Rabbish,
+  isMultitask:IsMultitask,
+  project:Project,
+  nextStep:NextStep,
+  isQuickFinish:IsQuickFinish,
+  nowTodo:NowTodo,
+  whoTodo:WhoTodo,
+  entrustOther:EntrustOther,
+  whenTodo:WhenTodo,
+  sheduleTodo:SheduleTodo,
+  toActionList:ToActionList
+
 }
 
 const currentComponent =ref(components.enter)
