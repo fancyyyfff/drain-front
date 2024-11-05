@@ -41,7 +41,6 @@ const createNewComponent = ()=>{
         align-items: center;
         /* height: 100%; */
         /* line-height: 100%; */
-        color: rgb(148, 158, 166);
         font-size: 1.2rem;
         text-align: center;
       }

@@ -67,7 +67,7 @@
 
           </div>
           <div class="new-wrap">
-            <span class="new-text">&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;新建任务</span>
+            <span class="new-text">+&nbsp;&nbsp;&nbsp;新建任务</span>
           </div>
         </div>
 
@@ -247,6 +247,8 @@ const callAI = ()=>{
   // background-color: #fff;
   border-radius: 20px;
   // background-image: linear-gradient(to top,#757F9A 0.1%,#d5d9e0 99.9%);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.2), /* 外部阴影 */
+              0 0 60px rgba(255, 255, 255, 0.5); /* 内部发光效果 */
 }
 
 // 固定的导航栏
@@ -289,12 +291,14 @@ const callAI = ()=>{
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid #ccc;
+    border-top: 0.5px solid white;
   }
 }
 .contrain-wrap .el-aside .el-menu {
   // background-image: linear-gradient(to top,#e8cbc0 0.1%,#636fa4 99.9%);
-  background-image: linear-gradient(to top,#b3c0de 0.1%,#d2dcee 99.9%);
+  // background-image: linear-gradient(to top,#b3c0de 0.1%,#d2dcee 99.9%);
+  // background-image: linear-gradient(to top,#20002c 0.1%, #cbb4d4 99.9%);
+  background-image: linear-gradient(to top,#e8cbc0 0.1%,#636fa4 99.9%);
 }
 
 .el-aside {
@@ -307,83 +311,6 @@ const callAI = ()=>{
   border: none;
 }
 
-
-
-      /* 左侧导航栏 */
-
-// .left-nav-footer {
-//   display: flow-root;
-//   position: absolute;
-//   display: grid;
-//   width: 199px;
-//   grid-template-rows: 1fr 1fr;
-//   height: 150px;
-//   // padding-top: 10px;
-//   bottom: 0px;
-//   left: 0px;
-
-//   .two-specail {
-//     display: flex;
-//     width: 190px;
-//     justify-content: space-around;
-//     // margin-top: 20px;
-
-
-//     .brain-wrap {
-//       .brain {
-//       width: 30px;
-//       height: 30px;
-//       margin-left: 30px;
-//       border-radius: 50%; /* 使其成为圆形 */
-//       background: radial-gradient(circle, rgb(224, 204, 224) 0%, rgba(87, 71, 98, 0.8) 60%, rgba(106, 104, 104, 0) 100%); /* 紫色渐变 */
-//       box-shadow: 0 0 30px rgba(83, 51, 83, 0.5), 0 0 60px rgba(73, 52, 87, 0.5); /* 紫色的模糊阴影 */
-
-//     }
-//     .brain-text {
-//       font-size: 0.7rem;
-//       text-align: center;
-//       line-height: 30px;
-//     }
-
-//     }
-//     .ai-wrap {
-
-//       .ai {
-//         width: 30px;
-//         margin-left: 20%;
-//         padding-bottom: -50%;
-
-//       }
-
-//       .ai-text {
-//         font-size: 0.8rem;
-//         text-align: center;
-//         line-height: 30px;
-
-//       }
-//     }
-//   }
-
-
-
-
-
-//   .new {
-//       // position: absolute;
-//       // bottom: 0px;
-//       // left: 0;
-//       margin-top: 10px;
-//       width: 100%;
-//       height: 30px;
-//       text-align: center;
-//       line-height: 30px;
-//       border-top: 0.8px solid rgb(165, 164, 164);
-//       margin-top: 20px;
-//     }
-
-// }
-
-
 .el-menu-item.is-active {
      color: none;
     //  改变对应的背景色
@@ -393,21 +320,24 @@ const callAI = ()=>{
   color:white;
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .action {
-  background-image: linear-gradient(to top,#f8e7bb 0.1%,#f9da84 99.9%);
+  background-image: var(--action-back-color);
+  box-shadow: var(--shine-shadow);
+
 }
 
 .el-menu-item:hover {
-  // background-image: linear-gradient(to top,#fceabb 0.1%,#f8b501 99.9%);
-  background-image: linear-gradient(to top,#f8e7bb 0.1%,#f9da84 99.9%);
-
+  background-image: var(--action-hover-color);
+  // 与主题色一样
+  // background-image: linear-gradient(to top, rgba(232, 203, 192, 0.5) 0.05%, rgba(99, 111, 164, 0.8) 99.95%);
 }
 
 .isClicked {
-  background-image: linear-gradient(to top,#c6b4b9 0.1%,#636fa4 99.9%);
+  background-image: var(--action-back-color);
+  box-shadow: var(--shine-shadow);
 }
 
 .search-input {
@@ -419,23 +349,23 @@ const callAI = ()=>{
 border-radius: 20px;         /* 圆角 */
 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), /* 外部阴影 */
               0 0 30px rgba(255, 255, 255, 0.5); /* 内部发光效果 */
-background-image: linear-gradient(to top,#c6b4b9 0.1%,#b3b9d2 99.9%);
+// background-image: linear-gradient(to top,#c6b4b9 0.1%,#b3b9d2 99.9%);
 color: white;
-
 }
 
 .line {
   width: 100%;
-  height: 1px;
+  height: 0.5px;
   background-color: white;
   transform: translateY(-1vh);
-  // border: 1px;
 }
 
 // 右边主体
 .right {
   position: relative;
-  background-image: linear-gradient(to top,#f8e7bb 0.1%,#f9da84 99.9%);
+  // background-image: linear-gradient(to top,#aea99b 0.1%,#aa9e7d 99.9%);
+  background-image: linear-gradient(to right,rgba(197, 197, 167, 0.7) 0.05%,rgba(212, 211, 221, 0.5) 99.95%);
+  // box-shadow: var(--shine-shadow);
 }
 .right-main {
     display: flex;

@@ -1,3 +1,14 @@
+:root {
+  --shine-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), /* 外部阴影 */
+  0 0 30px rgba(255, 255, 255, 0.8); /* 内部发光效果 */
+  --tranparent-background:rgba(255, 255, 255, 0.1);
+  --action-back-color:linear-gradient(to left,rgba(239, 239, 187, 0.7) 0.05%,rgba(212, 211, 221, 0.5) 99.95%);
+  --action-hover-color:linear-gradient(to left,rgba(183, 183, 167, 0.8) 0.05%,rgb(120, 119, 132,0.7) 99.95%);
+  --theme-color:linear-gradient(to top,#e8cbc0 0.1%,#636fa4 99.9%);
+
+  
+}
+
 .shine {
     border: 0.5px solid rgb(209, 207, 207);
     background: rgba(255, 255, 255, 0.1); /* 半透明白色背景 */

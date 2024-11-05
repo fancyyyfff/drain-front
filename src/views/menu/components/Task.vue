@@ -36,7 +36,7 @@ defineExpose({
       width: 96%;
       height: 50px;
       padding:0 20px 0 20px;
-    background: rgba(244, 231, 231, 0.2); /* 半透明白色背景 */
+    background: rgba(130, 127, 127, 0.2); /* 半透明白色背景 */
       border-radius: 10px;
       align-items: center;
 
@@ -52,7 +52,10 @@ defineExpose({
 
       .task-text {
         font-size: 1.5rem;
-        color: rgb(174, 164, 164);
+        color: rgb(255, 255, 255);
+        text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.5), /* 轻微的白色光晕 */
+    0 0 3px rgba(255, 255, 255, 0.3); /* 更大的模糊光晕 */
         font-weight:700;
         margin-left:4%;
       }

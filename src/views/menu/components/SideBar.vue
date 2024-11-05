@@ -88,8 +88,6 @@ onBeforeUnmount(() => {
   width: 0;
   height: 98vh;
   align-items: center;
-  background-image: linear-gradient(to top,#e2dede 0.1%, #aaa5ae 99.9%);
-  /* background-color: white; */
   overflow: hidden;
   transition: width 0.3s ease; /* 添加过渡效果 */
 
@@ -136,9 +134,6 @@ onBeforeUnmount(() => {
   align-items: center;
   flex: 1;
   margin-top: 40px;
-  background-color: #f0f0f0;
-
-
   }
 
   /* 单个任务的： */
@@ -148,7 +143,6 @@ onBeforeUnmount(() => {
       width: 70%;
       height: 50px;
       padding:0 40px 0 40px;
-    background: rgba(244, 231, 231, 0.2); /* 半透明白色背景 */
       border-radius: 10px;
       align-items: center;
       gap: 20px;
@@ -165,7 +159,6 @@ onBeforeUnmount(() => {
 
       .task-text {
         font-size: 1.5rem;
-        color: rgb(174, 164, 164);
         font-weight:700;
         margin-left:4%;
       }
@@ -178,7 +171,6 @@ onBeforeUnmount(() => {
 
 .sidebar-text {
   font-size: 1.2rem;
-  color: #afa5a5;
 }
 
 #other {
