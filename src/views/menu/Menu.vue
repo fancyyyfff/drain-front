@@ -17,17 +17,17 @@
         </div>
               <el-menu-item :class="{ 'active': isClicked }" class="action" index="actions" @click="changeBackColor">
                 <el-icon><House /></el-icon>
-               <span>行动清单</span>
+               <span>马上行动</span>
               </el-menu-item>
 
               <el-menu-item index="importance">
                 <el-icon><House /></el-icon>
-               <span>重要</span>
+               <span>DDL</span>
               </el-menu-item>
 
               <el-menu-item index="schedule">
                 <el-icon><House /></el-icon>
-               <span>计划内</span>
+               <span>重要</span>
               </el-menu-item>
 
               <el-menu-item index="works">
@@ -37,17 +37,17 @@
 
               <el-menu-item index="goals">
                 <el-icon><House /></el-icon>
-               <span>项目</span>
+               <span>多步骤任务</span>
               </el-menu-item>
 
               <el-menu-item index="thoughts">
                 <el-icon><House /></el-icon>
-               <span>想法</span>
+               <span>想法&愿景</span>
               </el-menu-item>
 
               <el-menu-item index="entrust">
                 <el-icon><House /></el-icon>
-               <span>委托</span>
+               <span>委托他人</span>
               </el-menu-item>
 
               <el-menu-item index="tags">
@@ -70,60 +70,22 @@
             <span class="new-text">+&nbsp;&nbsp;&nbsp;新建任务</span>
           </div>
         </div>
-
-
-            <!-- <div class="left-nav-footer">
-                <div class="two-specail">
-                  <div class="brain-wrap specail" @click="onClickClear">
-                    <div class="brain"></div>
-                     <img src="@/assets/clear-evail.svg" alt="" class="special-img"/>
-                    <p class="specail-p-text brain-text">进入头脑风暴</p>
-                  </div>
-
-                  <div class="ai-wrap specail" @click="onClickClear">
-                     <img src="@/assets/ai.svg" alt="" class="special-img"/>
-                    <img src="@/assets/plan.svg" alt="" class="ai">
-                    <p class="specail-p-text ai-text">ai帮我计划</p>
-                  </div>
-
-              <div class="new" > +&nbsp;&nbsp;&nbsp;新建列表</div>
-              </div>
-              </div> -->
-
-
-
-
-
-              <!-- <footer class="left-nav-footer">
-                <div class="two-specail">
-                  <div class="clear-wrap" @click="onClickClear">
-                    <img src="@/assets/clear-evail.svg" alt="" class="clear-evail"/>
-                    <p class="clear-p-text">进入头脑风暴</p>
-                  </div>
-
-                  <div class="ai-wrap" @click="onClickClear">
-                    <img src="@/assets/ai.svg" alt="" class="ai-img"/>
-                    <p class="ai-p-text">ai帮我计划</p>
-                  </div>
-
-              </div>
-
-              <div class="new" > +  新建列表</div>
-
-              </footer> -->
       </el-aside>
 
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top">行动清单</el-header>
+        <el-header class="right-top">马上行动</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
         <router-view>
-          <!-- <Task v-for="(taskValue, index) in tasks"
+          <!-- <Task v-for="(taskValue, index) in taskList"
         :key="index"
         :taskValue="taskValue"></Task> -->
-          <Task ref="sideBar"></Task>
+          <!-- <Task ref="sideBar"></Task> -->
+           <div v-for="task in taskList" :key="task.taskId">
+           <Task :taskName="task.taskName"></Task>
+          </div>
 
 
         </router-view>
@@ -157,7 +119,7 @@
 
 <script setup lang="ts" name="">
 import { useRouter,useRoute } from 'vue-router';
-import { ref,reactive } from "vue";
+import { ref,reactive, onMounted } from "vue";
 import UserInfo from "@/views/menu/components/UserInfo.vue";
 import { Search } from '@element-plus/icons-vue'
 import NewTask from "@/views/menu/components/NewTask.vue";
@@ -168,6 +130,7 @@ import Clear from "@/views/clear/Clear.vue";
 import Dialog from "@/views/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { ElMessage } from 'element-plus'
+import { v4 as uuidv4 } from 'uuid';
 const router = useRouter();
 const route = useRoute();
 const searchText=ref('')
@@ -179,18 +142,27 @@ const onClickClear = () => {
 };
 
 // 新建任务时实现新建子组件
-const inputValue = ref('');      // 输入框的值
-const tasks = ref<string[]>([]);       // 存储子组件的值
+const taskName = ref('');      // 输入框的值
+const taskList = reactive<{taskId:string;taskName:string}[]>([]);       // 存储子组件的值
 // 创建新组件的函数
-const createNewComponent = () => {
-  if (inputValue.value.trim()) {
-    tasks.value.push(inputValue.value); // 将输入框的值添加到数组中
-    inputValue.value = ''; // 清空输入框
+const handlecreateNewTask = (newTaskInputValue:unknown) => {
+  // 待：后期还要把新建的任务对象保存，并且在一开始就获取对应导航下的全部任务
+  taskName.value=newTaskInputValue as string
+  const taskId = uuidv4();
+  const task = {
+    taskId:taskId,
+    taskName:taskName.value
+  }
+  if (taskName.value.trim()!=='') {
+    taskList.unshift(task); // 将输入框的值添加到数组中
   }
 };
+onMounted(()=>{
+  emitter.on('createNewTask',handlecreateNewTask)
+})
 
 // 打开侧边栏
-const sideBar = ref()
+// const sideBar = ref()
 
 const isClicked = ref(false)
 const changeBackColor = ()=>{
@@ -369,7 +341,9 @@ color: white;
 }
 .right-main {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    row-gap: 10px;
 
   }
   .right-footer {

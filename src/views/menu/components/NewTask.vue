@@ -1,32 +1,52 @@
 <template>
 <div class="new-task-wrap shine" @click="onClickNew">
+
             <div class="new-task-text" v-if="showP">
-              <p>&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;新建任务</p>
+              &nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;新建任务
             </div>
             <div class="new-task-input-wrap" v-if="showInput">
-              <img src="@/assets/task-circle.svg" alt="" class="task-circle">
-              <el-input v-model="newTaskInputText" style="width: 240px" class="taskInput" @keyup.enter="createNewComponent"/>
-              <div class="task-icons">右侧的三个小图标</div>
+              <div class="task-tick"></div>
+               <input type="text" v-model="newTaskInputValue" class="taskInput dialog-input" ref="taskInput" @keyup.enter="createNewTask"
+               @blur="closeInput">
             </div>
           </div>
 
 </template>
 
 <script setup lang="ts" name="">
-import { ref } from "vue";
+import emitter from "@/mitt";
+import { ref,watch,nextTick } from "vue";
 const showInput = ref(false)
 const showP = ref(true)
-const newTaskInputText = ref('')
+const newTaskInputValue = ref('')
+const taskInput = ref<HTMLInputElement | null>(null);
 // 点击新建任务
 const onClickNew = ()=>{
   showInput.value=true
   showP.value=false
 }
 
-const createNewComponent = ()=>{
-  console.log('回车事件，获取用户输入，新建组件')
+const createNewTask = ()=>{
+
+  // 触发新建任务事件
+  emitter.emit('createNewTask',newTaskInputValue.value)
+  newTaskInputValue.value = ''; // 清空输入框
 }
 
+function closeInput() {
+  showInput.value=false
+  showP.value=true
+}
+
+// 点击新建任务后，显示输入框，并且自动聚焦
+// 监听输入框显示状态
+watch(showInput, async (newVal) => {
+  if (newVal) {
+    newTaskInputValue.value = ''; // 清空输入框内容
+    await nextTick();  // 确保 DOM 更新完成后执行
+    taskInput.value?.focus();  // 自动聚焦
+  }
+});
 </script>
 
 <style scoped>
@@ -47,21 +67,17 @@ const createNewComponent = ()=>{
 
       .new-task-input-wrap {
         display: flex;
+        position: relative;
         width: 100%;
         align-items: center;
         margin-left: 1%;
         justify-content: space-between;
 
-        .task-circle {
-          width: 25px;
-        }
         .taskInput {
           flex:1;
+          width: 100%;
+          padding-left: 6%;
 
-        }
-        .task-icons {
-          width: 120px;
-          height: 40px;
         }
 
       }

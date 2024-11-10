@@ -2,7 +2,7 @@
 <div class="task-wrap shine" @click="openSideBar">
   <div class="task-tick"></div>
   <!-- <p class="task-text">{{taskValue}}</p> -->
-  <p class="task-text">界面优化</p>
+  <p class="task-text">{{ taskName }}</p>
   <img src="@/assets/start.svg" class="start" alt="">
 </div>
 </template>
@@ -11,21 +11,22 @@
 import { ref } from 'vue'
 import { defineProps } from 'vue';
 import emitter from "@/mitt";
-// defineProps({
-//   taskValue: {
-//     type: String,
-//     required: true,
-//   },
-// })
+defineProps({
+  taskName: {
+    type: String,
+    required: true,
+  },
+})
 const drawer = ref(false)
 
 const openSideBar = ()=>{
+
   emitter.emit('toggleSidebar','传输的任务数据')
 }
 
-defineExpose({
-  openSideBar,
-})
+// defineExpose({
+//   openSideBar,
+// })
 
 </script>
 
@@ -39,16 +40,6 @@ defineExpose({
     background: rgba(130, 127, 127, 0.2); /* 半透明白色背景 */
       border-radius: 10px;
       align-items: center;
-
-      .task-tick {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        left: 2%;
-        border-radius: 50% ;
-        border: 3px solid rgb(254, 246, 246);
-        background-color: transparent;
-      }
 
       .task-text {
         font-size: 1.5rem;

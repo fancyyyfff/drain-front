@@ -19,43 +19,29 @@
 
         <!-- 主要内容： -->
         <div class="sidebar-main-content">
-          <div class="task-wrap shine" >
+
+          <div class="detail-wrap shine" >
             <div class="task-tick"></div>
-  <!-- <p class="task-text">{{taskValue}}</p> -->
-                <p class="task-text">界面优化</p>
-              <img src="@/assets/start.svg" class="start" alt="">
-            </div>
+            <p class="task-text">界面优化</p>
+            <img src="@/assets/start.svg" class="start" alt="">
+          </div>
 
-            <div class="task-wrap shine add-action" >
-            <img src="" alt="">
-  <!-- <p class="task-text">{{taskValue}}</p> -->
-                <p class="sidebar-text">加到行动清单</p>
-            </div>
+            <div class="detail-wrap shine add-action" >
+                <img src="" alt="">
+                <p class="detail-text">添加附件</p>
+              </div>
 
-            <div class="task-wrap shine add-action" >
-            <img src="" alt="">
-  <!-- <p class="task-text">{{taskValue}}</p> -->
-                <p class="sidebar-text">添加提醒日期</p>
-            </div>
-
-            <div class="task-wrap shine add-action" >
-            <img src="" alt="">
-  <!-- <p class="task-text">{{taskValue}}</p> -->
-                <p class="sidebar-text">添加附件</p>
-            </div>
-
-            <div class="task-wrap shine add-action" id="other">
-            <img src="" alt="">
-  <!-- <p class="task-text">{{taskValue}}</p> -->
-                <p class="sidebar-text">添加备注</p>
-            </div>
-
-            <div class="task-wrap shine add-action" >
-            <img src="" alt="">
-  <!-- <p class="task-text">{{taskValue}}</p> -->
-                <p class="sidebar-text">#&nbsp;&nbsp;添加标签</p>
-            </div>
-
+              <!-- 备注 -->
+               <!-- <div class="detail-wrap remarks-wrap">
+                 <div class="div-edit remarks-div shine" contenteditable="true" @input="onInput" style="display: line-block; width: 100%; min-height: 100px;"></div>
+               </div> -->
+               <div class="div-edit remarks-div shine" contenteditable="true"
+                  :data-placeholder="placeholderText"
+                  @input="onInput"
+                  @focus="onFocus"
+                  @blur="onBlur"
+                  ref="editableDiv"
+               ></div>
           </div>
 
           <!-- 底部 -->
@@ -70,32 +56,91 @@
 <script setup lang="ts" name="">
 import { ref,onMounted,onBeforeUnmount } from 'vue';
 import emitter from "@/mitt";
+import { da } from 'element-plus/es/locales.mjs';
 const sidebarOpen = ref(false); // 控制侧边栏的状态
 // const sidebarOpen = ref(true);
 // 切换侧边栏状态
 const toggleSidebar = () => {
+
   sidebarOpen.value = !sidebarOpen.value;
+
 };
-const handleToggleSidebar = ()=>{
+const handleToggleSidebar = (data:unknown)=>{
   // 先切换状态
   toggleSidebar()
   // 如果是打开状态，就渲染数据
   // 待：
+  console.log("打开侧边栏时接受到的数据"+data)
 }
 
-onMounted(()=>{
-  emitter.on('toggleSidebar',handleToggleSidebar)
-})
+
 
 onBeforeUnmount(() => {
   emitter.off('toggleSidebar', handleToggleSidebar); // 清除监听
 });
+
+// div实现的文本编辑框，在其中添加占位的内容
+// const editableDiv = ref(null);
+const editableDiv = ref<HTMLDivElement | null>(null);
+const placeholderText = "请输入内容...";
+onMounted(()=>{
+  emitter.on('toggleSidebar',handleToggleSidebar)
+  // 初始时，如果没有内容，显示 placeholder
+  const div = editableDiv.value;
+  if (div && div.innerHTML.trim() === '') {
+    div.classList.add('placeholder');
+  }
+})
+
+const onInput = () => {
+  const div = editableDiv.value;
+  // 当用户输入内容时清除 placeholder
+  if (div && div.innerHTML.trim() !== '') {
+    div.classList.remove('placeholder');
+  } else {
+    if(div) div.classList.add('placeholder');
+  }
+};
+
+const onFocus = () => {
+  // 在聚焦时，如果没有内容，显示 placeholder
+  const div = editableDiv.value;
+  if (div && div.innerHTML.trim() === '') {
+    div.classList.add('placeholder');
+    div.classList.add('div-edit-focus');
+
+  }
+};
+
+const onBlur = () => {
+  const div = editableDiv.value;
+  if(div) div.classList.remove('div-edit-focus');
+  // 当失去焦点时，如果没有内容，则显示 placeholder
+  if (div && div.innerHTML.trim() === '') {
+    div.classList.add('placeholder');
+  }
+};
+
+
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+/* 文本编辑框中写入的内容 */
+@mixin div-edit-before {
+        content: attr(data-placeholder);
+        color: #d7d6d6;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        pointer-events: none;
+}
+
+.sidebar-open {
+    width: 350px; /* 侧边栏打开时的宽度 */
+}
+
 /* 侧边栏样式 */
 .sidebar {
-
   width: 0;
   height: 96vh;
   min-height: 250px;
@@ -150,7 +195,7 @@ onBeforeUnmount(() => {
       }
 
     }
-    
+
   }
 
   /* 侧边栏主体部分 */
@@ -162,47 +207,34 @@ onBeforeUnmount(() => {
     width: 100%;
     /* margin-top: 50px; */
     align-items: center;
+    row-gap: 10px;
+    padding-top: 20px;
 
+    /* 文本编辑框 */
+    .remarks-div {
+      position: relative;
     }
 
+      .placeholder::before {
+        @include div-edit-before();
 
-  }
+      }
+
+      .placeholder:empty::before {
+        @include div-edit-before();
+      }
 
 
-
-
-.sidebar-open {
-  width: 350px; /* 侧边栏打开时的宽度 */
-}
-
-/* 主内容样式 */
-.sidebar-main-content {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  margin-top: 40px;
-  }
-
-  /* 单个任务的： */
-  .task-wrap {
+    /* 单个任务的： */
+    .detail-wrap {
       display: flex;
       position: relative;
       width: 70%;
       height: 50px;
       padding:0 40px 0 40px;
+      gap: 20px;
       border-radius: 10px;
       align-items: center;
-      gap: 20px;
-
-      .task-tick {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        left: 2%;
-        border-radius: 50% ;
-        border: 3px solid rgb(254, 246, 246);
-        background-color: transparent;
-      }
 
       .task-text {
         font-size: 1.5rem;
@@ -214,13 +246,21 @@ onBeforeUnmount(() => {
         position: absolute;
         right: 3%;
       }
+
+      .detail-text {
+        font-size: 1.2rem;
+      }
+
+    }
+
+  }
+
+  .sidebar-footer {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+  }
+
 }
 
-.sidebar-text {
-  font-size: 1.2rem;
-}
 
-#other {
-  height: 20%;
-}
 </style>
