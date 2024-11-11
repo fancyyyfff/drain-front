@@ -16,42 +16,42 @@
     <div class="line"></div>
         </div>
               <el-menu-item :class="{ 'active': isClicked }" class="action" index="actions" @click="changeBackColor">
-                <el-icon><House /></el-icon>
+                <el-icon></el-icon>
                <span>马上行动</span>
               </el-menu-item>
 
-              <el-menu-item index="importance">
-                <el-icon><House /></el-icon>
+              <el-menu-item index="schedule">
+                <el-icon></el-icon>
                <span>DDL</span>
               </el-menu-item>
 
-              <el-menu-item index="schedule">
-                <el-icon><House /></el-icon>
+              <el-menu-item index="importance">
+                <el-icon></el-icon>
                <span>重要</span>
               </el-menu-item>
 
               <el-menu-item index="works">
-                <el-icon><House /></el-icon>
+                <el-icon></el-icon>
                <span>工作篮</span>
               </el-menu-item>
 
               <el-menu-item index="goals">
-                <el-icon><House /></el-icon>
+                <el-icon></el-icon>
                <span>多步骤任务</span>
               </el-menu-item>
 
               <el-menu-item index="thoughts">
-                <el-icon><House /></el-icon>
+                <el-icon></el-icon>
                <span>想法&愿景</span>
               </el-menu-item>
 
               <el-menu-item index="entrust">
-                <el-icon><House /></el-icon>
+                <el-icon></el-icon>
                <span>委托他人</span>
               </el-menu-item>
 
               <el-menu-item index="tags">
-                <el-icon><House /></el-icon>
+                <el-icon></el-icon>
                <span>标签</span>
               </el-menu-item>
 
@@ -79,15 +79,10 @@
         <!-- 主题内容 -->
       <el-main class="right-main">
         <router-view>
-          <!-- <Task v-for="(taskValue, index) in taskList"
-        :key="index"
-        :taskValue="taskValue"></Task> -->
-          <!-- <Task ref="sideBar"></Task> -->
-           <div v-for="task in taskList" :key="task.taskId">
+          <!-- 以下代码具有参考意义，但对目前来看，不利于逻辑思考 -->
+           <!-- <div v-for="task in taskList" :key="task.taskId">
            <Task :taskName="task.taskName"></Task>
-          </div>
-
-
+          </div> -->
         </router-view>
       </el-main>
         <el-footer class="right-footer">
@@ -103,10 +98,6 @@
       <!-- 放侧边栏 -->
 
       <SideBar></SideBar>
-
-
-
-
     </el-container>
   </div>
 

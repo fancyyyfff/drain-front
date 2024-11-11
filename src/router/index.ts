@@ -35,7 +35,7 @@ const routes = [
 
     },
     {
-      path:'/importance/',
+      path:'/importance',
       name:'importance',
       component:()=>import('@/views/importance/Importance.vue'),
       // props(route:any){
