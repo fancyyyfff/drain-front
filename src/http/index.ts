@@ -5,7 +5,7 @@ import axios from 'axios'
 // 创建axios实例
 const instance = axios.create({
     // 后端的接口
-    baseURL: 'http://127.0.0.1:3007',
+    baseURL: 'http://127.0.0.1:8080',
     timeout: 6000,//设置超时
     // 使用表单默认的类型
     headers:{

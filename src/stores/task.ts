@@ -1,15 +1,15 @@
-import { defineStore } from "pinia";
+// import { defineStore } from "pinia";
 
-export const useTaskSotre = defineStore('task',{
-  state:()=>({
-    tasks:[],
+// export const useTaskSotre = defineStore('task',{
+//   state:()=>({
+//     tasks:[],
 
-  }),
-  getters:{},
-  actions:{
-    addTask(newTask) {
-      this.tasks.push(newTask)
-    }
+//   }),
+//   getters:{},
+//   actions:{
+//     addTask(newTask) {
+//       this.tasks.push(newTask)
+//     }
 
-  },
-},{persist:true})
+//   },
+// },{persist:true})

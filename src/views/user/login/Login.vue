@@ -4,18 +4,18 @@
     <div class="login-main-item">
       <span class="title">用户名</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input username-input">
+        <input type="text" class=" user-input username-input" v-model="username">
       </div>
     </div>
 
     <div class="login-main-item">
       <span class="title">密码</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input">
+        <input type="text" class=" user-input password-input" v-model="password">
       </div>
     </div>
 
-    <button type="submit" class="pretty-btn go">go!</button>
+    <button type="button" class="pretty-btn go" @click="toLogin">go!</button>
 
     <div class="login-footer-wrap">
       <button type="button" class="pretty-btn">微信登录</button>
@@ -28,7 +28,30 @@
 </template>
 
 <script setup lang="ts" name="">
+import { reactive, ref } from "vue";
+import { login } from "@/api/user";
+import { useRouter } from "vue-router";
+const router = useRouter()
+const username = ref('')
+const password = ref('')
 
+const user =reactive({username,password})
+async function toLogin() {
+  const res =await login(user)
+  console.log(res)
+  if(res.data.code==10001) {
+    alert('登录成功')
+    // 保存用户名，
+    localStorage.setItem('username',username.value)
+    // 保存到pinia
+    router.push('/menu')
+
+  }else {
+    alert('登录失败')
+    router.push('/login')
+  }
+
+}
 </script>
 
 <style lang="scss" scoped>

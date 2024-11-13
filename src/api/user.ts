@@ -5,7 +5,7 @@ import instance from '@/http/index'
 export const register = data =>{
     const { account, password} = data
     return instance({
-        url:'/api/register',
+        url:'/register',
         method:'POST',
         data:{
             account,
@@ -16,12 +16,12 @@ export const register = data =>{
 
 // 登录
 export const login = data =>{
-    const { account, password} = data
+    const { username, password} = data
     return instance({
-        url:'/api/login',
+        url:'/login',
         method:'POST',
         data:{
-            account,
+          username,
             password
         }
     })
