@@ -15,7 +15,7 @@
     />
     <div class="line"></div>
         </div>
-              <el-menu-item :class="{ 'active': isClicked }" class="action" index="actions" @click="changeBackColor">
+              <el-menu-item :class="{ 'active': isClicked }" class="action" index="/actions" @click="changeBackColor">
                 <el-icon></el-icon>
                <span>马上行动</span>
               </el-menu-item>
@@ -75,15 +75,15 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top">马上行动</el-header>
+        <el-header class="right-top" >{{ mainTile }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
-        <router-view>
+
           <!-- 以下代码具有参考意义，但对目前来看，不利于逻辑思考 -->
            <!-- <div v-for="task in taskList" :key="task.taskId">
            <Task :taskName="task.taskName"></Task>
           </div> -->
-        </router-view>
+          <router-view></router-view>
       </el-main>
         <el-footer class="right-footer">
           <!-- <div class="footer">
@@ -110,7 +110,7 @@
 
 <script setup lang="ts" name="">
 import { useRouter,useRoute } from 'vue-router';
-import { ref,reactive, onMounted } from "vue";
+import { ref,reactive, onMounted,watch } from "vue";
 import UserInfo from "@/views/menu/components/UserInfo.vue";
 import { Search } from '@element-plus/icons-vue'
 import NewTask from "@/views/menu/components/NewTask.vue";
@@ -120,13 +120,20 @@ import { fa, tr } from 'element-plus/es/locales.mjs';
 import Clear from "@/views/clear/Clear.vue";
 import Dialog from "@/views/clear/Dialog.vue";
 import emitter from "@/mitt";
-import { ElMessage } from 'element-plus'
+import { ElMessage, tabNavEmits } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid';
+import { getAllTaskByRouteName } from "@/api/task";
+import type { RefSymbol } from '@vue/reactivity';
+import _ from 'lodash';
+
+interface Task {
+  taskId: string;
+  taskName: string;
+}
+
 const router = useRouter();
 const route = useRoute();
 const searchText=ref('')
-const title=route.query.title
-// defineProps(['title'])
 const onClickClear = () => {
   // 弹出对话框，进入流程
   console.log('点击了清除按钮');
@@ -134,21 +141,29 @@ const onClickClear = () => {
 
 // 新建任务时实现新建子组件
 const taskName = ref('');      // 输入框的值
-const taskList = reactive<{taskId:string;taskName:string}[]>([]);       // 存储子组件的值
+let taskList = reactive<{taskId:string;taskName:string}[]>([]);       // 存储子组件的值
 // 创建新组件的函数
 const handlecreateNewTask = (newTaskInputValue:unknown) => {
   // 待：后期还要把新建的任务对象保存，并且在一开始就获取对应导航下的全部任务
   taskName.value=newTaskInputValue as string
   const taskId = uuidv4();
-  const task = {
+  const task:Task = {
     taskId:taskId,
     taskName:taskName.value
   }
   if (taskName.value.trim()!=='') {
     taskList.unshift(task); // 将输入框的值添加到数组中
+    console.log('已把新的对象添加到数组中')
   }
 };
-onMounted(()=>{
+onMounted(async ()=>{
+  if(routeName.value) {
+    // 把路由的名字呈现在右侧主体
+    routeToMainTile(routeName.value)
+    // 获取开始的路由的列表数据
+    const allTask:Task =await getAllTaskByRouteName(routeName.value)
+    taskList = _.cloneDeep(allTask);
+  }
   emitter.on('createNewTask',handlecreateNewTask)
 })
 
@@ -158,6 +173,49 @@ onMounted(()=>{
 const isClicked = ref(false)
 const changeBackColor = ()=>{
   isClicked.value=!isClicked.value
+}
+
+// 更换主体的标题
+const routeName = ref(route.name)
+const mainTile = ref('')  // 转换为字符串，确保类型为 string
+
+// 监听路由变化
+watch(route, (newRoute) => {
+  routeName.value = newRoute.name
+  routeToMainTile(routeName.value)
+
+})
+
+//识别函数的路由
+function routeToMainTile(routeName:any) {
+  switch (routeName) {
+      case 'actions':
+        mainTile.value='马上行动'
+        break
+      case 'schedule':
+        mainTile.value='DDL'
+        break
+      case 'importance':
+        mainTile.value='重要'
+      break
+      case 'works':
+        mainTile.value='工作篮'
+      break
+      case 'goals':
+        mainTile.value='多任务步骤'
+      break
+      case 'thoughts':
+        mainTile.value='想法&愿景'
+      break
+      case 'entrust':
+        mainTile.value='委托他人'
+      break
+      case 'tags':
+        mainTile.value='标签'
+      break
+      default:
+        console.log('新建的标题或出错了未捕获的标题')
+    }
 }
 
 // ===

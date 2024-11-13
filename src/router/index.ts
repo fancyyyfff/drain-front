@@ -26,6 +26,7 @@ const routes = [
         path:'/menu',
         name:'menu',
         component:()=>import('@/views/menu/Menu.vue'),
+        redirect: 'actions',  // 重定向到默认子路由
         children:[
 
       {
