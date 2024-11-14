@@ -2,27 +2,25 @@ import { defineStore } from "pinia";
 // import { getUserInfo } from "@/api/user";
 
 export const useUserInfo = defineStore('userinfo',{
-    state:()=> {
-        return {
-            imageUrl:'',
-            name:'',
-            sex:'',
-            department:null,
-            identity:'',
+    state: () => ({
             username:'',
-            email:''
-        }
-    },
+            imageUrl:'',
+            nickname:'',
+            email:'',
+            role:0,
+            listIds: [],
+
+    }),
     actions:{
-        async fetchUserInfo(id) {
-            const res = await getUserInfo(id)
-            this.imageUrl=res.image_url
-            this.name=res.name
-            this.sex=res.sex
-            this.department=res.department
-            this.identity=res.identity
-            this.account=res.account
-            this.email=res.email
+        async fetchUserInfo() {
+            // const res = await getUserInfo(id)
+            // this.imageUrl=res.image_url
+            // this.name=res.name
+            // this.sex=res.sex
+            // this.department=res.department
+            // this.identity=res.identity
+            // this.account=res.account
+            // this.email=res.email
         }
     },
 },{persist:{

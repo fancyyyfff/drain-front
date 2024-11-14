@@ -38,13 +38,13 @@ const password = ref('')
 const user =reactive({username,password})
 async function toLogin() {
   const res =await login(user)
-  console.log(res)
+  console.log("登录响应",res)
   if(res.data.code==1001) {
     alert('登录成功')
     // 保存用户名，
     localStorage.setItem('username',username.value)
+    if(res.data) localStorage.setItem('userId',res.data)
     // 保存到pinia
-
     router.push('/menu')
 
   }else {
