@@ -6,7 +6,7 @@ import instance from '@/http/index'
 export const getAllTaskByListId = (listId:number) =>{
     // const { id } = data
     return instance({
-        url:'/drain/task/getAllTaskByRouteName',
+        url:'/drain/task/getAllTaskByListId',
         method:'POST',
         data:{
           listId
