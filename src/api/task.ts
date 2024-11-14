@@ -6,10 +6,43 @@ import instance from '@/http/index'
 export const getAllTaskByListId = (listId:number) =>{
     // const { id } = data
     return instance({
-        url:'/drain/task/getAllTaskByListId',
+        url:'/task/getAllTaskByListId',
         method:'POST',
         data:{
           listId
         }
     })
+}
+
+export const getDDLTask = () =>{
+
+  return instance({
+    url:'/task/getDDLTask',
+    method:'POST',
+    data:{
+
+    }
+})
+}
+
+export const getImportanTask = () =>{
+
+  return instance({
+    url:'/task/getImportanTask',
+    method:'POST',
+    data:{
+
+    }
+})
+}
+
+export const getGoalsTask = () =>{
+
+  return instance({
+    url:'/task/getGoalsTask',
+    method:'POST',
+    data:{
+
+    }
+})
 }

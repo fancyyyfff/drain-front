@@ -1,0 +1,58 @@
+switch (routeName.value) {
+      case 'actions':
+        return '马上行动'
+      case 'schedule':
+        return 'DDL'
+        break
+      case 'importance':
+        return '重要'
+      break
+      case 'works':
+        return '工作篮'
+      break
+      case 'goals':
+        return '多任务步骤'
+      break
+      case 'thoughts':
+        return '想法&愿景'
+      break
+      case 'entrust':
+        return '委托他人'
+      break
+      case 'tags':
+        return '标签'
+      break
+      default:
+        console.log('新建的标题或出错了未捕获的标题')
+    }
+
+
+const listId = computed(()=>{
+  switch (routeName.value) {
+      case 'actions':
+        return 0
+      case 'schedule':
+        return 1
+        break
+      case 'importance':
+        return 2
+      break
+      case 'works':
+        return 3
+      break
+      case 'goals':
+        return 4
+      break
+      case 'thoughts':
+        return 5
+      break
+      case 'entrust':
+        return 6
+      break
+      case 'tags':
+        return 7
+      break
+      default:
+        console.log('新建的标题或出错了未捕获的标题')
+    }
+})

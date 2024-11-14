@@ -123,7 +123,7 @@ import Dialog from "@/views/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { ElMessage, tabNavEmits } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid';
-import { getAllTaskByListId } from "@/api/task";
+import { getAllTaskByListId,getDDLTask,getImportanTask,getGoalsTask } from "@/api/task";
 import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
 
@@ -219,29 +219,28 @@ const handlecreateNewTask = (newTaskInputValue:unknown) => {
 };
 onMounted(async ()=>{
   if(routeName.value) {
-    // 把路由的名字呈现在右侧主体的标题
-    // routeToMainTile(routeName.value)
-    // 获取路由名对应的listId
+    // ===过滤掉一些路由：
+    filterTaskList()
 
-
-    // 获取开始的路由的列表数据
     console.log('当前的列表id为：',listId.value)
-    const res =await getAllTaskByListId(listId.value as number)
+    //===
+     const res =await getAllTaskByListId(listId.value as number)
     console.log('获取到所有任务接口的结果：',res)
-    taskList= res.data
+     taskList= res.data
+
     // taskList = _.cloneDeep(res.data);
 
     // 初始化任务
-    // taskList.push(
-    //   {
-    //     taskId: '111',
-    //     taskName: '完成各部分页面设计'
-    //   },
-    //   {
-    //     taskId: '222',
-    //     taskName: '完成各部分页面流转'
-    //   }
-    // );
+    taskList.push(
+      {
+        taskId: '111',
+        taskName: '完成各部分页面设计'
+      },
+      {
+        taskId: '222',
+        taskName: '完成各部分页面流转'
+      }
+    );
     console.log(taskList)
 
   }
@@ -270,6 +269,27 @@ watch(
   },
   { immediate: true } // 立即调用一次
 );
+
+// 过滤一些需要通过属性值获取的
+// ddl、重要、多步骤任务
+async function filterTaskList() {
+  if(routeName.value==='schedule') {
+    // await get
+    console.log('获取ddl')
+    const res=await getDDLTask()
+    return taskList=res.data
+  }else if(routeName.value==='importance') {
+    console.log('获取重要')
+    const res=await getImportanTask()
+    return taskList=res.data
+
+  }else if(routeName.value==='goals') {
+    console.log('获取多步骤任务')
+    const res=await getGoalsTask()
+    return taskList=res.data
+  }
+
+}
 
 // 监听路由变化
 // watch(route, (newRoute) => {

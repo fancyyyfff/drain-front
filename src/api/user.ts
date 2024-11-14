@@ -18,7 +18,7 @@ export const register = data =>{
 export const login = data =>{
     const { username, password} = data
     return instance({
-        url:'/drain/user/login',
+        url:'/user/login',
         method:'POST',
         data:{
           username,
