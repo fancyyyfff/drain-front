@@ -135,7 +135,8 @@ interface Task {
 const router = useRouter();
 const route = useRoute();
 const searchText=ref('')
-const routeName = ref(route.name)
+// const routeName = ref(route.name)
+const routeName = computed(() => route.name); // 确保 routeName 是响应式的
 const mainTile = computed(() => {
   switch (routeName.value) {
       case 'actions':
@@ -222,11 +223,29 @@ onMounted(async ()=>{
     // routeToMainTile(routeName.value)
     // 获取路由名对应的listId
 
+
     // 获取开始的路由的列表数据
+    console.log('当前的列表id为：',listId.value)
     const res =await getAllTaskByListId(listId.value as number)
-    taskList = _.cloneDeep(res.data);
+    console.log('获取到所有任务接口的结果：',res)
+    taskList= res.data
+    // taskList = _.cloneDeep(res.data);
+
+    // 初始化任务
+    // taskList.push(
+    //   {
+    //     taskId: '111',
+    //     taskName: '完成各部分页面设计'
+    //   },
+    //   {
+    //     taskId: '222',
+    //     taskName: '完成各部分页面流转'
+    //   }
+    // );
+    console.log(taskList)
+
   }
-  emitter.on('createNewTask',handlecreateNewTask)
+
 })
 
 // 打开侧边栏
@@ -237,6 +256,20 @@ const changeBackColor = ()=>{
   isClicked.value=!isClicked.value
 }
 
+emitter.on('createNewTask',handlecreateNewTask)
+
+// 路由变化时，获取通过listId，获取新路由的任务
+watch(
+  () => route.name, // 或 route.path，根据需要选择
+  async () => {
+    if (listId.value) {
+      // 获取任务数据
+      console.log('路由变化时获取到的列表id',listId.value)
+      await getAllTaskByListId(listId.value);
+    }
+  },
+  { immediate: true } // 立即调用一次
+);
 
 // 监听路由变化
 // watch(route, (newRoute) => {

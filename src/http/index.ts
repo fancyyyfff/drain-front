@@ -9,7 +9,9 @@ const instance = axios.create({
     timeout: 6000,//设置超时
     // 使用表单默认的类型
     headers:{
-      'Content-Type':'application/x-www-form-urlencoded',
+      // 'Content-Type':'application/x-www-form-urlencoded',
+      'Content-Type':'application/json',
+
       // 'Authorization': `Bearer ${token}`
     }
   });
