@@ -224,9 +224,9 @@ onMounted(async ()=>{
 
     console.log('当前的列表id为：',listId.value)
     //===
-     const res =await getAllTaskByListId(listId.value as number)
-    console.log('获取到所有任务接口的结果：',res)
-     taskList= res.data
+    //  const res =await getAllTaskByListId(listId.value as number)
+    // console.log('获取到所有任务接口的结果：',res)
+    //  taskList= res.data
 
     // taskList = _.cloneDeep(res.data);
 
@@ -276,17 +276,17 @@ async function filterTaskList() {
   if(routeName.value==='schedule') {
     // await get
     console.log('获取ddl')
-    const res=await getDDLTask()
-    return taskList=res.data
+    // const res=await getDDLTask()
+    // return taskList=res.data
   }else if(routeName.value==='importance') {
     console.log('获取重要')
-    const res=await getImportanTask()
-    return taskList=res.data
+    // const res=await getImportanTask()
+    // return taskList=res.data
 
   }else if(routeName.value==='goals') {
     console.log('获取多步骤任务')
-    const res=await getGoalsTask()
-    return taskList=res.data
+    // const res=await getGoalsTask()
+    // return taskList=res.data
   }
 
 }

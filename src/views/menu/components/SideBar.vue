@@ -61,9 +61,9 @@ const sidebarOpen = ref(false); // 控制侧边栏的状态
 // const sidebarOpen = ref(true);
 // 切换侧边栏状态
 const toggleSidebar = () => {
-
+  console.log('切换前，侧边栏的状态',sidebarOpen.value)
   sidebarOpen.value = !sidebarOpen.value;
-
+  console.log('切换后，侧边栏的状态',sidebarOpen.value)
 };
 const handleToggleSidebar = (data:unknown)=>{
   // 先切换状态
@@ -73,6 +73,7 @@ const handleToggleSidebar = (data:unknown)=>{
   console.log("打开侧边栏时接受到的数据"+data)
 }
 
+emitter.on('toggleSidebar',handleToggleSidebar)
 
 
 onBeforeUnmount(() => {
@@ -84,7 +85,7 @@ onBeforeUnmount(() => {
 const editableDiv = ref<HTMLDivElement | null>(null);
 const placeholderText = "请输入内容...";
 onMounted(()=>{
-  emitter.on('toggleSidebar',handleToggleSidebar)
+  // emitter.on('toggleSidebar',handleToggleSidebar)
   // 初始时，如果没有内容，显示 placeholder
   const div = editableDiv.value;
   if (div && div.innerHTML.trim() === '') {
@@ -133,10 +134,6 @@ const onBlur = () => {
         top: 20px;
         left: 20px;
         pointer-events: none;
-}
-
-.sidebar-open {
-    width: 350px; /* 侧边栏打开时的宽度 */
 }
 
 /* 侧边栏样式 */
@@ -262,5 +259,7 @@ const onBlur = () => {
 
 }
 
-
+.sidebar-open {
+    width: 350px ; /* 侧边栏打开时的宽度 */
+}
 </style>

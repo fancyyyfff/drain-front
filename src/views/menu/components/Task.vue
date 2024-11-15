@@ -20,7 +20,6 @@ defineProps({
 const drawer = ref(false)
 
 const openSideBar = ()=>{
-
   emitter.emit('toggleSidebar','传输的任务数据')
 }
 

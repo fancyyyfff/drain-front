@@ -37,6 +37,7 @@ const password = ref('')
 
 const user =reactive({username,password})
 async function toLogin() {
+  // 先判断用户是否有token，或是否过期
   const res =await login(user)
   console.log("登录响应",res)
   if(res.data.code==1001) {
@@ -45,6 +46,8 @@ async function toLogin() {
     localStorage.setItem('username',username.value)
     if(res.data) localStorage.setItem('userId',res.data)
     // 保存到pinia
+  // 把token也保存到pinia
+
     router.push('/menu')
 
   }else {
