@@ -23,6 +23,24 @@ const openSideBar = ()=>{
   emitter.emit('toggleSidebar','传输的任务数据')
 }
 
+emitter.on('addTagSign',addTagSign)
+// ==
+function addTagSign() {
+  console.log('添加标签的符号到任务卡')
+}
+
+// ===获取任务：
+// 如何获取到当前的taskId？首先获取到listId,判断包含与否
+// 不如统一放到pinia
+emitter.on('getTask',getTask)
+async function getTask() {
+      const res=await getTask(taksId)
+      if(res.data.code==1) {
+
+      }
+      sidebarData.value = data;
+}
+
 // defineExpose({
 //   openSideBar,
 // })

@@ -15,17 +15,3 @@ export const useTaskSotre = defineStore('task', {
     },
   },
 })
-
-export const useTskSotre = defineStore('task',{
-  state:()=>({
-    tasks:[],
-
-  }),
-  getters:{},
-  actions:{
-    addTask(newTask) {
-      this.tasks.push(newTask)
-    }
-
-  },
-},{persist:true})

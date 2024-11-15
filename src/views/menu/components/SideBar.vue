@@ -11,7 +11,10 @@
 
         <div class="sidebar-tag">
           <div class="sidebar-tag-text-wrap">
-            <div>标签1</div>
+            <div v-for="tag in tagList" key="index">
+              <span class="add-tage">#</span>
+              {{ tag }}
+            </div>
           </div>
           <div class="sidebar-tag-more">></div>
         </div>
@@ -22,7 +25,7 @@
 
           <div class="detail-wrap shine" >
             <div class="task-tick"></div>
-            <p class="task-text">界面优化</p>
+            <p class="task-text">{{ taskName }}</p>
             <img src="@/assets/start.svg" class="start" alt="">
           </div>
 
@@ -46,7 +49,10 @@
 
           <!-- 底部 -->
         <footer class="sidebar-footer">
-          <div class="sidebar-tag"># 点击输入</div>
+          <div class="sidebar-tag">
+            <span class="add-tag">#</span>
+            <input type="text" placeholder="添加标签" class="shine tag-input" v-model="tagValue" @keydown.enter="addTag">
+          </div>
           <div class="sidebar-create">创建于2024年11月1日</div>
         </footer>
 
@@ -54,23 +60,19 @@
 </template>
 
 <script setup lang="ts" name="">
-import { ref,onMounted,onBeforeUnmount } from 'vue';
+import { ref,onMounted,onBeforeUnmount, reactive,watchEffect  } from 'vue';
 import emitter from "@/mitt";
 import { da } from 'element-plus/es/locales.mjs';
+import { addTagList } from "@/api/task";
 const sidebarOpen = ref(false); // 控制侧边栏的状态
 // const sidebarOpen = ref(true);
 // 切换侧边栏状态
 const toggleSidebar = () => {
-  console.log('切换前，侧边栏的状态',sidebarOpen.value)
   sidebarOpen.value = !sidebarOpen.value;
-  console.log('切换后，侧边栏的状态',sidebarOpen.value)
 };
 const handleToggleSidebar = (data:unknown)=>{
   // 先切换状态
   toggleSidebar()
-  // 如果是打开状态，就渲染数据
-  // 待：
-  console.log("打开侧边栏时接受到的数据"+data)
 }
 
 emitter.on('toggleSidebar',handleToggleSidebar)
@@ -92,6 +94,25 @@ onMounted(()=>{
     div.classList.add('placeholder');
   }
 })
+
+interface Task {
+  taskName:string,
+  star:number,
+  finish:number,
+
+}
+const taskName = ref('获取任务名')
+let task = reactive<Task>({taskName:'',star:0,finish:0})
+// ==检测sideBar值的变化，获取后端的数据渲染:
+// ===
+watchEffect(() => {
+  if (sidebarOpen.value) {
+      emitter.emit('getTask')
+      console.log('检测sideBar值的变化，获取后端的数据渲染:')
+  }
+});
+
+
 
 const onInput = () => {
   const div = editableDiv.value;
@@ -121,6 +142,21 @@ const onBlur = () => {
     div.classList.add('placeholder');
   }
 };
+
+// 添加标签：
+const tagList = reactive<string[]>(['前端'])
+const tagValue = ref('')
+async function addTag() {
+  tagList.push(tagValue.value)
+  tagValue.value=''
+  // 发送请求，添加标签
+  const res=await addTagList(tagList)
+  if(res.data.code==1) {
+    // 成功就渲染一个标签的符号到Task
+    emitter.emit('addTagSign')
+  }
+
+}
 
 
 </script>
@@ -181,7 +217,16 @@ const onBlur = () => {
 
       /* 包裹的标签文字 */
       .sidebar-tag-text-wrap {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        column-gap:20px;
 
+        >div {
+          font-size: 1rem;
+          color: rgb(178, 181, 140);
+
+        }
 
       }
 
@@ -255,8 +300,48 @@ const onBlur = () => {
   .sidebar-footer {
     display: grid;
     grid-template-rows: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+
+    .sidebar-tag {
+      display: flex;
+      position: relative;
+      // width: 90%;
+
+      .add-tag {
+        position: absolute;
+        top: 3px;
+        left: 5px;
+      }
+
+      .tag-input {
+        width: 100%;
+        height: 25px;
+        padding: 0 10px 0 20px;
+        border: none;
+        outline: none;
+        color: white;
+        background: none;
+      }
+
+      .tag-input::placeholder {
+        color: white;
+      }
+
+    }
+
+
+    .sidebar-create {
+      border-top: 0.5px solid white; /* 1px 细的白色上边框 */
+    }
+
   }
 
+}
+// #符号的样式：
+.add-tage {
+          font-size: 1rem;
+          color: rgb(178, 181, 140);
 }
 
 .sidebar-open {

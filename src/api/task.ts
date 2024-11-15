@@ -42,7 +42,29 @@ export const getGoalsTask = () =>{
     url:'/task/getGoalsTask',
     method:'POST',
     data:{
+    }
+})
+}
 
+export const addTagList = (tagList:[]) =>{
+
+  return instance({
+    url:'/task/addTagList',
+    method:'POST',
+    data:{
+      tagList
+
+    }
+})
+}
+
+export const getTask = (taskId:number) =>{
+
+  return instance({
+    url:'/task/getGoalsTask',
+    method:'POST',
+    data:{
+      taskId
     }
 })
 }
