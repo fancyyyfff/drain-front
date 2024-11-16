@@ -4,7 +4,7 @@
   <Tick v-model:checked="finish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ taskName }}</p>
-  <img src="@/assets/start.svg" class="start" alt="" @click.stop>
+  <Star v-model:starred="item.isStarred" star-color="#efe299" :size="'1.5rem'" @click.stop />
 </div>
 </template>
 
@@ -15,6 +15,7 @@ import emitter from "@/mitt";
 import { getTask,updateTaskName,updateTaskFinish } from "@/api/task";
 import Tick from '@/components/Tick.vue';
 import { tourStepEmits } from 'element-plus/lib/components/index.js';
+import Star from "@/components/Star.vue";
 defineProps({
   taskName: {
     type: String,
@@ -79,6 +80,13 @@ async function handleTaskChange (isChecked:boolean)  {
   //   console.error('更新任务失败:', err);
   // }
 }
+
+
+// 控制星星
+const item = ref({
+  isStarred: false,
+  // ... other item data
+});
 </script>
 
 <style scoped>
@@ -96,11 +104,6 @@ async function handleTaskChange (isChecked:boolean)  {
         font-size: 1.5rem;
         font-weight:700;
         margin-left:4%;
-      }
-
-      .start {
-        position: absolute;
-        right: 3%;
       }
 }
 </style>

@@ -26,7 +26,7 @@
           <div class="detail-wrap shine" >
             <div class="task-tick"></div>
             <input class="task-input" v-model="task.taskName"/>
-            <img src="@/assets/start.svg" class="start" alt="">
+            <Star v-model:starred="item.isStarred" star-color="#efe299" :size="'1.5rem'" @click.stop />
           </div>
 
             <div class="detail-wrap shine add-action" >
@@ -55,7 +55,6 @@
           </div>
           <div class="sidebar-create">创建于2024年11月1日</div>
         </footer>
-
     </aside>
 </template>
 
@@ -64,6 +63,7 @@ import { ref,onMounted,onBeforeUnmount, reactive,watchEffect  } from 'vue';
 import emitter from "@/mitt";
 import { da } from 'element-plus/es/locales.mjs';
 import { addTagList } from "@/api/task";
+import Star from "@/components/Star.vue";
 const sidebarOpen = ref(false); // 控制侧边栏的状态
 // const sidebarOpen = ref(true);
 // 切换侧边栏状态
@@ -168,6 +168,11 @@ function addAttachment() {
 
 }
 
+// 控制星星
+const item = ref({
+  isStarred: false,
+  // ... other item data
+});
 
 </script>
 
