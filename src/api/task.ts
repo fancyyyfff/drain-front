@@ -61,7 +61,19 @@ export const addTagList = (tagList:[]) =>{
 export const getTask = (taskId:number) =>{
 
   return instance({
-    url:'/task/getGoalsTask',
+    url:'/task/getTask',
+    method:'POST',
+    data:{
+      taskId
+    }
+})
+}
+
+// 修改任务名
+export const updateTaskName = (taskId:number) =>{
+
+  return instance({
+    url:'/task/updateTaskName',
     method:'POST',
     data:{
       taskId

@@ -25,12 +25,12 @@
 
           <div class="detail-wrap shine" >
             <div class="task-tick"></div>
-            <p class="task-text">{{ taskName }}</p>
+            <input class="task-input" v-model="task.taskName"/>
             <img src="@/assets/start.svg" class="start" alt="">
           </div>
 
             <div class="detail-wrap shine add-action" >
-                <img src="" alt="">
+                <ion-icon name="attach-outline" class="detail-icon"></ion-icon>
                 <p class="detail-text">添加附件</p>
               </div>
 
@@ -44,7 +44,7 @@
                   @focus="onFocus"
                   @blur="onBlur"
                   ref="editableDiv"
-               ></div>
+               >{{ task.remark }}</div>
           </div>
 
           <!-- 底部 -->
@@ -99,16 +99,19 @@ interface Task {
   taskName:string,
   star:number,
   finish:number,
-
+  remark:string,
+  // === 是否有写附件？
+  // attachment:string,
 }
-const taskName = ref('获取任务名')
-let task = reactive<Task>({taskName:'',star:0,finish:0})
+
+let task = reactive<Task>({taskName:'获取任务名',star:0,finish:0,remark:'备注'})
 // ==检测sideBar值的变化，获取后端的数据渲染:
 // ===
 watchEffect(() => {
   if (sidebarOpen.value) {
       emitter.emit('getTask')
       console.log('检测sideBar值的变化，获取后端的数据渲染:')
+      // emitter.on('resTask',(resTask:Task)=>task=resTask)
   }
 });
 
@@ -243,6 +246,7 @@ async function addTag() {
   /* 侧边栏主体部分 */
   .sidebar-main-content {
     flex:1;
+    overflow-x: hidden;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -278,10 +282,15 @@ async function addTag() {
       border-radius: 10px;
       align-items: center;
 
-      .task-text {
+      .task-input {
+        // color: white;
         font-size: 1.5rem;
         font-weight:700;
         margin-left:4%;
+        background: none;
+        outline: none;
+        border: none;
+        color: white;
       }
 
       .start {
@@ -291,6 +300,7 @@ async function addTag() {
 
       .detail-text {
         font-size: 1.2rem;
+        margin-left: 10px;
       }
 
     }
@@ -340,8 +350,8 @@ async function addTag() {
 }
 // #符号的样式：
 .add-tage {
-          font-size: 1rem;
-          color: rgb(178, 181, 140);
+  font-size: 1rem;
+  color: rgb(178, 181, 140);
 }
 
 .sidebar-open {

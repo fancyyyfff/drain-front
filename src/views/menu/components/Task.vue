@@ -11,6 +11,7 @@
 import { ref } from 'vue'
 import { defineProps } from 'vue';
 import emitter from "@/mitt";
+import { getTask,updateTaskName } from "@/api/task";
 defineProps({
   taskName: {
     type: String,
@@ -32,13 +33,12 @@ function addTagSign() {
 // ===获取任务：
 // 如何获取到当前的taskId？首先获取到listId,判断包含与否
 // 不如统一放到pinia
-emitter.on('getTask',getTask)
-async function getTask() {
-      const res=await getTask(taksId)
-      if(res.data.code==1) {
-
-      }
-      sidebarData.value = data;
+emitter.on('getTask',fetchTask)
+async function fetchTask() {
+      // const res=await getTask(taskId)
+      // if(res.data.code==1) {
+      //   emitter.emit('resTask',res.data.Task)
+      // }
 }
 
 // defineExpose({

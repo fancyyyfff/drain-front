@@ -74,7 +74,14 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), /* 外部阴影 */
         outline:none;
 }
 
-/* 任务的圆圈 */
+/* 任务栏的图标的定位 */
+.detail-icon {
+  font-size: 23px;
+  position: absolute;
+  left: 2%;
+}
+
+/* 任务的圆圈*/
 .task-tick {
   position: absolute;
   width: 15px;
