@@ -7,7 +7,13 @@ import { codeInspectorPlugin } from 'code-inspector-plugin';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => tag.startsWith('ion-')
+        }
+      }
+    }),
     codeInspectorPlugin({
       bundler: 'vite',
     }),

@@ -1,6 +1,5 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
-  <!-- <div class="task-tick"></div> -->
   <Tick v-model:checked="finish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ taskName }}</p>
@@ -9,13 +8,17 @@
 </template>
 
 <script setup lang="ts" name="">
-import { ref,computed } from 'vue'
+import { ref,reactive,computed } from 'vue'
 import { defineProps } from 'vue';
 import emitter from "@/mitt";
 import { getTask,updateTaskName,updateTaskFinish } from "@/api/task";
 import Tick from '@/components/Tick.vue';
 import { tourStepEmits } from 'element-plus/lib/components/index.js';
 import Star from "@/components/Star.vue";
+import { useTaskStore } from '@/stores/task';
+
+const taskStore = useTaskStore();
+
 defineProps({
   taskName: {
     type: String,
@@ -25,8 +28,20 @@ defineProps({
 const finish = ref(false);
 const drawer = ref(false)
 
+// 需要过滤DDL、多任务列表
 const openSideBar = ()=>{
+  if(taskStore.currentRoute==='schedule') {
+    // === 获取当前的任务的数据
+    console.log('当前路由：',taskStore.currentRoute)
+    emitter.emit('scheduleOpenSideBar','渲染当前的任务的数据')
+
+  } else if(taskStore.currentRoute==='goals') {
+    // === 获取当前的任务的数据
+    emitter.emit('goalsOpenSideBar','渲染当前的任务的数据')
+
+  }else {
   emitter.emit('toggleSidebar','传输的任务数据')
+  }
 }
 
 emitter.on('addTagSign',addTagSign)
@@ -87,6 +102,27 @@ const item = ref({
   isStarred: false,
   // ... other item data
 });
+
+// 右键出现菜单
+// 右键菜单
+const showMenu = ref(false);
+const contextMenuX = ref(0);
+const contextMenuY = ref(0);
+
+const contextMenuOptions = reactive([
+  { label: '移动到组件 A', value: 'componentA' },
+  { label: '移动到组件 B', value: 'componentB' },
+  { label: '删除', value: 'delete' },
+]);
+
+const showContextMenu = (event:Event) => {
+  event.preventDefault(); // 阻止默认的右键菜单
+  showMenu.value = true;
+  console.log('这是展示右键菜单的选项')
+  // contextMenuX.value = event.clientX;
+  // contextMenuY.value = event.clientY;
+};
+
 </script>
 
 <style scoped>

@@ -82,9 +82,9 @@
         <router-view>
           <!-- 以下代码具有参考意义，但对目前来看，不利于逻辑思考 -->
            <div v-for="task in taskList" :key="task.taskId">
-           <Task :taskName="task.taskName"></Task>
+            <Task :taskName="task.taskName"></Task>
           </div>
-          </router-view>
+        </router-view>
       </el-main>
         <el-footer class="right-footer">
           <!-- <div class="footer">
@@ -126,6 +126,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAllTaskByListId,getDDLTask,getImportanTask,getGoalsTask } from "@/api/task";
 import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
+import { useTaskStore } from '@/stores/task';
 
 interface Task {
   taskId: string;
@@ -134,6 +135,8 @@ interface Task {
 
 const router = useRouter();
 const route = useRoute();
+const taskStore = useTaskStore();
+
 const searchText=ref('')
 // const routeName = ref(route.name)
 const routeName = computed(() => route.name); // 确保 routeName 是响应式的
@@ -166,35 +169,7 @@ const mainTile = computed(() => {
         console.log('新建的标题或出错了未捕获的标题')
     }
     });
-const listId = computed(()=>{
-  switch (routeName.value) {
-      case 'actions':
-        return 0
-      case 'schedule':
-        return 1
-        break
-      case 'importance':
-        return 2
-      break
-      case 'works':
-        return 3
-      break
-      case 'goals':
-        return 4
-      break
-      case 'thoughts':
-        return 5
-      break
-      case 'entrust':
-        return 6
-      break
-      case 'tags':
-        return 7
-      break
-      default:
-        console.log('新建的标题或出错了未捕获的标题')
-    }
-})
+
 const onClickClear = () => {
   // 弹出对话框，进入流程
   console.log('点击了清除按钮');
@@ -222,7 +197,7 @@ onMounted(async ()=>{
     // ===过滤掉一些路由：
     filterTaskList()
 
-    console.log('当前的列表id为：',listId.value)
+    // console.log('当前的列表id为：',listId.value)
     //===
     //  const res =await getAllTaskByListId(listId.value as number)
     // console.log('获取到所有任务接口的结果：',res)
@@ -257,17 +232,14 @@ const changeBackColor = ()=>{
 
 emitter.on('createNewTask',handlecreateNewTask)
 
-// 路由变化时，获取通过listId，获取新路由的任务
+// 自动检测路由变化
+
 watch(
-  () => route.name, // 或 route.path，根据需要选择
-  async () => {
-    if (listId.value) {
-      // 获取任务数据
-      console.log('路由变化时获取到的列表id',listId.value)
-      await getAllTaskByListId(listId.value);
-    }
+  () => route.name,
+  (newRouteName) => {
+    taskStore.updateCurrentRoute(newRouteName);
   },
-  { immediate: true } // 立即调用一次
+  { immediate: true }
 );
 
 // 过滤一些需要通过属性值获取的
