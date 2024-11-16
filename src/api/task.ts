@@ -80,3 +80,15 @@ export const updateTaskName = (taskId:number) =>{
     }
 })
 }
+// 修改元素的选中状态
+export const updateTaskFinish = (taskId:number,finish:number) =>{
+
+  return instance({
+    url:'/task/updateTaskName',
+    method:'POST',
+    data:{
+      taskId,
+      finish
+    }
+})
+}

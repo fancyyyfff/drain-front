@@ -31,7 +31,7 @@
 
             <div class="detail-wrap shine add-action" >
                 <ion-icon name="attach-outline" class="detail-icon"></ion-icon>
-                <p class="detail-text">添加附件</p>
+                <p class="detail-text" @click="addAttachment">添加附件</p>
               </div>
 
               <!-- 备注 -->
@@ -158,6 +158,13 @@ async function addTag() {
     // 成功就渲染一个标签的符号到Task
     emitter.emit('addTagSign')
   }
+
+}
+
+// 添加附件
+function addAttachment() {
+  // ==
+  console.log('添加附件逻辑')
 
 }
 

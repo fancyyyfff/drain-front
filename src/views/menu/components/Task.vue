@@ -1,23 +1,27 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
-  <div class="task-tick"></div>
+  <!-- <div class="task-tick"></div> -->
+  <Tick v-model:checked="finish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
-  <p class="task-text">{{ taskName }}</p>
-  <img src="@/assets/start.svg" class="start" alt="">
+  <p class="task-text" :style="textStyle" >{{ taskName }}</p>
+  <img src="@/assets/start.svg" class="start" alt="" @click.stop>
 </div>
 </template>
 
 <script setup lang="ts" name="">
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 import { defineProps } from 'vue';
 import emitter from "@/mitt";
-import { getTask,updateTaskName } from "@/api/task";
+import { getTask,updateTaskName,updateTaskFinish } from "@/api/task";
+import Tick from '@/components/Tick.vue';
+import { tourStepEmits } from 'element-plus/lib/components/index.js';
 defineProps({
   taskName: {
     type: String,
     required: true,
   },
 })
+const finish = ref(false);
 const drawer = ref(false)
 
 const openSideBar = ()=>{
@@ -45,6 +49,36 @@ async function fetchTask() {
 //   openSideBar,
 // })
 
+// 打勾的组件：
+
+const textStyle = computed(() => {
+  return {
+    'text-decoration': finish.value ? 'line-through' : 'none',
+    'text-shadow': finish.value ? 'none':'0 0 2px rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.5)' , // 添加发光效果
+    'color': finish.value ?  'gray':'white'
+  };
+});
+async function handleTaskChange (isChecked:boolean)  {
+  finish.value=isChecked
+  // == 完成的任务放到最后面：
+  if(finish.value===true) {
+    console.log('需要把当前任务的id放到页面渲染数组的最后面')
+  }
+  // === 发送请求更改任务的完成状态
+  // == 获取当前元素的taskId
+  // try {
+  //   const res = await updateTaskFinish(taskId, !finish.value);
+  //   if (res.code===1) {
+  //     finish.value = !finish.value;
+  //   } else {
+  //     // 处理可能的错误响应
+  //     console.error(`更新失败：${res.message || '未知错误'}`, 'error');
+  //   }
+  // } catch (err) {
+  //   // 捕获意外的异常并处理
+  //   console.error('更新任务失败:', err);
+  // }
+}
 </script>
 
 <style scoped>
@@ -60,10 +94,6 @@ async function fetchTask() {
 
       .task-text {
         font-size: 1.5rem;
-        color: rgb(255, 255, 255);
-        text-shadow:
-    0 0 2px rgba(255, 255, 255, 0.5), /* 轻微的白色光晕 */
-    0 0 3px rgba(255, 255, 255, 0.3); /* 更大的模糊光晕 */
         font-weight:700;
         margin-left:4%;
       }
