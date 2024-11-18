@@ -3,19 +3,20 @@
     <el-container class="contrain-wrap">
       <!-- 左边的侧边栏 -->
       <el-aside class="left-aside" width="200px">
-        <el-menu class="el-menu-vertical-demo" router>
+        <el-menu class="el-menu-vertical-demo" router default-active='schedule'>
         <div class="user-search">
           <UserInfo>用户信息</UserInfo>
         <!-- <div>搜索框</div> -->
-        <el-input
-      v-model="searchText"
-      placeholder="搜索"
-      :suffix-icon="Search"
-       class="search-input shine"
-    />
-    <div class="line"></div>
-        </div>
-              <el-menu-item :class="{ 'active': isClicked }" class="action" index="/actions" @click="changeBackColor">
+          <el-input
+            v-model="searchText"
+            placeholder="搜索"
+            :suffix-icon="Search"
+            class="search-input shine"
+          />
+            <div class="line"></div>
+          </div>
+
+              <el-menu-item :class="{ 'active': isClicked }" class="action" index="actions" @click="changeBackColor">
                 <el-icon></el-icon>
                <span>马上行动</span>
               </el-menu-item>
@@ -57,6 +58,7 @@
 
         </el-menu>
 
+
         <div class="left-footer">
           <div class="function-wrap">
             <Clear></Clear>
@@ -70,6 +72,7 @@
             <span class="new-text">+&nbsp;&nbsp;&nbsp;新建任务</span>
           </div>
         </div>
+
       </el-aside>
 
 <!-- 右边的内容 -->
@@ -80,7 +83,6 @@
       <el-main class="right-main">
 
         <router-view>
-          <!-- 以下代码具有参考意义，但对目前来看，不利于逻辑思考 -->
            <div v-for="task in taskList" :key="task.taskId">
             <Task :taskName="task.taskName"></Task>
           </div>
@@ -95,11 +97,13 @@
         </el-footer>
 
       </el-container>
-
       <!-- 放侧边栏 -->
 
       <SideBar></SideBar>
+
     </el-container>
+
+
   </div>
 
 <!-- 弹窗: -->

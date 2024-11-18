@@ -1,112 +1,73 @@
-import { pa } from "element-plus/es/locales.mjs";
-import { createRouter,createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginPage from '../views/LoginPage.vue';
+import DashboardPage from '../views/DashboardPage.vue';
+import MenuPage from '../views/MenuPage.vue';
+import TaskListPage from '../views/TaskListPage.vue';
+import { useUserStore } from '../store/userStore';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const routes = [
+  { path: '/', component: LoginPage },
+  { path: '/menu', component: MenuPage },
+];
+
+const dynamicRoutes = [
   {
-    path:'/',
-    redirect:'/menu'
+    path: '/dashboard/:basketId',
+    component: DashboardPage,
+    meta: { requiresAuth: true }, // 需要登录权限
   },
   {
-    path:'/index',
-    name:'index',
-    component:()=>import('@/views/index/Index.vue')
+    path: '/tasks/:taskId',
+    component: TaskListPage,
+    meta: { requiresAuth: true },
   },
-  {
-    path:'/login',
-    name:'login',
-    component:()=>import('@/views/user/login/Login.vue')
-},
-{
-  path:'/register',
-  name:'register',
-  component:()=>import('@/views/user/register/Register.vue')
-},
-
-    {
-        path:'/menu',
-        name:'menu',
-        component:()=>import('@/views/menu/Menu.vue'),
-        redirect: 'actions',  // 重定向到默认子路由
-        children:[
-
-      {
-        path:'/actions',
-        name:'actions',
-        component:()=>import('@/views/actions/Actions.vue'),
-
-    },
-    {
-      path:'/importance',
-      name:'importance',
-      component:()=>import('@/views/importance/Importance.vue'),
-      // props(route:any){
-      //   return route.query
-      // },
-    },
-    {
-      path:'/schedule',
-      name:'schedule',
-      component:()=>import('@/views/schedule/Schedule.vue')
-    },
-    {
-      path:'/works',
-      name:'works',
-      component:()=>import('@/views/works/Works.vue')
-    },
-    {
-      path:'/goals',
-      name:'goals',
-      component:()=>import('@/views/goals/Goals.vue')
-    },
-    {
-      path:'/thoughts',
-      name:'thoughts',
-      component:()=>import('@/views/thoughts/Thoughts.vue')
-    },
-    {
-      path:'/entrust',
-      name:'entrust',
-      component:()=>import('@/views/entrust/Entrust.vue')
-    },
-    {
-      path:'/tags',
-      name:'tags',
-      component:()=>import('@/views/tags/Tags.vue')
-    },
-        ]
-    },
-  {
-  path:'/clear',
-  name:'clear',
-  component:()=>import('@/views/clear/Clear.vue')
-},
-{
-  path:'/ai',
-  name:'ai',
-  component:()=>import('@/views/AI/AI.vue')
-},
-{
-  path:'/new',
-  name:'new',
-  component:()=>import('@/views/new/New.vue')
-},
-
-
-]
+];
 
 const router = createRouter({
-    history:createWebHashHistory(),
-    routes
-})
+  history: createWebHistory(),
+  routes,
+});
 
+// 路由守卫
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+  const token = Cookies.get('token');
 
-// 在导航守卫中添加query数据
-// router.beforeEach((to, from, next) => {
-//   if (to.path === '/importance' && !to.query.title) {
-//     next({ ...to, query: { title: '重要' } });
-//   } else {
-//     next();
-//   }
-// });
+  if (to.meta.requiresAuth && !token) {
+    // 如果需要登录但没有 Token，跳转到登录页面
+    next('/');
+  } else if (token && !userStore.userId) {
+    try {
+      // 如果存在 Token 但用户未登录，自动验证 Token
+      const response = await axios.get('/api/validate-token', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const { userId, role, basketIds } = response.data;
+
+      // 自动登录并设置用户状态
+      userStore.login(userId, role, basketIds, token);
+
+      next();
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      Cookies.remove('token'); // 清除无效 Token
+      next('/');
+    }
+  } else {
+    next();
+  }
+});
+
+// 动态添加路由
+export function setupDynamicRoutes(basketIds: string[]) {
+  basketIds.forEach((basketId) => {
+    router.addRoute({
+      path: `/dashboard/${basketId}`,
+      component: DashboardPage,
+    });
+  });
+}
 
 export default router;

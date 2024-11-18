@@ -1,31 +1,44 @@
-import { defineStore } from "pinia";
-// import { getUserInfo } from "@/api/user";
+import { defineStore } from 'pinia';
+import Cookies from 'js-cookie';
 
-export const useUserInfo = defineStore('userinfo',{
-    state: () => ({
-            username:'',
-            imageUrl:'',
-            nickname:'',
-            email:'',
-            role:0,
-            listIds: [],
+interface UserState {
+  userId: string | null;
+  role: string | null; // 用户角色
+  token: string | null; // 用于存储用户的 Token
+  basketIds: string[]; // 当前用户的 basketIds
+  tasks: Record<string, string[]>; // 每个 basketId 对应 taskId 列表
+}
 
-    }),
-    actions:{
-        async fetchUserInfo() {
-            // const res = await getUserInfo(id)
-            // this.imageUrl=res.image_url
-            // this.name=res.name
-            // this.sex=res.sex
-            // this.department=res.department
-            // this.identity=res.identity
-            // this.account=res.account
-            // this.email=res.email
-        }
+export const useUserStore = defineStore('user', {
+  state: (): UserState => ({
+    userId: null,
+    role: null,
+    token: null,
+    basketIds: [],
+    tasks: {},
+  }),
+  actions: {
+    login(userId: string, role: string, basketIds: string[], token: string) {
+      this.userId = userId;
+      this.role = role;
+      this.basketIds = basketIds;
+      this.token = token;
+
+      // 将 Token 存储到 Cookie 中
+      Cookies.set('token', token, { expires: 7 });
     },
-},{persist:{
-        enabled:true,
-        key:'userinfo',
-        storage:localStorage
-    }
-})
+    setTasks(basketId: string, taskIds: string[]) {
+      this.tasks[basketId] = taskIds;
+    },
+    logout() {
+      this.userId = null;
+      this.role = null;
+      this.token = null;
+      this.basketIds = [];
+      this.tasks = {};
+
+      // 清除 Cookie 中的 Token
+      Cookies.remove('token');
+    },
+  },
+});

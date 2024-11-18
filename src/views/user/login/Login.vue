@@ -3,15 +3,15 @@
   <div class="login-main">
     <div class="login-main-item">
       <span class="title">用户名</span>
-        <div class="input-wrap shine">
-        <input type="text" class=" user-input username-input" v-model="username">
+      <div class="input-wrap shine">
+        <input type="text" class="user-input username-input" v-model="user.username" />
       </div>
     </div>
 
     <div class="login-main-item">
       <span class="title">密码</span>
-        <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input" v-model="password">
+      <div class="input-wrap shine">
+        <input type="password" class="user-input password-input" v-model="user.password" />
       </div>
     </div>
 
@@ -20,43 +20,47 @@
     <div class="login-footer-wrap">
       <button type="button" class="pretty-btn">微信登录</button>
       <button type="button" class="pretty-btn">短信登录</button>
+    </div>
   </div>
-
-</div>
-
-
 </template>
 
-<script setup lang="ts" name="">
-import { reactive, ref } from "vue";
-import { login } from "@/api/user";
-import { useRouter } from "vue-router";
-const router = useRouter()
-const username = ref('')
-const password = ref('')
+<script setup lang="ts">
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user'; // 引入 Pinia 的用户状态管理
+import { login } from '@/api/user'; // API 请求方法
 
-const user =reactive({username,password})
+const router = useRouter();
+const userStore = useUserStore();
+
+const user = reactive({
+  username: '',
+  password: '',
+});
+
 async function toLogin() {
-  // 先判断用户是否有token，或是否过期
-  const res =await login(user)
-  console.log("登录响应",res)
-  if(res.data.code==1001) {
-    alert('登录成功')
-    // 保存用户名，
-    localStorage.setItem('username',username.value)
-    if(res.data) localStorage.setItem('userId',res.data)
-    // 保存到pinia
-  // 把token也保存到pinia
+  try {
+    const res = await login(user);
 
-    router.push('/menu')
+    if (res.data.code === 1001) {
+      alert('登录成功');
+      const { userId, role, basketIds, token } = res.data;
 
-  }else {
-    alert('登录失败')
-    router.push('/login')
+      // 保存登录信息到 Pinia
+      userStore.login(userId, role, basketIds, token);
+
+      // 跳转到菜单页面
+      router.push('/menu');
+    } else {
+      alert('登录失败');
+    }
+  } catch (error) {
+    console.error('登录失败:', error);
+    alert('登录失败，请重试！');
   }
-
 }
 </script>
+
 
 <style lang="scss" scoped>
 .login-tile {
