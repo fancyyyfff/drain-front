@@ -90,7 +90,9 @@
           <!-- <div class="footer">
 
           </div> -->
-          <NewTask></NewTask>
+          <!-- <NewTask></NewTask> -->
+           <DdlNewTask></DdlNewTask>
+
 
         </el-footer>
 
@@ -127,6 +129,7 @@ import { getAllTaskByListId,getDDLTask,getImportanTask,getGoalsTask } from "@/ap
 import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
 import { useTaskStore } from '@/stores/task';
+import DdlNewTask from "@/views/menu/components/DdlNewTask.vue";
 
 interface Task {
   taskId: string;

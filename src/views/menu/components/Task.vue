@@ -13,10 +13,11 @@ import { defineProps } from 'vue';
 import emitter from "@/mitt";
 import { getTask,updateTaskName,updateTaskFinish } from "@/api/task";
 import Tick from '@/components/Tick.vue';
-import { tourStepEmits } from 'element-plus/lib/components/index.js';
+// import { tourStepEmits } from 'element-plus/lib/components/index.js';
 import Star from "@/components/Star.vue";
 import { useTaskStore } from '@/stores/task';
-
+import { useSideBarStore } from "@/stores/ui";
+const sideBarStore = useSideBarStore()
 const taskStore = useTaskStore();
 
 defineProps({
@@ -33,7 +34,8 @@ const openSideBar = ()=>{
   if(taskStore.currentRoute==='schedule') {
     // === 获取当前的任务的数据
     console.log('当前路由：',taskStore.currentRoute)
-    emitter.emit('scheduleOpenSideBar','渲染当前的任务的数据')
+    // emitter.emit('scheduleOpenSideBar','渲染当前的任务的数据')
+    sideBarStore.toggleSidebar();
 
   } else if(taskStore.currentRoute==='goals') {
     // === 获取当前的任务的数据

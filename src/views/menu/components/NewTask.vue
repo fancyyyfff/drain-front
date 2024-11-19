@@ -8,6 +8,7 @@
               <div class="task-tick"></div>
                <input type="text" v-model="newTaskInputValue" class="taskInput dialog-input" ref="taskInput" @keyup.enter="createNewTask"
                @blur="closeInput">
+               <slot name="right-clock"></slot>
             </div>
           </div>
 

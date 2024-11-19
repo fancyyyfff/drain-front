@@ -1,17 +1,19 @@
 <template>
+<Drain>
+<div class="display shine">
   <span class="login-tile">登&nbsp;&nbsp;录</span>
   <div class="login-main">
     <div class="login-main-item">
       <span class="title">用户名</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input username-input" v-model="username">
+        <input type="text" class=" user-input username-input" v-model="user.username">
       </div>
     </div>
 
     <div class="login-main-item">
       <span class="title">密码</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input" v-model="password">
+        <input type="text" class=" user-input password-input" v-model="user.password">
       </div>
     </div>
 
@@ -24,35 +26,42 @@
 
 </div>
 
-
+</div>
+</Drain>
 </template>
 
 <script setup lang="ts" name="">
 import { reactive, ref } from "vue";
 import { login } from "@/api/user";
 import { useRouter } from "vue-router";
+import type { User } from "@/types/user";
+import { useUserInfo } from "@/stores/user";
 const router = useRouter()
-const username = ref('')
-const password = ref('')
+// const username = ref('')
+// const password = ref('')
+const user = reactive<User>({
+  username:'',
+  password:''
+})
 
-const user =reactive({username,password})
+// --- 待优化,pinia,token,动态路由,角色判断,权限控制
 async function toLogin() {
-  // 先判断用户是否有token，或是否过期
-  const res =await login(user)
-  console.log("登录响应",res)
-  if(res.data.code==1001) {
-    alert('登录成功')
-    // 保存用户名，
-    localStorage.setItem('username',username.value)
-    if(res.data) localStorage.setItem('userId',res.data)
-    // 保存到pinia
-  // 把token也保存到pinia
+  // const res =await login(user)
+  // console.log("登录响应",res)
+  // if(res.data.code==1001) {
+  //   alert('登录成功')
+  //   // 保存用户名，
+  //   localStorage.setItem('username',username.value)
+  //   if(res.data) localStorage.setItem('userId',res.data)
+  //   // 保存到pinia
+  // // 把token也保存到pinia
 
+  //   router.push('/menu')
+  const code =1
+  if(code){
     router.push('/menu')
-
   }else {
     alert('登录失败')
-    router.push('/login')
   }
 
 }
@@ -94,6 +103,7 @@ async function toLogin() {
     width: 100%;
     height: 100%;
     background: none;
+    padding: 0 20px 0 20px;
   }
 }
 .title {

@@ -28,7 +28,7 @@
           </div>
 
           <!-- 提醒插槽，由DDL的组件定义 -->
-          <slot name="ddl"></slot>
+          <slot name="ddl" ></slot>
 
           <!-- 附件 -->
             <div class="detail-wrap shine add-action" >
