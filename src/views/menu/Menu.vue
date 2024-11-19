@@ -90,8 +90,8 @@
           <!-- <div class="footer">
 
           </div> -->
-          <!-- <NewTask></NewTask> -->
-           <DdlNewTask></DdlNewTask>
+          <NewTask></NewTask>
+           <!-- <DdlNewTask></DdlNewTask> -->
 
 
         </el-footer>

@@ -7,8 +7,8 @@
             <div class="new-task-input-wrap" v-if="showInput">
               <div class="task-tick"></div>
                <input type="text" v-model="newTaskInputValue" class="taskInput dialog-input" ref="taskInput" @keyup.enter="createNewTask"
-               @blur="closeInput">
-               <slot name="right-clock"></slot>
+               @blur="closeInput" @input="sendSlotClock">
+               <slot name="right-clock" :showClock="showClock"></slot>
             </div>
           </div>
 
@@ -16,6 +16,8 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
+import { inputEmits } from "element-plus";
+import { fa } from "element-plus/es/locales.mjs";
 import { ref,watch,nextTick } from "vue";
 const showInput = ref(false)
 const showP = ref(true)
@@ -48,6 +50,12 @@ watch(showInput, async (newVal) => {
     taskInput.value?.focus();  // 自动聚焦
   }
 });
+
+const showClock = ref(false)
+function sendSlotClock() {
+  // 如果是ddl就展示右侧有时间提醒的组件
+  showClock.value=true;
+}
 </script>
 
 <style scoped>
