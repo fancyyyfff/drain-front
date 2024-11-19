@@ -1,17 +1,29 @@
 <template>
+<Drain>
+<div class="display shine">
   <span class="login-tile">登&nbsp;&nbsp;录</span>
   <div class="login-main">
     <div class="login-main-item">
       <span class="title">用户名</span>
+<<<<<<< HEAD
       <div class="input-wrap shine">
         <input type="text" class="user-input username-input" v-model="user.username" />
+=======
+        <div class="input-wrap shine">
+        <input type="text" class=" user-input username-input" v-model="user.username">
+>>>>>>> feat-input-element
       </div>
     </div>
 
     <div class="login-main-item">
       <span class="title">密码</span>
+<<<<<<< HEAD
       <div class="input-wrap shine">
         <input type="password" class="user-input password-input" v-model="user.password" />
+=======
+        <div class="input-wrap shine">
+        <input type="text" class=" user-input password-input" v-model="user.password">
+>>>>>>> feat-input-element
       </div>
     </div>
 
@@ -22,41 +34,45 @@
       <button type="button" class="pretty-btn">短信登录</button>
     </div>
   </div>
+
+</div>
+
+</div>
+</Drain>
 </template>
 
-<script setup lang="ts">
-import { reactive } from 'vue';
-import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user'; // 引入 Pinia 的用户状态管理
-import { login } from '@/api/user'; // API 请求方法
+<script setup lang="ts" name="">
+import { reactive, ref } from "vue";
+import { login } from "@/api/user";
+import { useRouter } from "vue-router";
+import type { User } from "@/types/user";
+import { useUserInfo } from "@/stores/user";
+const router = useRouter()
+// const username = ref('')
+// const password = ref('')
+const user = reactive<User>({
+  username:'',
+  password:''
+})
 
-const router = useRouter();
-const userStore = useUserStore();
-
-const user = reactive({
-  username: '',
-  password: '',
-});
-
+// --- 待优化,pinia,token,动态路由,角色判断,权限控制
 async function toLogin() {
-  try {
-    const res = await login(user);
+  // const res =await login(user)
+  // console.log("登录响应",res)
+  // if(res.data.code==1001) {
+  //   alert('登录成功')
+  //   // 保存用户名，
+  //   localStorage.setItem('username',username.value)
+  //   if(res.data) localStorage.setItem('userId',res.data)
+  //   // 保存到pinia
+  // // 把token也保存到pinia
 
-    if (res.data.code === 1001) {
-      alert('登录成功');
-      const { userId, role, basketIds, token } = res.data;
-
-      // 保存登录信息到 Pinia
-      userStore.login(userId, role, basketIds, token);
-
-      // 跳转到菜单页面
-      router.push('/menu');
-    } else {
-      alert('登录失败');
-    }
-  } catch (error) {
-    console.error('登录失败:', error);
-    alert('登录失败，请重试！');
+  //   router.push('/menu')
+  const code =1
+  if(code){
+    router.push('/menu')
+  }else {
+    alert('登录失败')
   }
 }
 </script>
@@ -98,6 +114,7 @@ async function toLogin() {
     width: 100%;
     height: 100%;
     background: none;
+    padding: 0 20px 0 20px;
   }
 }
 .title {

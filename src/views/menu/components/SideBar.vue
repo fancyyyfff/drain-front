@@ -47,20 +47,37 @@
       </div>
     </div>
 
-    <!-- 底部 -->
-    <footer class="sidebar-footer">
-      <div class="sidebar-tag">
-        <input
-          type="text"
-          v-model="newTag"
-          @keydown.enter="addTag"
-          placeholder="添加标签"
-          class="tag-input"
-        />
-      </div>
-      <div class="sidebar-create">创建于 {{ task.createdAt }}</div>
-    </footer>
-  </aside>
+          <!-- 提醒插槽，由DDL的组件定义 -->
+          <slot name="ddl" ></slot>
+
+          <!-- 附件 -->
+            <div class="detail-wrap shine add-action" >
+                <ion-icon name="attach-outline" class="detail-icon"></ion-icon>
+                <p class="detail-text" @click="addAttachment">添加附件</p>
+              </div>
+
+              <!-- 备注 -->
+               <!-- <div class="detail-wrap remarks-wrap">
+                 <div class="div-edit remarks-div shine" contenteditable="true" @input="onInput" style="display: line-block; width: 100%; min-height: 100px;"></div>
+               </div> -->
+               <div class="div-edit remarks-div shine" contenteditable="true"
+                  :data-placeholder="placeholderText"
+                  @input="onInput"
+                  @focus="onFocus"
+                  @blur="onBlur"
+                  ref="editableDiv"
+               >{{ task.remark }}</div>
+          </div>
+
+          <!-- 底部 -->
+        <footer class="sidebar-footer">
+          <div class="sidebar-tag">
+            <span class="add-tag">#</span>
+            <input type="text" placeholder="添加标签" class="shine tag-input" v-model="tagValue" @keydown.enter="addTag">
+          </div>
+          <div class="sidebar-create">创建于2024年11月1日</div>
+        </footer>
+    </aside>
 </template>
 
 <script setup lang="ts">

@@ -91,3 +91,26 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), /* 外部阴影 */
   border: 3px solid rgb(254, 246, 246);
   background-color: transparent;
 }
+
+/* 输入框中文字颜色 */
+input::placeholder {
+  color: rgb(190, 186, 186); /* 设置颜色为灰色 */
+  font-style: italic; /* 可以设置其他样式，例如斜体 */
+}
+input {
+  color: white;
+}
+
+.display {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 400px;
+  overflow: hidden;
+  margin-top: 18%;
+  transform: translateY(-50%);
+  background-color: transparent;
+}
