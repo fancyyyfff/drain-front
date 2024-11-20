@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { useRouter } from 'vue-router'; // Vue Router
+import { getCookie, clearCookie } from "@/http/cookie";
 
 // 创建 axios 实例
 const instance = axios.create({
@@ -12,12 +14,14 @@ const instance = axios.create({
 // 添加请求拦截器
 instance.interceptors.request.use(
   (config) => {
-    // 从 localStorage 中获取 token
-    const token = localStorage.getItem('token');
+    const tokenName = getCookie('tokenName');
+    const tokenValue = tokenName ? getCookie(tokenName) : null;
 
-    if (token) {
+    if (tokenName&&tokenValue) {
       // 如果存在 token，将其附加到请求头
-      config.headers['Authorization'] = `Bearer ${token}`;
+      // config.headers['Authorization'] = `Bearer ${token}`;
+      // 动态添加请求头
+      config.headers[tokenName] = tokenValue;
     }
 
     return config;
@@ -35,11 +39,27 @@ instance.interceptors.response.use(
     return response.data; // 直接返回 data，简化调用时的代码
   },
   (error) => {
-    // 超出 2xx 范围的状态码都会触发该函数
-    if (error.response?.status === 401) {
-      // 如果后端返回 401 未授权，清除 token 并跳转到登录页
-      localStorage.removeItem('token');
-      window.location.href = '/login'; // 根据你的项目路由修改
+    const router = useRouter(); // 获取 Vue Router 实例
+
+    if (error.response) {
+      const { status } = error.response;
+
+      if (status === 1006) {
+        // 提示重新登录
+        alert('登录已过期，请重新登录');
+        
+        clearCookie('tokenName');
+        const tokenName = getCookie('tokenName');
+        if (tokenName) clearCookie(tokenName);
+
+        // 跳转到登录页
+        router.push('/login');
+      }
+
+      if (status === 401) {
+        alert('未授权，请登录后重试');
+        router.push('/login');
+      }
     }
     return Promise.reject(error);
   }

@@ -18,6 +18,7 @@
     <!-- 主体内容 -->
     <div class="sidebar-main-content">
       <div class="detail-wrap">
+        <div>
         <Tick
           v-model:checked="task.finish"
           icon-name="checkmark-done"
@@ -39,14 +40,6 @@
       >
         {{ task.remark }}
       </div>
-
-      <!-- 附件 -->
-      <div class="attachment" @click="addAttachment">
-        <ion-icon name="attach-outline" class="attachment-icon"></ion-icon>
-        添加附件
-      </div>
-    </div>
-
           <!-- 提醒插槽，由DDL的组件定义 -->
           <slot name="ddl" ></slot>
 
@@ -67,7 +60,9 @@
                   @blur="onBlur"
                   ref="editableDiv"
                >{{ task.remark }}</div>
+
           </div>
+        </div>
 
           <!-- 底部 -->
         <footer class="sidebar-footer">

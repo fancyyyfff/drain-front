@@ -10,14 +10,21 @@
     <div class="login-main-item">
       <span class="title">用户名</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input username-input" placeholder="请输入用户名" v-model="username">
+        <input type="text" class=" user-input username-input" placeholder="请输入用户名" v-model="user.username">
+      </div>
+    </div>
+
+    <div class="login-main-item">
+      <span class="title">邮箱</span>
+        <div class="input-wrap shine">
+        <input type="text" class=" user-input password-input"  placeholder="请输入邮箱" v-model="user.email">
       </div>
     </div>
 
     <div class="login-main-item">
       <span class="title">密码</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input"  placeholder="请输入密码" v-model="password">
+        <input type="text" class=" user-input password-input"  placeholder="请输入密码" v-model="user.password">
       </div>
     </div>
 
@@ -28,7 +35,7 @@
       </div>
     </div>
 
-    <button type="button" class="pretty-btn go" @click="register">ok!</button>
+    <button type="button" class="pretty-btn go" @click="toRegister">ok!</button>
 
     <div class="login-footer-wrap">
       <button type="button" class="pretty-btn">微信注册</button>
@@ -45,24 +52,33 @@
 </template>
 
 <script setup lang="ts" name="">
-import { reactive } from "vue";
+import { reactive,ref } from "vue";
 import type { User } from '@/types/user';
 import { useRouter } from "vue-router";
 import Message from "@/components/Message.vue";
 import Drain from "@/components/Drain.vue";
+import type { RegisterUser } from "@/types/user";
+import { register } from "@/api/user";
 const router = useRouter()
-const user = reactive<User>({
+const user = reactive<RegisterUser>({
   username: '',
+  email:'',
   password:'',
-  confirmPassword:''
 });
 
-function register() {
+const confirmPassword=ref('')
+
+async function toRegister() {
+  if(user.password!==confirmPassword.value) {
+    alert('两次密码不一致')
+  }
+
   // --- 发送请求
-  // const res = await register(user)
+  const res = await register(user)
   // 成功:
-  let code =1
+  let code =res.code
   if(code===1) {
+    // ?
     router.push('/login')
   }else {
     alert('注册失败')

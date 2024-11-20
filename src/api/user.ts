@@ -1,9 +1,14 @@
 import instance from '@/http/index';
 
+// 4种角色
+//订阅：多了AI
+// 管理员：单一，订单、
+// 未登录：仅注册
+
 // 注册
-export const register = (data: { account: string; password: string }) => {
+export const register = (data: { username: string; email:string; password: string }) => {
   return instance({
-    url: '/register',
+    url: '/user/register',
     method: 'POST',
     data,
   });

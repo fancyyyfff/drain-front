@@ -17,13 +17,8 @@
 
     <div class="login-main-item">
       <span class="title">密码</span>
-<<<<<<< HEAD
       <div class="input-wrap shine">
         <input type="password" class="user-input password-input" v-model="user.password" />
-=======
-        <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input" v-model="user.password">
->>>>>>> feat-input-element
       </div>
     </div>
 
@@ -47,6 +42,8 @@ import { login } from "@/api/user";
 import { useRouter } from "vue-router";
 import type { User } from "@/types/user";
 import { useUserInfo } from "@/stores/user";
+import { setCookie,getCookie,clearCookie } from "@/http/cookie";
+import { userInfo } from "os";
 const router = useRouter()
 // const username = ref('')
 // const password = ref('')
@@ -55,25 +52,50 @@ const user = reactive<User>({
   password:''
 })
 
+interface TokenType {
+  tokenName: string;
+  tokenValue: string;
+  tokenTimeout: number; // 毫秒
+}
+
 // --- 待优化,pinia,token,动态路由,角色判断,权限控制
 async function toLogin() {
-  // const res =await login(user)
-  // console.log("登录响应",res)
-  // if(res.data.code==1001) {
-  //   alert('登录成功')
-  //   // 保存用户名，
-  //   localStorage.setItem('username',username.value)
-  //   if(res.data) localStorage.setItem('userId',res.data)
-  //   // 保存到pinia
-  // // 把token也保存到pinia
+  try{
+    const res =await login(user)
+    console.log("登录响应",res)
+    if(res.data.status==1001) {
+      const { tokenName, tokenValue, tokenTimeout } = res.data.data
 
-  //   router.push('/menu')
-  const code =1
-  if(code){
+    setCookie('tokenName', res.data.data.tokenName, res.data.data.tokenTimeout);
+    setCookie(tokenName, tokenValue, tokenTimeout);
+    // 保存到pinia
+    userInfo.userId=res.data.data.userId
+    
+    alert('登录成功')
+
     router.push('/menu')
-  }else {
-    alert('登录失败')
+    }
+
+  }catch (error) {
+    alert('登录失败，请检查用户名或密码');
   }
+
+  // const code =1
+  // if(code){
+  //   router.push('/menu')
+  // }else {
+  //   alert('登录失败')
+  // }
+}
+
+/**
+ * 登出逻辑
+ */
+ export function logout() {
+  clearCookie('tokenName');
+  const tokenName = getCookie('tokenName');
+  if (tokenName) clearCookie(tokenName);
+  alert('您已退出登录');
 }
 </script>
 

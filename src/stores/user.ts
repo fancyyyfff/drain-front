@@ -3,17 +3,19 @@ import Cookies from 'js-cookie';
 
 interface UserState {
   userId: string | null;
+  userName: string | null;
+  nickName: string | null;
   role: string | null; // 用户角色
-  token: string | null; // 用于存储用户的 Token
-  basketIds: string[]; // 当前用户的 basketIds
+  basketIds?: string[]; // 当前用户的 basketIds
   tasks: Record<string, string[]>; // 每个 basketId 对应 taskId 列表
 }
+
+
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     userId: null,
     role: null,
-    token: null,
     basketIds: [],
     tasks: {},
   }),
