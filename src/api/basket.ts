@@ -1,12 +1,12 @@
 import instance from '@/http/index'
 
-export const getAllTaskByListId = (listId:number) =>{
+export const getAllBaskets = (userId:number) =>{
   // const { id } = data
   return instance({
-      url:'/task/getAllTaskByListId',
+      url:'/task/getAllBaskets',
       method:'POST',
       data:{
-        listId
+        userId
       }
   })
 }

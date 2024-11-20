@@ -33,7 +33,7 @@
 import { reactive, ref } from "vue";
 import { login } from "@/api/user";
 import { useRouter } from "vue-router";
-import type { User } from "@/types/user";
+import type { User } from "@/types/type";
 import { useUserStore } from "@/stores/user";
 import { setCookie,getCookie,clearCookie } from "@/http/cookie";
 

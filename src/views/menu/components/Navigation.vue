@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="basketId in basketIds" :key="basketId">
-        <router-link :to="`/dashboard/${basketId}`">Basket {{ basketId }}</router-link>
-      </li>
-    </ul>
-  </div>
+    <div class="nav-ul">
+      <div  v-for="basket in baskets" :key="basket.basketId">
+        <router-link :to="{ name: 'BasketTasks', params: { basketId: id, } }">
+          Basket {{ id }}
+        </router-link>
+      </div>
+      <!-- <li v-for="id in basketIds" :key="id">
+        <router-link :to="{ name: 'BasketTasks', params: { basketId: id } }">
+          Basket {{ id }}
+        </router-link>
+      </li> -->
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -18,3 +23,19 @@ const router = useRouter();
 const basketIds = userStore.basketIds;
 
 </script>
+
+<style scoped>
+
+/* 以下是原来菜单页的可能样式，可以参考以下 */
+.nav-ul {
+  display: flex;
+  width:199px;
+  flex-direction: column;
+}
+.nav-ul>div {
+  list-style: none;
+  width: 100%;
+  height: 43px;
+  border: 2px solid black;
+}
+</style>

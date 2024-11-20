@@ -3,7 +3,8 @@ import { createRouter,createWebHashHistory } from "vue-router";
 const routes = [
   {
     path:'/',
-    redirect:'/first'  //开始跳转的路径
+    // redirect:'/first'  //开始跳转的路径
+    redirect:'/menu'
   },
   {
     path:'/first',

@@ -1,4 +1,4 @@
-// 用户类型
+// ====用户类型
 export interface User {
   username?:string;
   password?:string;
@@ -32,6 +32,9 @@ export interface Global {
 
 
 }
-// 属性型：
+// ====篮子
+export interface Basket {
+
+}
 
 

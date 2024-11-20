@@ -292,19 +292,11 @@ const callAI = ()=>{
 }
 
 .el-aside {
-  overflow-x: hidden; /* 仅隐藏水平溢出 */
+  overflow-x: hidden; /* 仅隐藏垂直溢出 */
   height: 100vh;
   width: 199px;
 }
-.el-menu {
-  height: 100%;
-  border: none;
-}
 
-.el-menu-item.is-active {
-     color: none;
-    //  改变对应的背景色
-}
 
 .el-menu-item {
   color:white;

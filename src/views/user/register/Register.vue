@@ -53,11 +53,11 @@
 
 <script setup lang="ts" name="">
 import { reactive,ref } from "vue";
-import type { User } from '@/types/user';
+import type { User } from '@/types/type';
 import { useRouter } from "vue-router";
 import Message from "@/components/Message.vue";
 import Drain from "@/views/first/components/Drain.vue";
-import type { RegisterUser } from "@/types/user";
+import type { RegisterUser } from "@/types/type";
 import { register } from "@/api/user";
 const router = useRouter()
 const user = reactive<RegisterUser>({

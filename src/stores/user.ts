@@ -12,7 +12,7 @@ interface UserState {
 
 
 
-export const useUserStore = defineStore('user', {
+export const useUserStore = defineStore('userStore', {
   state: (): UserState => ({
     userId: null,
     role: null,
