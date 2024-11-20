@@ -76,8 +76,8 @@ async function toRegister() {
   // --- 发送请求
   const res = await register(user)
   // 成功:
-  let code =res.code
-  if(code===1) {
+  let status =res.data.status
+  if(status===1) {
     // ?
     router.push('/login')
   }else {

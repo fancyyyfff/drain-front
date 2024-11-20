@@ -5,13 +5,8 @@
   <div class="login-main">
     <div class="login-main-item">
       <span class="title">用户名</span>
-<<<<<<< HEAD
-      <div class="input-wrap shine">
-        <input type="text" class="user-input username-input" v-model="user.username" />
-=======
         <div class="input-wrap shine">
         <input type="text" class=" user-input username-input" v-model="user.username">
->>>>>>> feat-input-element
       </div>
     </div>
 
@@ -31,8 +26,6 @@
   </div>
 
 </div>
-
-</div>
 </Drain>
 </template>
 
@@ -41,9 +34,10 @@ import { reactive, ref } from "vue";
 import { login } from "@/api/user";
 import { useRouter } from "vue-router";
 import type { User } from "@/types/user";
-import { useUserInfo } from "@/stores/user";
+import { useUserStore } from "@/stores/user";
 import { setCookie,getCookie,clearCookie } from "@/http/cookie";
-import { userInfo } from "os";
+
+const userInfo =useUserStore()
 const router = useRouter()
 // const username = ref('')
 // const password = ref('')
@@ -70,7 +64,7 @@ async function toLogin() {
     setCookie(tokenName, tokenValue, tokenTimeout);
     // 保存到pinia
     userInfo.userId=res.data.data.userId
-    
+
     alert('登录成功')
 
     router.push('/menu')
@@ -79,19 +73,23 @@ async function toLogin() {
   }catch (error) {
     alert('登录失败，请检查用户名或密码');
   }
+// ---
 
+// 无后端开启代码
   // const code =1
   // if(code){
   //   router.push('/menu')
+  //   alert('登录成功')
   // }else {
   //   alert('登录失败')
   // }
+
 }
 
 /**
  * 登出逻辑
  */
- export function logout() {
+function logout() {
   clearCookie('tokenName');
   const tokenName = getCookie('tokenName');
   if (tokenName) clearCookie(tokenName);

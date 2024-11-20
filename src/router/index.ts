@@ -4,11 +4,11 @@ import { createRouter,createWebHashHistory } from "vue-router";
 const routes = [
   {
     path:'/',
-    redirect:'/menu'
+    redirect:'/first'
   },
   {
-    path:'/index',
-    name:'index',
+    path:'/first',
+    name:'first',
     component:()=>import('@/views/first/First.vue')
   },
   {
@@ -23,8 +23,8 @@ const routes = [
 },
 
     {
-        path:'/menu',
-        name:'menu',
+        path:'/brain',
+        name:'brain',
         component:()=>import('@/views/menu/Menu.vue'),
         // redirect: 'actions',  // 重定向到默认子路由
         children:[

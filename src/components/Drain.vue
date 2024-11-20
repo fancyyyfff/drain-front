@@ -4,7 +4,7 @@
       <div id="help">帮助</div>
       <div id="logo">Drain</div>
       <div class="top-button">
-        <button id="login-btn" class="shine pretty-btn" @click="toLogin">登录</button>
+        <button id="login-btn" class="shine pretty-btn" @click="router.push('/login')">登录</button>
         <button id="regiter-btn" class="shine pretty-btn" @click="router.push('/register')">注册</button>
       </div>
     </div>
@@ -33,9 +33,9 @@
   import Register from "@/views/user/register/Register.vue";
   import { useRouter } from "vue-router";
   const router = useRouter()
-  function toLogin() {
-    router.push('/login')
-  }
+  // function toLogin() {
+  //   router.push('/login')
+  // }
   </script>
 
   <style lang="scss"  scoped>

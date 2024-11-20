@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 interface UserState {
   userId: string | null;
@@ -16,6 +16,8 @@ export const useUserStore = defineStore('user', {
   state: (): UserState => ({
     userId: null,
     role: null,
+    userName:null,
+    nickName:null,
     basketIds: [],
     tasks: {},
   }),
@@ -24,10 +26,10 @@ export const useUserStore = defineStore('user', {
       this.userId = userId;
       this.role = role;
       this.basketIds = basketIds;
-      this.token = token;
+      // this.token = token;
 
       // 将 Token 存储到 Cookie 中
-      Cookies.set('token', token, { expires: 7 });
+      // Cookies.set('token', token, { expires: 7 });
     },
     setTasks(basketId: string, taskIds: string[]) {
       this.tasks[basketId] = taskIds;
@@ -35,12 +37,12 @@ export const useUserStore = defineStore('user', {
     logout() {
       this.userId = null;
       this.role = null;
-      this.token = null;
+      // this.token = null;
       this.basketIds = [];
       this.tasks = {};
 
       // 清除 Cookie 中的 Token
-      Cookies.remove('token');
+      // Cookies.remove('token');
     },
   },
 });
