@@ -54,6 +54,7 @@ interface TokenType {
 
 // --- 待优化,pinia,token,动态路由,角色判断,权限控制
 async function toLogin() {
+  // 小邓想看登录
   try{
     const res =await login(user)
     console.log("登录响应",res)

@@ -73,6 +73,7 @@ async function toRegister() {
     alert('两次密码不一致')
   }
 
+  // 小邓想看注册
   // --- 发送请求
   const res = await register(user)
   // 成功:
