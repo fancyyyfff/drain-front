@@ -1,4 +1,3 @@
-import { pa } from "element-plus/es/locales.mjs";
 import { createRouter,createWebHashHistory } from "vue-router";
 
 const routes = [
@@ -8,7 +7,7 @@ const routes = [
   },
   {
     path:'/first',
-    name:'first',
+    name:'first',//首页
     component:()=>import('@/views/first/First.vue')
   },
   {
@@ -21,37 +20,26 @@ const routes = [
   name:'register',
   component:()=>import('@/views/user/register/Register.vue')
 },
-
     {
-        path:'/brain',
-        name:'brain',
+        path:'/menu',
+        name:'menu',
         component:()=>import('@/views/menu/Menu.vue'),
-        // redirect: 'actions',  // 重定向到默认子路由
+        redirect: 'basket',  // 重定向到默认子路由
         children:[
+          {
+            path:'/basket',
+            name:'basket',
+            component:()=>import('@/views/normal/Basket.vue')
+          },
 
-      {
-        path:'actions',
-        name:'actions',
-        component:()=>import('@/views/actions/Actions.vue'),
-
-    },
+    // 特殊的路由：
     {
       path:'importance',
       name:'importance',
-      component:()=>import('@/views/importance/Importance.vue'),
+      component:()=>import('@/views/normal/sepcial/importance/Importance.vue'),
       // props(route:any){
       //   return route.query
       // },
-    },
-    {
-      path:'schedule',
-      name:'schedule',
-      component:()=>import('@/views/schedule/Schedule.vue')
-    },
-    {
-      path:'works',
-      name:'works',
-      component:()=>import('@/views/works/Works.vue')
     },
     {
       path:'goals',
@@ -59,38 +47,23 @@ const routes = [
       component:()=>import('@/views/goals/Goals.vue')
     },
     {
-      path:'thoughts',
-      name:'thoughts',
-      component:()=>import('@/views/thoughts/index.vue')
-    },
-    {
-      path:'entrust',
-      name:'entrust',
-      component:()=>import('@/views/entrust/Entrust.vue')
-    },
-    {
       path:'tags',
       name:'tags',
       component:()=>import('@/views/tags/Tags.vue')
     },
-        ]
+  ]
+  // 两个特殊功能的路由：
     },
-  {
-  path:'/clear',
-  name:'clear',
-  component:()=>import('@/views/clear/Clear.vue')
-},
-{
-  path:'/ai',
-  name:'ai',
-  component:()=>import('@/views/AI/AI.vue')
-},
-{
-  path:'/new',
-  name:'new',
-  component:()=>import('@/views/new/New.vue')
-},
-
+    {
+      path:'/clear',
+      name:'clear',
+      component:()=>import('@/views/clear/Clear.vue')
+    },
+    {
+      path:'/ai',
+      name:'ai',
+      component:()=>import('@/views/AI/AI.vue')
+    },
 ]
 
 const router = createRouter({

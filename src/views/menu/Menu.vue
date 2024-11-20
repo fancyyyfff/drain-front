@@ -15,47 +15,8 @@
           />
             <div class="line"></div>
           </div>
-
-              <el-menu-item :class="{ 'active': isClicked }" class="action" index="actions" @click="changeBackColor">
-                <el-icon></el-icon>
-               <span>马上行动</span>
-              </el-menu-item>
-
-              <el-menu-item index="schedule">
-                <el-icon></el-icon>
-               <span>DDL</span>
-              </el-menu-item>
-
-              <el-menu-item index="importance">
-                <el-icon></el-icon>
-               <span>重要</span>
-              </el-menu-item>
-
-              <el-menu-item index="works">
-                <el-icon></el-icon>
-               <span>工作篮</span>
-              </el-menu-item>
-
-              <el-menu-item index="goals">
-                <el-icon></el-icon>
-               <span>多步骤任务</span>
-              </el-menu-item>
-
-              <el-menu-item index="thoughts">
-                <el-icon></el-icon>
-               <span>想法&愿景</span>
-              </el-menu-item>
-
-              <el-menu-item index="entrust">
-                <el-icon></el-icon>
-               <span>委托他人</span>
-              </el-menu-item>
-
-              <el-menu-item index="tags">
-                <el-icon></el-icon>
-               <span>标签</span>
-              </el-menu-item>
-
+          <!-- 左侧导航栏:专门生成导航 -->
+           <Navigation></Navigation>
         </el-menu>
 
         <div class="left-footer">
@@ -88,16 +49,11 @@
         </router-view>
       </el-main>
         <el-footer class="right-footer">
-          <!-- <div class="footer">
-
-          </div> -->
           <NewTask></NewTask>
-
         </el-footer>
 
       </el-container>
       <!-- 放侧边栏 -->
-
       <SideBar></SideBar>
 
     </el-container>
@@ -127,6 +83,7 @@ import { getAllTaskByListId,getDDLTask,getImportanTask,getGoalsTask } from "@/ap
 import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
 import { useTaskStore } from '@/stores/task';
+import Navigation from "@/views/menu/components/Navigation.vue";
 
 interface Task {
   taskId: string;

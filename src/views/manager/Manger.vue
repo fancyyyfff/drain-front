@@ -1,5 +1,5 @@
 <template>
-  行动清单
+这里是管理员专享页面
 </template>
 
 <script setup lang="ts" name="">

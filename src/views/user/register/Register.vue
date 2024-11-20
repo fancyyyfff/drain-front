@@ -56,7 +56,7 @@ import { reactive,ref } from "vue";
 import type { User } from '@/types/user';
 import { useRouter } from "vue-router";
 import Message from "@/components/Message.vue";
-import Drain from "@/components/Drain.vue";
+import Drain from "@/views/first/components/Drain.vue";
 import type { RegisterUser } from "@/types/user";
 import { register } from "@/api/user";
 const router = useRouter()
