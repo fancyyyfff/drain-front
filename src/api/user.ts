@@ -6,7 +6,7 @@ import instance from '@/http/index';
 // 未登录：仅注册
 
 // 注册
-export const register = (data: { username: string; email:string; password: string }) => {
+export const register = (data: { username: string; password: string; email:string }) => {
   return instance({
     url: '/user/register',
     method: 'POST',

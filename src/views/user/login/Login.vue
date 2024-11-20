@@ -52,28 +52,28 @@ interface TokenType {
   tokenTimeout: number; // 毫秒
 }
 
-// --- 待优化,pinia,token,动态路由,角色判断,权限控制
-async function toLogin() {
-  // 小邓想看登录
-  try{
-    const res =await login(user)
-    console.log("登录响应",res)
-    if(res.data.status==1001) {
-      const { tokenName, tokenValue, tokenTimeout } = res.data.data
+// // --- 待优化,pinia,token,动态路由,角色判断,权限控制
+// async function toLogin() {
 
-    setCookie('tokenName', res.data.data.tokenName, res.data.data.tokenTimeout);
-    setCookie(tokenName, tokenValue, tokenTimeout);
-    // 保存到pinia
-    userInfo.userId=res.data.data.userId
+//   // 小邓想看登录
+//   try{
+//     const res =await login(user)
+//     console.log("登录响应",res)
+//     if(res.status == 1001) {
+//       const { tokenName, tokenValue, tokenTimeout } = res.data
+//       setCookie('tokenName', res.data.data.tokenName, res.data.data.tokenTimeout);
+//       setCookie(tokenName, tokenValue, tokenTimeout);
+//       // 保存到pinia
+//       userInfo.userId=res.data.data.userId
 
-    alert('登录成功')
+//       alert('登录成功')
 
-    router.push('/menu')
-    }
+//       router.push('/menu')
+//     }
 
-  }catch (error) {
-    alert('登录失败，请检查用户名或密码');
-  }
+//   }catch (error) {
+//     alert('登录失败，请检查用户名或密码');
+//   }
 // ---
 
 // 无后端开启代码
@@ -85,6 +85,30 @@ async function toLogin() {
   //   alert('登录失败')
   // }
 
+//}
+
+async function toLogin() {
+
+  // 小邓想看登录
+  try {
+    const res = await login(user);
+    console.log("登录响应", res);
+
+    if (res.status === 1001) {
+      const { tokenName, tokenValue, tokenTimeout, loginId } = res.data;
+
+      // Set cookies
+      setCookie(tokenName, tokenValue, tokenTimeout);
+
+      alert('登录成功');
+      router.push('/menu')
+    } else {
+      alert('登录失败');
+    }
+  } catch (error) {
+    alert('登录失败，请检查用户名或密码');
+    console.error('登录请求失败', error);
+  }
 }
 
 /**
