@@ -12,22 +12,22 @@
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
 import { ref,computed } from "vue";
-import Enter from "@/views/clear/components/Enter.vue";
-import What from "@/views/clear/components/What.vue";
-import IsAction from "@/views/clear/components/IsAction.vue";
+import Enter from "@/views/vip/clear/components/Enter.vue";
+import What from "@/views/vip/clear/components/What.vue";
+import IsAction from "@/views/vip/clear/components/IsAction.vue";
 import NoAtion from "./components/NoAtion.vue";
-import Thought from "@/views/clear/components/Thought.vue";
-import Rabbish from "@/views/clear/components/Rabbish.vue";
-import IsMultitask from "@/views/clear/components/IsMultitask.vue";
-import Project from "@/views/clear/components/Project.vue";
-import NextStep from "@/views/clear/components/NextStep.vue";
-import IsQuickFinish from "@/views/clear/components/IsQuickFinish.vue";
-import NowTodo from "@/views/clear/components/NowTodo.vue";
-import WhoTodo from "@/views/clear/components/WhoTodo.vue";
-import EntrustOther from "@/views/clear/components/EntrustOther.vue";
-import WhenTodo from "@/views/clear/components/WhenTodo.vue";
-import SheduleTodo from "@/views/clear/components/SheduleTodo.vue";
-import ToActionList from "@/views/clear/components/ToActionList.vue";
+import Thought from "@/views/vip/clear/components/Thought.vue";
+import Rabbish from "@/views/vip/clear/components/Rabbish.vue";
+import IsMultitask from "@/views/vip/clear/components/IsMultitask.vue";
+import Project from "@/views/vip/clear/components/Project.vue";
+import NextStep from "@/views/vip/clear/components/NextStep.vue";
+import IsQuickFinish from "@/views/vip/clear/components/IsQuickFinish.vue";
+import NowTodo from "@/views/vip/clear/components/NowTodo.vue";
+import WhoTodo from "@/views/vip/clear/components/WhoTodo.vue";
+import EntrustOther from "@/views/vip/clear/components/EntrustOther.vue";
+import WhenTodo from "@/views/vip/clear/components/WhenTodo.vue";
+import SheduleTodo from "@/views/vip/clear/components/SheduleTodo.vue";
+import ToActionList from "@/views/vip/clear/components/ToActionList.vue";
 const components = {
   enter:Enter,
   what:What,

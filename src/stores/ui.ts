@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
+// 主要用于控制全局共享组件的状态
 
+// sideBar的控制
 export const useSideBarStore = defineStore('sideBar', {
   state: () => ({
     sidebarOpen: false,

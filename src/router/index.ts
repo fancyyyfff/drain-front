@@ -3,7 +3,7 @@ import { createRouter,createWebHashHistory } from "vue-router";
 const routes = [
   {
     path:'/',
-    redirect:'/first'
+    redirect:'/first'  //开始跳转的路径
   },
   {
     path:'/first',
@@ -20,50 +20,59 @@ const routes = [
   name:'register',
   component:()=>import('@/views/user/register/Register.vue')
 },
+{
+  path:'/menu',
+  name:'menu',
+  component:()=>import('@/views/menu/Menu.vue'),
+  //redirect: 'basket',  // 重定向到默认子路由
+  children:[
     {
-        path:'/menu',
-        name:'menu',
-        component:()=>import('@/views/menu/Menu.vue'),
-        redirect: 'basket',  // 重定向到默认子路由
-        children:[
-          {
-            path:'/basket',
-            name:'basket',
-            component:()=>import('@/views/normal/Basket.vue')
-          },
+      path:'/basket',
+      name:'basket',
+      component:()=>import('@/views/normal/Basket.vue')
+    },
 
     // 特殊的路由：
     {
-      path:'importance',
+      path:'/importance',
       name:'importance',
       component:()=>import('@/views/normal/sepcial/importance/Importance.vue'),
       // props(route:any){
       //   return route.query
       // },
     },
+    // 三个特殊的路由
     {
-      path:'goals',
+      path:'/importance',
+      name:'importance',
+      component:()=>import('@/views/normal/sepcial/importance/Importance.vue')
+    },
+    {
+      path:'/goals',
       name:'goals',
-      component:()=>import('@/views/goals/Goals.vue')
+      component:()=>import('@/views/normal/sepcial/goals/Goals.vue')
     },
     {
-      path:'tags',
+      path:'/tags',
       name:'tags',
-      component:()=>import('@/views/tags/Tags.vue')
+      component:()=>import('@/views/normal/sepcial/tags/Tags.vue')
     },
-  ]
-  // 两个特殊功能的路由：
-    },
+
+    // 两个vip路由：
     {
       path:'/clear',
       name:'clear',
-      component:()=>import('@/views/clear/Clear.vue')
-    },
+      component:()=>import('@/views/vip/clear/Clear.vue')
+   },
     {
       path:'/ai',
       name:'ai',
-      component:()=>import('@/views/AI/AI.vue')
+      component:()=>import('@/views/vip/AI/AI.vue')
     },
+  ]
+}
+
+
 ]
 
 const router = createRouter({

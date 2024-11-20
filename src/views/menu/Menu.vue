@@ -3,7 +3,6 @@
     <el-container class="contrain-wrap">
       <!-- 左边的侧边栏 -->
       <el-aside class="left-aside" width="200px">
-        <el-menu class="el-menu-vertical-demo" router default-active='schedule'>
         <div class="user-search">
           <UserInfo>用户信息</UserInfo>
         <!-- <div>搜索框</div> -->
@@ -15,9 +14,8 @@
           />
             <div class="line"></div>
           </div>
-          <!-- 左侧导航栏:专门生成导航 -->
+          <!-- 左侧导航栏 -->
            <Navigation></Navigation>
-        </el-menu>
 
         <div class="left-footer">
           <div class="function-wrap">
@@ -49,16 +47,19 @@
         </router-view>
       </el-main>
         <el-footer class="right-footer">
+          <!-- <div class="footer">
+
+          </div> -->
           <NewTask></NewTask>
+
         </el-footer>
 
-      </el-container>
+  </el-container>
       <!-- 放侧边栏 -->
       <SideBar></SideBar>
 
-    </el-container>
-
-  </div>
+</el-container>
+</div>
 
 <!-- 弹窗: -->
 <Dialog v-if="brainDialogVisible"></Dialog>
@@ -73,17 +74,16 @@ import { Search } from '@element-plus/icons-vue'
 import NewTask from "@/views/menu/components/NewTask.vue";
 import Task from "@/views/menu/components/Task.vue";
 import SideBar from "@/views/menu/components/SideBar.vue";
-import { fa, tr } from 'element-plus/es/locales.mjs';
-import Clear from "@/views/clear/Clear.vue";
-import Dialog from "@/views/clear/Dialog.vue";
+import Clear from "@/views/vip/clear/Clear.vue";
+import Dialog from "@/views/vip/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { ElMessage, tabNavEmits } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid';
 import { getAllTaskByListId,getDDLTask,getImportanTask,getGoalsTask } from "@/api/task";
 import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
-import { useTaskStore } from '@/stores/task';
 import Navigation from "@/views/menu/components/Navigation.vue";
+import { useTaskStore } from '@/stores/task';
 
 interface Task {
   taskId: string;
@@ -97,36 +97,6 @@ const taskStore = useTaskStore();
 const searchText=ref('')
 // const routeName = ref(route.name)
 const routeName = computed(() => route.name); // 确保 routeName 是响应式的
-const mainTile = computed(() => {
-  switch (routeName.value) {
-      case 'actions':
-        return '马上行动'
-      case 'schedule':
-        return 'DDL'
-        break
-      case 'importance':
-        return '重要'
-      break
-      case 'works':
-        return '工作篮'
-      break
-      case 'goals':
-        return '多任务步骤'
-      break
-      case 'thoughts':
-        return '想法&愿景'
-      break
-      case 'entrust':
-        return '委托他人'
-      break
-      case 'tags':
-        return '标签'
-      break
-      default:
-        console.log('新建的标题或出错了未捕获的标题')
-    }
-    });
-
 const onClickClear = () => {
   // 弹出对话框，进入流程
   console.log('点击了清除按钮');
@@ -219,47 +189,6 @@ async function filterTaskList() {
   }
 
 }
-
-// 监听路由变化
-// watch(route, (newRoute) => {
-//   routeName.value = newRoute.name
-//   routeToMainTile(routeName.value)
-
-// })
-
-//识别函数的路由
-// function getMainTileAndCurrent(routeName:any) {
-//   switch (routeName) {
-//       case 'actions':
-//         return '马上行动'
-//         break
-//       case 'schedule':
-//         return 'DDL'
-//         break
-//       case 'importance':
-//         return '重要'
-//       break
-//       case 'works':
-//         return '工作篮'
-//       break
-//       case 'goals':
-//         return '多任务步骤'
-//       break
-//       case 'thoughts':
-//         return '想法&愿景'
-//       break
-//       case 'entrust':
-//         return '委托他人'
-//       break
-//       case 'tags':
-//         return '标签'
-//       break
-//       default:
-//         console.log('新建的标题或出错了未捕获的标题')
-//     }
-// }
-// 获取当前路由对应的id:
-// function
 
 // ===
 // 头脑风暴的弹窗
@@ -434,8 +363,8 @@ color: white;
     flex-direction: column;
     row-gap: 10px;
 
-  }
-  .right-footer {
+}
+.right-footer {
     position: absolute;
     top:calc(650px + 1vh);
     left:0px;
@@ -452,7 +381,6 @@ color: white;
       background-color: #d2dcee;
     }
   }
-
 .right-top {
   padding: 20px;
   font-size: 2rem;
