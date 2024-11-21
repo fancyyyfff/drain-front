@@ -20,12 +20,12 @@ import { useSideBarStore } from "@/stores/ui";
 const sideBarStore = useSideBarStore()
 const taskStore = useTaskStore();
 
-defineProps({
-  taskName: {
-    type: String,
-    required: true,
-  },
-})
+// defineProps({
+//   taskName: {
+//     type: String,
+//     required: true,
+//   },
+// })
 const finish = ref(false);
 const drawer = ref(false)
 
@@ -125,6 +125,7 @@ const showContextMenu = (event:Event) => {
   // contextMenuY.value = event.clientY;
 };
 
+defineProps(['taskId','taskName'])
 </script>
 
 <style scoped>
