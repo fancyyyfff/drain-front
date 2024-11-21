@@ -36,7 +36,7 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ mainTile }}</el-header>
+        <el-header class="right-top" >{{ basketName  }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
 
@@ -84,6 +84,7 @@ import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
 import Navigation from "@/views/menu/components/Navigation.vue";
 import { useTaskStore } from '@/stores/task';
+import { useBasketStore  } from "@/stores/basket";
 
 interface Task {
   taskId: string;
@@ -93,10 +94,15 @@ interface Task {
 const router = useRouter();
 const route = useRoute();
 const taskStore = useTaskStore();
+const basketStore = useBasketStore();
+
+// 动态绑定 basketName
+const basketName = computed(() => {
+  return basketStore.getBasketNameById(route.params.basketId as number);
+});
 
 const searchText=ref('')
-// const routeName = ref(route.name)
-const routeName = computed(() => route.name); // 确保 routeName 是响应式的
+
 const onClickClear = () => {
   // 弹出对话框，进入流程
   console.log('点击了清除按钮');
@@ -158,16 +164,6 @@ const changeBackColor = ()=>{
 }
 
 emitter.on('createNewTask',handlecreateNewTask)
-
-// 自动检测路由变化
-
-watch(
-  () => route.name,
-  (newRouteName) => {
-    taskStore.updateCurrentRoute(newRouteName);
-  },
-  { immediate: true }
-);
 
 // 过滤一些需要通过属性值获取的
 // ddl、重要、多步骤任务

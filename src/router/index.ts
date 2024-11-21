@@ -1,5 +1,5 @@
 import { createRouter,createWebHashHistory } from "vue-router";
-
+import { useBasketStore } from "@/stores/basket";
 const routes = [
   {
     path:'/',
@@ -28,9 +28,16 @@ const routes = [
   //redirect: 'basket',  // 重定向到默认子路由
   children:[
     {
-      path:'/basket',
+      path:'/basket/:basketId',
       name:'basket',
-      component:()=>import('@/views/normal/Basket.vue')
+      component:()=>import('@/views/normal/Basket.vue'),
+      // 以下操作通过 meta 动态注入 basketName，再在导航或视图中显示
+      meta: { basketName: "" }, // 默认值
+      beforeEnter:async (to) => {
+        const basketStore = useBasketStore();
+        const basketName = basketStore.getBasketNameById(to.params.basketId as number);
+        to.meta.basketName = basketName;
+      },
     },
 
     // 特殊的路由：

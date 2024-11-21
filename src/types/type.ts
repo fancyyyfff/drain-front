@@ -1,3 +1,4 @@
+// 为了简化开发，暂时不适用过多的类型校验
 // ====用户类型
 export interface User {
   username?:string;

@@ -2,11 +2,11 @@ import { defineStore } from 'pinia';
 // import Cookies from 'js-cookie';
 
 interface UserState {
-  userId: string | null;
+  userId: number | null;
   userName: string | null;
   nickName: string | null;
   role: string | null; // 用户角色
-  basketIds?: string[]; // 当前用户的 basketIds
+  basketIds?: number[]; // 当前用户的 basketIds
   tasks: Record<string, string[]>; // 每个 basketId 对应 taskId 列表
 }
 
@@ -14,7 +14,7 @@ interface UserState {
 
 export const useUserStore = defineStore('userStore', {
   state: (): UserState => ({
-    userId: null,
+    userId: 1,
     role: null,
     userName:null,
     nickName:null,
@@ -22,7 +22,8 @@ export const useUserStore = defineStore('userStore', {
     tasks: {},
   }),
   actions: {
-    login(userId: string, role: string, basketIds: string[], token: string) {
+    // 登录时保存用户数据的方法
+    login(userId: number, role: string, basketIds: string[], token: string) {
       this.userId = userId;
       this.role = role;
       this.basketIds = basketIds;
