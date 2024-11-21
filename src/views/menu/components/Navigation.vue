@@ -1,14 +1,64 @@
 <template>
 <div class="nav-ul">
     <!-- 循环渲染每个 basket -->
-    <div v-for="basket in basketStore.baskets" :key="basket.basketId" class="nav-item">
+    <template  v-for="routeBasket in routeBaskets" :key="routeBasket.routeKey" class="nav-item">
+      <div v-if="routeBasket.routeKey === 'importance'">
       <router-link
-        :to="`/basket/${basket.basketId}`"
+        :to="{
+          name: 'importance',
+          params:{
+            routeKey:routeBasket.routeKey,
+            mainTile:routeBasket.mainTile,
+          }
+        }"
         class="nav-link"
       >
-        {{ basket.basketName }}
+        {{ routeBasket.mainTile }}
       </router-link>
     </div>
+
+    <div v-else-if="routeBasket.routeKey === 'ddl'">
+      <router-link
+        :to="`/basket/${routeBasket.routeKey}`"
+        class="nav-link"
+      >
+        {{ routeBasket.mainTile }}
+      </router-link>
+    </div>
+
+    <div v-else-if="routeBasket.routeKey === 'goals'">
+      <router-link
+        :to="`/basket/goals`"
+        class="nav-link"
+      >
+        {{ routeBasket.mainTile }}
+      </router-link>
+    </div>
+
+    <div v-else-if="routeBasket.routeKey === 'goals'">
+      <router-link
+        :to="`/basket/goals`"
+        class="nav-link"
+      >
+        {{ routeBasket.mainTile }}
+      </router-link>
+    </div>
+
+    <div v-else>
+      <router-link
+        :to="{
+          name: 'basket',
+          params:{
+            routeKey:routeBasket.routeKey,
+            mainTile:routeBasket.mainTile,
+          }
+        }"
+        class="nav-link"
+      >
+        {{ routeBasket.mainTile }}
+      </router-link>
+    </div>
+    </template>
 </div>
 </template>
 
@@ -16,16 +66,16 @@
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useBasketStore } from "@/stores/basket";
+import { onMounted } from 'vue';
 
 const basketStore = useBasketStore();
-
-const userStore = useUserStore();
 const router = useRouter();
-
-const basketIds = userStore.basketIds;
+const {routeBaskets}=basketStore
 // 这个方法会自动从后端获取数据并且更新在pinia中的 baskets
 // 从而实现baskets在前后端数据都同时更新
-await basketStore.fetchBaskets();
+onMounted( async ()=>{
+  await basketStore.fetchAllBaskets();
+})
 </script>
 
 <style scoped>
@@ -35,12 +85,15 @@ await basketStore.fetchBaskets();
   display: flex;
   width:199px;
   flex-direction: column;
+  align-items: flex-end;
   margin: 0;
+  overflow-x: hidden;
 }
 
 .nav-item {
-  width: 100%;
+  width: 90%;
   height: 45px;
+  border: 50% 0 0 50%;
 }
 
 .nav-link {

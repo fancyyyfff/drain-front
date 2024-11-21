@@ -126,17 +126,9 @@ const handlecreateNewTask = (newTaskInputValue:unknown) => {
   }
 };
 onMounted(async ()=>{
-  if(routeName.value) {
-    // ===过滤掉一些路由：
-    filterTaskList()
 
-    // console.log('当前的列表id为：',listId.value)
-    //===
-    //  const res =await getAllTaskByListId(listId.value as number)
-    // console.log('获取到所有任务接口的结果：',res)
-    //  taskList= res.data
+  // 获取用户列表
 
-    // taskList = _.cloneDeep(res.data);
 
     // 初始化任务
     taskList.push(
@@ -151,7 +143,7 @@ onMounted(async ()=>{
     );
     console.log(taskList)
 
-  }
+
 
 })
 
