@@ -36,7 +36,7 @@ import { useRouter } from "vue-router";
 import type { User } from "@/types/type";
 import { useUserStore } from "@/stores/user";
 import { setCookie,getCookie,clearCookie } from "@/http/cookie";
-
+import  Drain  from "@/views/first/components/Drain.vue";
 const userInfo =useUserStore()
 const router = useRouter()
 // const username = ref('')
@@ -53,39 +53,63 @@ interface TokenType {
 }
 
 // --- 待优化,pinia,token,动态路由,角色判断,权限控制
+// async function toLogin() {
+//   // 小邓想看登录
+//   try{
+//     const res =await login(user)
+//     console.log("登录响应",res)
+//     if(res.data.status==1001) {
+//       const { tokenName, tokenValue, tokenTimeout } = res.data.data
+
+//     setCookie('tokenName', res.data.data.tokenName, res.data.data.tokenTimeout);
+//     setCookie(tokenName, tokenValue, tokenTimeout);
+//     // 保存到pinia
+//     userInfo.userId=res.data.data.userId
+
+//     alert('登录成功')
+
+//     router.push('/menu')
+//     }
+
+//   }catch (error) {
+//     alert('登录失败，请检查用户名或密码');
+//   }
+// // ---
+
+// // 无后端开启代码
+//   // const code =1
+//   // if(code){
+//   //   router.push('/menu')
+//   //   alert('登录成功')
+//   // }else {
+//   //   alert('登录失败')
+//   // }
+// }
 async function toLogin() {
-  // 小邓想看登录
-  try{
-    const res =await login(user)
-    console.log("登录响应",res)
-    if(res.data.status==1001) {
-      const { tokenName, tokenValue, tokenTimeout } = res.data.data
+  try {
+    const res = await login(user);
+    console.log("登录响应", res);
 
-    setCookie('tokenName', res.data.data.tokenName, res.data.data.tokenTimeout);
-    setCookie(tokenName, tokenValue, tokenTimeout);
-    // 保存到pinia
-    userInfo.userId=res.data.data.userId
+    if (res.status === 1001) {
+      const { tokenName, tokenValue, tokenTimeout, loginId } = res.data;
 
-    alert('登录成功')
+      // Set cookies
+      setCookie(tokenName, tokenValue, tokenTimeout);
 
-    router.push('/menu')
+      alert('登录成功');
+      router.push('/menu')
+    } else {
+      alert('登录失败');
     }
-
-  }catch (error) {
+  } catch (error) {
     alert('登录失败，请检查用户名或密码');
+    console.error('登录请求失败', error);
   }
-// ---
-
-// 无后端开启代码
-  // const code =1
-  // if(code){
-  //   router.push('/menu')
-  //   alert('登录成功')
-  // }else {
-  //   alert('登录失败')
-  // }
-
 }
+
+
+
+
 
 /**
  * 登出逻辑

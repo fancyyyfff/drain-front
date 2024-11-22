@@ -15,11 +15,21 @@ export const register = (data: { username: string; email:string; password: strin
 };
 
 // 登录
-export const login = (data: { username: string; password: string }) => {
+// export const login = (data: { username: string; password: string }) => {
+//   return instance({
+//     url: '/user/login',
+//     method: 'POST',
+//     data,
+//   });
+// };
+
+export const login = (user) => {
   return instance({
     url: '/user/login',
     method: 'POST',
-    data,
+    data:{
+      user
+    }
   });
 };
 

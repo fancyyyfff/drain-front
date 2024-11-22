@@ -69,22 +69,26 @@ const user = reactive<RegisterUser>({
 const confirmPassword=ref('')
 
 async function toRegister() {
-  if(user.password!==confirmPassword.value) {
-    alert('两次密码不一致')
+  if (user.password !== confirmPassword.value) {
+    alert('两次密码不一致');
+    return;  // Add return to stop execution if passwords don't match
   }
 
-  // 小邓想看注册
-  // --- 发送请求
-  const res = await register(user)
-  // 成功:
-  let status =res.data.status
-  if(status===1) {
-    // ?
-    router.push('/login')
-  }else {
-    alert('注册失败')
-  }
+  try {
+    // 发送请求
+    const res = await register(user);
 
+    // 成功处理
+    if (res.status % 2 === 1) {
+      router.push('/login');
+    } else {
+      alert('注册失败');
+    }
+  } catch (error) {
+    // 处理请求异常
+    alert('请求失败，请稍后重试');
+    console.error('注册请求失败', error);
+  }
 }
 </script>
 
