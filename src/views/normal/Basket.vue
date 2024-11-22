@@ -3,7 +3,7 @@
 <div class="nav-ul">
     <!-- 循环渲染每个 basket -->
     <div v-for="task in tasks" :key="task.taskId" class="nav-item">
-      <Task></Task>
+      <Task :task></Task>
     </div>
 </div>
 </template>
@@ -18,6 +18,8 @@ import { getAllTaskByBasketId } from "@/api/task";
 // 获取路由参数
 const route = useRoute();
 const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
+console.log('routeKey',routeKey)
+console.log('mainTitle',mainTitle)
 const basketStore= useBasketStore()
 
 // 只为了让数据可视化，暂时不使用类型绑定
@@ -69,7 +71,7 @@ const tasks = reactive([
     isDrain:1,
   },
   {
-    taskId:3,
+    taskId:4,
     taskName:'实现移动任务',
     star:0,
     isFinish:0,
@@ -80,7 +82,7 @@ const tasks = reactive([
     isDrain:1,
   },
   {
-    taskId:4,
+    taskId:5,
     taskName:'实现Task和sideBar数据联动',
     star:0,
     isFinish:0,

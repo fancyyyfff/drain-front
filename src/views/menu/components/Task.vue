@@ -1,15 +1,15 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
-  <Tick v-model:checked="finish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
+  <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
-  <p class="task-text" :style="textStyle" >{{ taskName }}</p>
-  <Star v-model:starred="item.isStarred" star-color="#efe299" :size="'1.5rem'" @click.stop />
+  <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
+  <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
 </div>
 </template>
 
 <script setup lang="ts" name="">
 import { ref,reactive,computed } from 'vue'
-import { defineProps } from 'vue';
+// import { defineProps } from 'vue';
 import emitter from "@/mitt";
 import { getTask,updateTaskName,updateTaskFinish } from "@/api/task";
 import Tick from '@/components/Tick.vue';
@@ -20,31 +20,33 @@ import { useSideBarStore } from "@/stores/ui";
 const sideBarStore = useSideBarStore()
 const taskStore = useTaskStore();
 
-// defineProps({
-//   taskName: {
-//     type: String,
-//     required: true,
-//   },
-// })
+ // 使用 defineProps 来接收来自父组件的 task 对象
+ const {task} = defineProps({
+  task: {
+    type: Object,
+    required: false
+  }
+})
+
 const finish = ref(false);
 const drawer = ref(false)
 
-// 需要过滤DDL、多任务列表
-const openSideBar = ()=>{
-  if(taskStore.currentRoute==='schedule') {
-    // === 获取当前的任务的数据
-    console.log('当前路由：',taskStore.currentRoute)
-    // emitter.emit('scheduleOpenSideBar','渲染当前的任务的数据')
-    sideBarStore.toggleSidebar();
+// // 需要过滤DDL、多任务列表
+// const openSideBar = ()=>{
+//   if(taskStore.currentRoute==='schedule') {
+//     // === 获取当前的任务的数据
+//     console.log('当前路由：',taskStore.currentRoute)
+//     // emitter.emit('scheduleOpenSideBar','渲染当前的任务的数据')
+//     sideBarStore.toggleSidebar();
 
-  } else if(taskStore.currentRoute==='goals') {
-    // === 获取当前的任务的数据
-    emitter.emit('goalsOpenSideBar','渲染当前的任务的数据')
+//   } else if(taskStore.currentRoute==='goals') {
+//     // === 获取当前的任务的数据
+//     emitter.emit('goalsOpenSideBar','渲染当前的任务的数据')
 
-  }else {
-  emitter.emit('toggleSidebar','传输的任务数据')
-  }
-}
+//   }else {
+//   emitter.emit('toggleSidebar','传输的任务数据')
+//   }
+// }
 
 emitter.on('addTagSign',addTagSign)
 // ==
@@ -125,7 +127,6 @@ const showContextMenu = (event:Event) => {
   // contextMenuY.value = event.clientY;
 };
 
-defineProps(['taskId','taskName'])
 </script>
 
 <style scoped>

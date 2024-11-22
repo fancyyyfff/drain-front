@@ -36,7 +36,7 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ mainTitle  }}</el-header>
+        <el-header class="right-top" >{{ route.params.mainTitle  }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
         <router-view/>
@@ -81,8 +81,6 @@ import _ from 'lodash';
 import Navigation from "@/views/menu/components/Navigation.vue";
 import { useTaskStore } from '@/stores/task';
 import { useBasketStore  } from "@/stores/basket";
-
-const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
 
 interface Task {
   taskId: string;
