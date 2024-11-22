@@ -56,19 +56,20 @@ const routes = [
       component:()=>import('@/views/normal/sepcial/tags/Tags.vue')
     },
 
-    // 两个vip路由：
-    {
-      path:'/clear',
-      name:'clear',
-      component:()=>import('@/views/vip/clear/Clear.vue')
-   },
-    {
-      path:'/ai',
-      name:'ai',
-      component:()=>import('@/views/vip/AI/AI.vue')
-    },
+
   ]
-}
+},
+ // 两个vip路由：
+ {
+  path:'/vip/clear',
+  name:'clear',
+  component:()=>import('@/views/vip/clear/Clear.vue')
+},
+{
+  path:'/vip/ai',
+  name:'ai',
+  component:()=>import('@/views/vip/AI/AI.vue')
+},
 
 
 ]

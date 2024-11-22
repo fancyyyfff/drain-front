@@ -96,10 +96,10 @@ const route = useRoute();
 const taskStore = useTaskStore();
 const basketStore = useBasketStore();
 
-// 动态绑定 basketName
-const basketName = computed(() => {
-  return basketStore.getBasketNameById(route.params.basketId as number);
-});
+// // 动态绑定 basketName
+// const basketName = computed(() => {
+//   return basketStore.getBasketNameById(route.params.basketId as number);
+// });
 
 const searchText=ref('')
 
@@ -209,7 +209,21 @@ emitter.on('closeAndTips',()=>{
 // ===
 // 呼叫AI
 const callAI = ()=>{
-  router.push('/ai')
+  // 从 Store 或组件数据中获取 drainAndAiRouteBasket
+  const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
+  const aiBasket = drainAndAiRouteBasket.find(
+      (basket) => basket.routeKey === "ai"
+    );
+    if (aiBasket) {
+      const { routeKey, mainTile } = aiBasket;
+      // 通过路由传递参数
+      router.push({
+        name: "ai",
+        params: { routeKey, mainTile },
+      });
+    } else {
+      alert("ai功能是vip用户独有的哦！欢迎您订阅！");
+    }
 }
 
 </script>
