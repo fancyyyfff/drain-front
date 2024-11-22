@@ -1,5 +1,5 @@
 <template>
-<div class="brain-wrap" @click="emitter.emit('openBrainDialog')">
+<div class="brain-wrap" @click="handleClick">
               <div class="brain">
 
               </div>
@@ -12,8 +12,35 @@
 import { ref,computed } from "vue";
 import Dialog from "@/views/clear/Dialog.vue";
 import emitter from "@/mitt";
+import { useRouter,useRoute } from 'vue-router';
+import { useBasketStore  } from "@/stores/basket";
+
+const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
+const router = useRouter();
+const basketStore = useBasketStore();
+function handleClick() {
+  // 从 Store 或组件数据中获取 drainAndAiRouteBasket
+  basketStore.fetchAllBaskets()
+  const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
+  const clearBasket = drainAndAiRouteBasket.find(
+      (basket) => basket.routeKey === "clear"
+    );
+    console.log
+    if (clearBasket) {
+      const { routeKey, mainTitle } = clearBasket;
+      // 通过路由传递参数
+      router.push({
+        name: "drain",
+        params: { routeKey,mainTitle },
+      });
+      emitter.emit('openBrainDialog')
+    } else {
+      alert("头脑风暴功能是vip用户独有的哦！欢迎您订阅！");
+    }
 
 
+
+}
 </script>
 
 <style scoped>

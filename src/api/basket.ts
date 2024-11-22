@@ -5,12 +5,12 @@ import instance from '@/http/index'
 //   {
 //     routeKey:"importance",
 //     basketIds: [0],
-//     mainTile: '重要',
+//     mainTitle: '重要',
 //   },
 //   {
 //     routeKey:"ddl",
 //     basketIds: [1],
-//     mainTile: 'DDL',
+//     mainTitle: 'DDL',
 //   },]
 export const getAllRouteBasket = () =>{
   // const { id } = data

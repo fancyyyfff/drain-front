@@ -28,7 +28,7 @@ const routes = [
   //redirect: 'basket',  // 重定向到默认子路由
   children:[
     {
-      path:'/basket/:routeKey/:mainTile',
+      path:'/basket/:routeKey/:mainTitle',
       name:'basket',
       component:()=>import('@/views/normal/Basket.vue'),
       props:true
@@ -36,37 +36,43 @@ const routes = [
 
     // 四个特殊的路由
     {
-      path:'/basket/importance/:mainTile',
+      path:'/basket/:routeKey/:mainTitle',
       name:'importance',
-      component:()=>import('@/views/normal/sepcial/importance/Importance.vue')
+      component:()=>import('@/views/normal/sepcial/importance/Importance.vue'),
+      props:true
     },
     {
-      path:'/basket/ddl/:mainTile',
+      path:'/basket/:routeKey/:mainTitle',
       name:'ddl',
-      component:()=>import('@/views/normal/sepcial/ddl/DDL.vue')
+      component:()=>import('@/views/normal/sepcial/ddl/DDL.vue'),
+      props:true
     },
     {
-      path:'/basket/goals/:mainTile',
+      path:'/basket/:routeKey/:mainTitle',
       name:'goals',
-      component:()=>import('@/views/normal/sepcial/goals/Goals.vue')
+      component:()=>import('@/views/normal/sepcial/goals/Goals.vue'),
+      props:true
     },
     {
-      path:'/basket/tags/:mainTile',
+      path:'/basket/:routeKey/:mainTitle',
       name:'tags',
-      component:()=>import('@/views/normal/sepcial/tags/Tags.vue')
+      component:()=>import('@/views/normal/sepcial/tags/Tags.vue'),
+      props:true
     },
   ]
 },
  // 两个vip路由：
  {
-  path:'/vip/clear/:mainTile',
-  name:'clear',
-  component:()=>import('@/views/vip/clear/Clear.vue')
+  path:'/vip/:routeKey/:mainTitle',
+  name:'drain',
+  component:()=>import('@/views/vip/clear/Clear.vue'),
+  props:true
 },
 {
-  path:'/vip/ai/:mainTile',
+  path:'/vip/:routeKey/:mainTitle',
   name:'ai',
-  component:()=>import('@/views/vip/AI/AI.vue')
+  component:()=>import('@/views/vip/AI/AI.vue'),
+  props:true
 },
 
 

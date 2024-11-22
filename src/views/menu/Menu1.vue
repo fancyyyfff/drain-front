@@ -77,7 +77,7 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ mainTile }}</el-header>
+        <el-header class="right-top" >{{ mainTitle }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
 
@@ -140,7 +140,7 @@ const taskStore = useTaskStore();
 const searchText=ref('')
 // const routeName = ref(route.name)
 const routeName = computed(() => route.name); // 确保 routeName 是响应式的
-const mainTile = computed(() => {
+const mainTitle = computed(() => {
   switch (routeName.value) {
       case 'actions':
         return '马上行动'
@@ -266,12 +266,12 @@ async function filterTaskList() {
 // 监听路由变化
 // watch(route, (newRoute) => {
 //   routeName.value = newRoute.name
-//   routeToMainTile(routeName.value)
+//   routeTomainTitle(routeName.value)
 
 // })
 
 //识别函数的路由
-// function getMainTileAndCurrent(routeName:any) {
+// function getmainTitleAndCurrent(routeName:any) {
 //   switch (routeName) {
 //       case 'actions':
 //         return '马上行动'
@@ -583,7 +583,7 @@ color: white;
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ mainTile }}</el-header>
+        <el-header class="right-top" >{{ mainTitle }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
 
@@ -646,7 +646,7 @@ const taskStore = useTaskStore();
 const searchText=ref('')
 // const routeName = ref(route.name)
 const routeName = computed(() => route.name); // 确保 routeName 是响应式的
-const mainTile = computed(() => {
+const mainTitle = computed(() => {
   switch (routeName.value) {
       case 'actions':
         return '马上行动'
@@ -772,12 +772,12 @@ async function filterTaskList() {
 // 监听路由变化
 // watch(route, (newRoute) => {
 //   routeName.value = newRoute.name
-//   routeToMainTile(routeName.value)
+//   routeTomainTitle(routeName.value)
 
 // })
 
 //识别函数的路由
-// function getMainTileAndCurrent(routeName:any) {
+// function getmainTitleAndCurrent(routeName:any) {
 //   switch (routeName) {
 //       case 'actions':
 //         return '马上行动'

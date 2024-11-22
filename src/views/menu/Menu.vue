@@ -36,14 +36,14 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ basketName  }}</el-header>
+        <el-header class="right-top" >{{ mainTitle  }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
 
         <router-view>
-           <div v-for="task in taskList" :key="task.taskId">
+           <!-- <div v-for="task in taskList" :key="task.taskId">
             <Task :taskName="task.taskName"></Task>
-          </div>
+          </div> -->
         </router-view>
       </el-main>
         <el-footer class="right-footer">
@@ -79,12 +79,14 @@ import Dialog from "@/views/vip/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { ElMessage, tabNavEmits } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid';
-import { getAllTaskByListId,getDDLTask,getImportanTask,getGoalsTask } from "@/api/task";
+import { getDDLTask,getImportanTask,getGoalsTask } from "@/api/task";
 import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
 import Navigation from "@/views/menu/components/Navigation.vue";
 import { useTaskStore } from '@/stores/task';
 import { useBasketStore  } from "@/stores/basket";
+
+const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
 
 interface Task {
   taskId: string;
@@ -210,18 +212,18 @@ emitter.on('closeAndTips',()=>{
 // 呼叫AI
 const callAI =()=>{
   // 从 Store 或组件数据中获取 drainAndAiRouteBasket
-  const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
   basketStore.fetchAllBaskets()
+  const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
   const aiBasket = drainAndAiRouteBasket.find(
       (basket) => basket.routeKey === "ai"
     );
     console.log
     if (aiBasket) {
-      const { routeKey, mainTile } = aiBasket;
+      const { routeKey, mainTitle } = aiBasket;
       // 通过路由传递参数
       router.push({
         name: "ai",
-        params: { routeKey,mainTile },
+        params: { routeKey,mainTitle },
       });
     } else {
       alert("ai功能是vip用户独有的哦！欢迎您订阅！");

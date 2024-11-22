@@ -8,12 +8,12 @@
           name: 'importance',
           params:{
             routeKey:routeBasket.routeKey,
-            mainTile:routeBasket.mainTile,
+            mainTitle:routeBasket.mainTitle,
           }
         }"
         class="nav-link"
       >
-        {{ routeBasket.mainTile }}
+        {{ routeBasket.mainTitle }}
       </router-link>
     </div>
 
@@ -23,12 +23,12 @@
           name: 'ddl',
           params:{
             routeKey:routeBasket.routeKey,
-            mainTile:routeBasket.mainTile,
+            mainTitle:routeBasket.mainTitle,
           }
         }"
         class="nav-link"
       >
-        {{ routeBasket.mainTile }}
+        {{ routeBasket.mainTitle }}
       </router-link>
     </div>
 
@@ -38,12 +38,12 @@
           name: 'goals',
           params:{
             routeKey:routeBasket.routeKey,
-            mainTile:routeBasket.mainTile,
+            mainTitle:routeBasket.mainTitle,
           }
         }"
         class="nav-link"
       >
-        {{ routeBasket.mainTile }}
+        {{ routeBasket.mainTitle }}
       </router-link>
     </div>
 
@@ -53,12 +53,12 @@
           name: 'tags',
           params:{
             routeKey:routeBasket.routeKey,
-            mainTile:routeBasket.mainTile,
+            mainTitle:routeBasket.mainTitle,
           }
         }"
         class="nav-link"
       >
-        {{ routeBasket.mainTile }}
+        {{ routeBasket.mainTitle }}
       </router-link>
     </div>
 
@@ -68,12 +68,12 @@
           name: 'basket',
           params:{
             routeKey:routeBasket.routeKey,
-            mainTile:routeBasket.mainTile,
+            mainTitle:routeBasket.mainTitle,
           }
         }"
         class="nav-link"
       >
-        {{ routeBasket.mainTile }}
+        {{ routeBasket.mainTitle }}
       </router-link>
     </div>
     </template>

@@ -6,7 +6,7 @@ import { useUserStore } from "@/stores/user";
 interface RouteBasket {
   routeKey:string|null;
   basketIds: []|null;
-  mainTile: string|null;
+  mainTitle: string|null;
 }
 // 主要的作用：获取当前用户下的每个basketId对应的basketName,
 export const useBasketStore = defineStore("basket", {
@@ -28,58 +28,58 @@ export const useBasketStore = defineStore("basket", {
       {
         routeKey:"importance",
         basketIds: [0],
-        mainTile: '重要',
+        mainTitle: '重要',
       },
       {
         routeKey:"ddl",
         basketIds: [1],
-        mainTile: 'DDL',
+        mainTitle: 'DDL',
       },
       {
         routeKey:"goals",
         basketIds: [2],
-        mainTile: '多步骤任务',
+        mainTitle: '多步骤任务',
       },
       {
         routeKey:"actions",
         basketIds: [3],
-        mainTile: '马上行动',
+        mainTitle: '马上行动',
       },
       {
         routeKey:"works",
         basketIds: [4],
-        mainTile: '工作篮',
+        mainTitle: '工作篮',
       },
       {
         routeKey:"thoughts",
         basketIds: [5],
-        mainTile: '以后可能会做',
+        mainTitle: '以后可能会做',
       },
       {
         routeKey:"tags",
         basketIds: [6],
-        mainTile: '标签',
+        mainTitle: '标签',
       },
       {
         routeKey:"drain",
         basketIds: [7],
-        mainTile: '头脑风暴',
+        mainTitle: '头脑风暴',
       },
       {
         routeKey:"ai",
         basketIds: [8],
-        mainTile: 'ai帮我做计划',
+        mainTitle: 'ai帮我做计划',
       },
   ],
   drainAndAiRouteBasket: [{
     routeKey:"drain",
     basketIds: [7],
-    mainTile: '头脑风暴',
+    mainTitle: '头脑风暴',
   },
   {
     routeKey:"ai",
     basketIds: [8],
-    mainTile: 'ai帮我做计划',
+    mainTitle: 'ai帮我做计划',
   },]
   }),
   actions: {
@@ -114,12 +114,10 @@ export const useBasketStore = defineStore("basket", {
     },
   },
   getters: {
-    /**可能暂时不用：
-     * 根据 routeKey 获取对应的 mainTile
-     */
-    getBasketNameById: (state) => (routeKey: string) => {
+    // 根据 routeKey 获取对应的 basketIds
+    getBasketIdsByRouteKey: (state) => (routeKey) => {
       const basket = state.routeBaskets.find((b) => b.routeKey === routeKey);
-      return basket ? basket.mainTile : "未命名篮子";
+      return basket ? basket.basketIds : [];
     },
   },
   // - 退出时的操作：
