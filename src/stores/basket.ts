@@ -63,29 +63,38 @@ export const useBasketStore = defineStore("basket", {
       {
         routeKey:"drain",
         basketIds: [7],
-        mainTile: '标签',
+        mainTile: '头脑风暴',
       },
       {
         routeKey:"ai",
         basketIds: [8],
-        mainTile: '标签',
+        mainTile: 'ai帮我做计划',
       },
   ],
   drainAndAiRouteBasket: [{
     routeKey:"drain",
     basketIds: [7],
-    mainTile: '标签',
+    mainTile: '头脑风暴',
   },
   {
     routeKey:"ai",
     basketIds: [8],
-    mainTile: '标签',
+    mainTile: 'ai帮我做计划',
   },]
   }),
   actions: {
     // - 对baskets的增删改操作
     async fetchAllBaskets() {
-      const userStore = useUserStore();
+      // 此段接通代码后应当不需要，目前只是为了有数据能够渲染
+        // 过滤出 drain 和 ai 的篮子
+        this.drainAndAiRouteBasket = this.routeBaskets.filter(
+          (routeBasket) => routeBasket.routeKey === "drain" || routeBasket.routeKey === "ai"
+        );
+        // 更新 routeBaskets，移除 drain 和 ai 的篮子
+        this.routeBaskets = this.routeBaskets.filter(
+          (routeBasket) => routeBasket.routeKey !== "drain" && routeBasket.routeKey !== "ai"
+        );
+
       try {
         const res = await getAllRouteBasket();
         const {routeBaskets}=res.data
@@ -100,16 +109,6 @@ export const useBasketStore = defineStore("basket", {
           );
         }
       } catch (error) {
-        // 此段接通代码后应当不需要，目前只是为了有数据能够渲染
-        // 过滤出 drain 和 ai 的篮子
-
-        this.drainAndAiRouteBasket = this.routeBaskets.filter(
-          (routeBasket) => routeBasket.routeKey === "drain" || routeBasket.routeKey === "ai"
-        );
-        // 更新 routeBaskets，移除 drain 和 ai 的篮子
-        this.routeBaskets = this.routeBaskets.filter(
-          (routeBasket) => routeBasket.routeKey !== "drain" && routeBasket.routeKey !== "ai"
-        );
         console.error("获取篮子数据失败：", error);
       }
     },

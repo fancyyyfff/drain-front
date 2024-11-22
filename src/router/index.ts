@@ -36,37 +36,35 @@ const routes = [
 
     // 四个特殊的路由
     {
-      path:'/basket/importance',
+      path:'/basket/importance/:mainTile',
       name:'importance',
       component:()=>import('@/views/normal/sepcial/importance/Importance.vue')
     },
     {
-      path:'/basket/ddl',
+      path:'/basket/ddl/:mainTile',
       name:'ddl',
       component:()=>import('@/views/normal/sepcial/ddl/DDL.vue')
     },
     {
-      path:'/basket/goals',
+      path:'/basket/goals/:mainTile',
       name:'goals',
       component:()=>import('@/views/normal/sepcial/goals/Goals.vue')
     },
     {
-      path:'/basket/tags',
+      path:'/basket/tags/:mainTile',
       name:'tags',
       component:()=>import('@/views/normal/sepcial/tags/Tags.vue')
     },
-
-
   ]
 },
  // 两个vip路由：
  {
-  path:'/vip/clear',
+  path:'/vip/clear/:mainTile',
   name:'clear',
   component:()=>import('@/views/vip/clear/Clear.vue')
 },
 {
-  path:'/vip/ai',
+  path:'/vip/ai/:mainTile',
   name:'ai',
   component:()=>import('@/views/vip/AI/AI.vue')
 },

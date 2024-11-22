@@ -208,18 +208,20 @@ emitter.on('closeAndTips',()=>{
 
 // ===
 // 呼叫AI
-const callAI = ()=>{
+const callAI =()=>{
   // 从 Store 或组件数据中获取 drainAndAiRouteBasket
   const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
+  basketStore.fetchAllBaskets()
   const aiBasket = drainAndAiRouteBasket.find(
       (basket) => basket.routeKey === "ai"
     );
+    console.log
     if (aiBasket) {
       const { routeKey, mainTile } = aiBasket;
       // 通过路由传递参数
       router.push({
         name: "ai",
-        params: { routeKey, mainTile },
+        params: { routeKey,mainTile },
       });
     } else {
       alert("ai功能是vip用户独有的哦！欢迎您订阅！");

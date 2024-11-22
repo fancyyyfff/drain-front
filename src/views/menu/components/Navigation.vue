@@ -1,7 +1,7 @@
 <template>
 <div class="nav-ul">
     <!-- 循环渲染每个 basket -->
-    <template  v-for="routeBasket in routeBaskets" :key="routeBasket.routeKey">
+    <template  v-for="routeBasket in basketStore.routeBaskets" :key="routeBasket.routeKey">
       <div v-if="routeBasket.routeKey === 'importance'"  class="nav-item">
       <router-link
         :to="{
@@ -88,11 +88,10 @@ import { onMounted } from 'vue';
 
 const basketStore = useBasketStore();
 const router = useRouter();
-const {routeBaskets}=basketStore
 // 这个方法会自动从后端获取数据并且更新在pinia中的 baskets
 // 从而实现baskets在前后端数据都同时更新
-onMounted( async ()=>{
-  await basketStore.fetchAllBaskets();
+onMounted( ()=>{
+  basketStore.fetchAllBaskets();
 })
 </script>
 
