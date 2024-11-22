@@ -39,12 +39,8 @@
         <el-header class="right-top" >{{ mainTitle  }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
-
-        <router-view>
-           <!-- <div v-for="task in taskList" :key="task.taskId">
-            <Task :taskName="task.taskName"></Task>
-          </div> -->
-        </router-view>
+        <router-view/>
+        <!-- </router-view> -->
       </el-main>
         <el-footer class="right-footer">
           <!-- <div class="footer">
