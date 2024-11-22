@@ -81,7 +81,7 @@ import _ from 'lodash';
 import Navigation from "@/views/menu/components/Navigation.vue";
 import { useTaskStore } from '@/stores/task';
 import { useBasketStore  } from "@/stores/basket";
-
+import { addTask } from "@/api/task";
 interface Task {
   taskId: string;
   taskName: string;
@@ -91,7 +91,6 @@ const router = useRouter();
 const route = useRoute();
 const taskStore = useTaskStore();
 const basketStore = useBasketStore();
-
 // // 动态绑定 basketName
 // const basketName = computed(() => {
 //   return basketStore.getBasketNameById(route.params.basketId as number);
@@ -104,42 +103,37 @@ const onClickClear = () => {
   console.log('点击了清除按钮');
 };
 
-// 新建任务时实现新建子组件
-const taskName = ref('');      // 输入框的值
-let taskList = reactive<{taskId:string;taskName:string}[]>([]);       // 存储子组件的值
-// 创建新组件的函数
-const handlecreateNewTask = (newTaskInputValue:unknown) => {
-  // 待：后期还要把新建的任务对象保存，并且在一开始就获取对应导航下的全部任务
-  taskName.value=newTaskInputValue as string
-  const taskId = uuidv4();
-  const task:Task = {
-    taskId:taskId,
-    taskName:taskName.value
-  }
-  if (taskName.value.trim()!=='') {
-    taskList.unshift(task); // 将输入框的值添加到数组中
-    console.log('已把新的对象添加到数组中')
-  }
+// 新建任务
+emitter.on('createNewTask',handlecreateNewTask)
+async function handlecreateNewTask (taskName) {
+  let basketId=-1
+  let deadline=''
+  console.log('新建任务触发事件')
+  // const res = await addTask({taskName,basketId,deadline})
+//   try {
+//     if(res.status % 2 == 1) {
+//       const task = res.data
+//       if(currentRouteKey.value === 'ddl') {
+//         emitter.emit('ddlNewTask',task)
+//       } else if (currentRouteKey.value==='goals') {
+//         emitter.emit('goalsNewTask',task)
+//       } else if (currentRouteKey.value==='star') {
+//         emitter.emit('starNewTask',task)
+//       } else {
+//         emitter.emit('basketNewTask',task)
+//       }
+
+//     }
+//   } catch (error) {
+//     console.error('通过basketId获取所有任务失败', error);
+//   }
+//   if (newTask) {
+//     taskList.unshift(task); // 将输入框的值添加到数组中
+//     console.log('已把新的对象添加到数组中')
+//   }
+
 };
-onMounted(async ()=>{
-
-  // 获取用户列表
-
-
-    // 初始化任务
-    taskList.push(
-      {
-        taskId: '111',
-        taskName: '完成各部分页面设计'
-      },
-      {
-        taskId: '222',
-        taskName: '完成各部分页面流转'
-      }
-    );
-    console.log(taskList)
-
-
+onMounted(()=>{
 
 })
 
@@ -149,29 +143,6 @@ onMounted(async ()=>{
 const isClicked = ref(false)
 const changeBackColor = ()=>{
   isClicked.value=!isClicked.value
-}
-
-emitter.on('createNewTask',handlecreateNewTask)
-
-// 过滤一些需要通过属性值获取的
-// ddl、重要、多步骤任务
-async function filterTaskList() {
-  if(routeName.value==='schedule') {
-    // await get
-    console.log('获取ddl')
-    // const res=await getDDLTask()
-    // return taskList=res.data
-  }else if(routeName.value==='importance') {
-    console.log('获取重要')
-    // const res=await getImportanTask()
-    // return taskList=res.data
-
-  }else if(routeName.value==='goals') {
-    console.log('获取多步骤任务')
-    // const res=await getGoalsTask()
-    // return taskList=res.data
-  }
-
 }
 
 // ===

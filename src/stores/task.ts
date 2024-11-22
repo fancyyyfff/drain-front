@@ -15,7 +15,9 @@ export const useTaskStore = defineStore('taskStore', {
       deadline:'',
       createTime:'',
       isDrain:1,//是否有被加入到头脑风暴
-    }
+    },
+    // 用于放置新建任务时的临时数据
+    deadline:''
   }),
   actions: {
     // 以下可以对taskId进行crud

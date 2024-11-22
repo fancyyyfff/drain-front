@@ -22,11 +22,19 @@
 
 <script setup lang="ts" name="">
 import NewTask from "@/views/menu/components/NewTask.vue";
-import { ref } from "vue";
+import { ref,computed, watch } from "vue";
 import DateTimePicker from "@/components/DateTimePicker.vue";
+import { useTaskStore } from "@/stores/task";
+const taskStore= useTaskStore()
 const clockText=ref('今天8点')
 const clock = ref('')
+// 在此更新pinia当中新建任务的值
+watch(clock,(newClock)=>{
+  taskStore.deadline=newClock
+})
+
 console.log("提醒时间是",clock.value)
+
 </script>
 
 <style scoped>

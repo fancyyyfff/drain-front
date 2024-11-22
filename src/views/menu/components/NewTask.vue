@@ -18,11 +18,18 @@
 import emitter from "@/mitt";
 import { inputEmits } from "element-plus";
 import { fa } from "element-plus/es/locales.mjs";
-import { ref,watch,nextTick } from "vue";
+import { ref,watch,nextTick,computed } from "vue";
+import { useRoute } from "vue-router";
+import { useTaskStore } from "@/stores/task";
+
+const taskStore= useTaskStore()
+const route = useRoute()
 const showInput = ref(false)
 const showP = ref(true)
 const newTaskInputValue = ref('')
 const taskInput = ref<HTMLInputElement | null>(null);
+
+const currentRouteKey = computed(() => route.params.routeKey as string || '');
 // 点击新建任务
 const onClickNew = ()=>{
   showInput.value=true
@@ -30,9 +37,32 @@ const onClickNew = ()=>{
 }
 
 const createNewTask = ()=>{
+  if(newTaskInputValue.value.trim()===''){
+    return
+  }
+  let taskName=newTaskInputValue.value
+  let basketId=-1
+  const deadline=taskStore.deadline
+  const task = {taskName,basketId,deadline}
+  // 处理ddl的新建任务
+  if(route.params.routeKey ==='ddl') {
+      if(deadline) {
+        emitter.emit('ddlNewTask',task)
+        // 清空，实现复用
+        taskStore.deadline=''
+      }else {
+        alert('DDL清单必须要有截至时间设定哦！')
+        console.error('DDL清单添加任务时没有截至时间设定')
+        return
+      }
+    }else if (currentRouteKey.value==='goals') {
+        emitter.emit('goalsNewTask',task)
+    } else if (currentRouteKey.value==='star') {
+        emitter.emit('starNewTask',task)
+    } else {
+        emitter.emit('basketNewTask',task)
+    }
 
-  // 触发新建任务事件
-  emitter.emit('createNewTask',newTaskInputValue.value)
   newTaskInputValue.value = ''; // 清空输入框
 }
 

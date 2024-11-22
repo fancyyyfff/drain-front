@@ -14,6 +14,21 @@ export const getAllTaskByBasketId = (basketId:number) =>{
     })
 }
 
+export const addTask = (task) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/add',
+      method:'POST',
+      data:{
+        task
+      }
+  })
+}
+
+
+
+
+// --
 export const getDDLTask = () =>{
 
   return instance({
