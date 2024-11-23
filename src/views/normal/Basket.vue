@@ -146,10 +146,12 @@ async function getAllTasks(basketId) {
 // }
 
 
-// 监听 routeKey 变化，重新加载任务
-watch(() => routeKey, (newRouteKey) => {
-  routeKey.value = newRouteKey;
-  loadTasks(newRouteKey);
+// 使用 computed 属性包装 routeKey
+const currentRouteKey = computed(() => routeKey);
+
+// 监听 routeKey 的变化
+watch(currentRouteKey, (newRouteKey) => {
+  loadTasks(newRouteKey); // 在路由键变化时加载任务
 });
 
 

@@ -2,67 +2,7 @@
 <div class="nav-ul">
     <!-- 循环渲染每个 basket -->
     <template  v-for="routeBasket in basketStore.routeBaskets" :key="routeBasket.routeKey">
-      <div v-if="routeBasket.routeKey === 'importance'"  class="nav-item">
-      <router-link
-        :to="{
-          name: 'importance',
-          params:{
-            routeKey:routeBasket.routeKey,
-            mainTitle:routeBasket.mainTitle,
-          }
-        }"
-        class="nav-link"
-      >
-        {{ routeBasket.mainTitle }}
-      </router-link>
-    </div>
-
-    <div v-else-if="routeBasket.routeKey === 'ddl'"  class="nav-item">
-      <router-link
-        :to="{
-          name: 'ddl',
-          params:{
-            routeKey:routeBasket.routeKey,
-            mainTitle:routeBasket.mainTitle,
-          }
-        }"
-        class="nav-link"
-      >
-        {{ routeBasket.mainTitle }}
-      </router-link>
-    </div>
-
-    <div v-else-if="routeBasket.routeKey === 'goals'"  class="nav-item">
-      <router-link
-        :to="{
-          name: 'goals',
-          params:{
-            routeKey:routeBasket.routeKey,
-            mainTitle:routeBasket.mainTitle,
-          }
-        }"
-        class="nav-link"
-      >
-        {{ routeBasket.mainTitle }}
-      </router-link>
-    </div>
-
-    <div v-else-if="routeBasket.routeKey === 'tags'" class="nav-item">
-      <router-link
-        :to="{
-          name: 'tags',
-          params:{
-            routeKey:routeBasket.routeKey,
-            mainTitle:routeBasket.mainTitle,
-          }
-        }"
-        class="nav-link"
-      >
-        {{ routeBasket.mainTitle }}
-      </router-link>
-    </div>
-
-    <div v-else  class="nav-item">
+    <div class="nav-item">
       <router-link
         :to="{
           name: 'basket',

@@ -27,36 +27,11 @@ const routes = [
   component:()=>import('@/views/menu/Menu.vue'),
   //redirect: 'basket',  // 重定向到默认子路由
   children:[
+    // 任务全部渲染到Basket
     {
       path:'/basket/:routeKey/:mainTitle',
       name:'basket',
       component:()=>import('@/views/normal/Basket.vue'),
-      props:true
-    },
-
-    // 四个特殊的路由
-    {
-      path:'/basket/:routeKey/:mainTitle',
-      name:'importance',
-      component:()=>import('@/views/normal/sepcial/importance/Importance.vue'),
-      props:true
-    },
-    {
-      path:'/basket/:routeKey/:mainTitle',
-      name:'ddl',
-      component:()=>import('@/views/normal/sepcial/ddl/DDL.vue'),
-      props:true
-    },
-    {
-      path:'/basket/:routeKey/:mainTitle',
-      name:'goals',
-      component:()=>import('@/views/normal/sepcial/goals/Goals.vue'),
-      props:true
-    },
-    {
-      path:'/basket/:routeKey/:mainTitle',
-      name:'tags',
-      component:()=>import('@/views/normal/sepcial/tags/Tags.vue'),
       props:true
     },
   ]

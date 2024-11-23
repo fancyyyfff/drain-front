@@ -46,7 +46,7 @@
           <!-- <div class="footer">
 
           </div> -->
-          <NewTask></NewTask>
+          <component :is="currentNewTask"/>
 
         </el-footer>
 
@@ -68,6 +68,7 @@ import { ref,reactive, onMounted,watch,computed } from "vue";
 import UserInfo from "@/views/menu/components/UserInfo.vue";
 import { Search } from '@element-plus/icons-vue'
 import NewTask from "@/views/menu/components/NewTask.vue";
+import DdlNewTask from "@/views/menu/components/DdlNewTask.vue";
 import Task from "@/views/menu/components/Task.vue";
 import SideBar from "@/views/menu/components/SideBar.vue";
 import Clear from "@/views/vip/clear/Clear.vue";
@@ -102,7 +103,14 @@ const onClickClear = () => {
   // 弹出对话框，进入流程
   console.log('点击了清除按钮');
 };
-
+// 新建任务组件切换
+// 动态计算当前的新建任务组件
+const currentNewTask = computed(()=>{
+  console.log("新建任务routeKey",route.params.routeKey)
+  return route.params.routeKey==='ddl'?DdlNewTask:NewTask
+}
+)
+// 侧边栏组件切换
 // 新建任务
 emitter.on('createNewTask',handlecreateNewTask)
 async function handlecreateNewTask (taskName) {
@@ -138,7 +146,7 @@ onMounted(()=>{
 })
 
 // 打开侧边栏
-// const sideBar = ref()
+const sideBar = ref()
 
 const isClicked = ref(false)
 const changeBackColor = ()=>{
