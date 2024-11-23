@@ -8,7 +8,7 @@
               <div class="task-tick"></div>
                <input type="text" v-model="newTaskInputValue" class="taskInput dialog-input" ref="taskInput" @keyup.enter="createNewTask"
                @blur="closeInput" @input="sendSlotClock">
-               <slot name="right-clock" :showClock="showClock"></slot>
+               <slot name="right-clock"></slot>
             </div>
           </div>
 
@@ -36,31 +36,32 @@ const onClickNew = ()=>{
   showP.value=false
 }
 
-const createNewTask = ()=>{
+function createNewTask (){
   if(newTaskInputValue.value.trim()===''){
     return
   }
   let taskName=newTaskInputValue.value
   let basketId=-1
-  const deadline=taskStore.deadline
+  let deadline='' //默认 ''
   const task = {taskName,basketId,deadline}
+   // 获取当前路由键，避免依赖计算属性
+   const routeKey = route.params.routeKey as string || '';
   // 处理ddl的新建任务
-  if(route.params.routeKey ==='ddl') {
-      if(deadline) {
-        emitter.emit('ddlNewTask',task)
+  if( routeKey==='ddl') {
+      if(taskStore.deadline) {
+        task.deadline=taskStore.deadline
+        emitter.emit('createNewTask',task)
         // 清空，实现复用
         taskStore.deadline=''
+        newTaskInputValue.value = ''; // 清空输入框
+        return
       }else {
         alert('DDL清单必须要有截至时间设定哦！')
         console.error('DDL清单添加任务时没有截至时间设定')
         return
       }
-    }else if (currentRouteKey.value==='goals') {
-        emitter.emit('goalsNewTask',task)
-    } else if (currentRouteKey.value==='star') {
-        emitter.emit('starNewTask',task)
-    } else {
-        emitter.emit('basketNewTask',task)
+    }else {
+        emitter.emit('createNewTask',task)
     }
 
   newTaskInputValue.value = ''; // 清空输入框
@@ -91,6 +92,7 @@ function sendSlotClock() {
 <style scoped>
   .new-task-wrap {
       display: flex;
+      position: relative;
       width: 95%;
       height: 90%;
       /* background-color: white; */
@@ -106,7 +108,7 @@ function sendSlotClock() {
 
       .new-task-input-wrap {
         display: flex;
-        position: relative;
+        /* position: relative; */
         width: 100%;
         align-items: center;
         margin-left: 1%;

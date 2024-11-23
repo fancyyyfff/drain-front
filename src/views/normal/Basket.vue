@@ -14,7 +14,9 @@ import { useRoute } from 'vue-router';
 import Task from "@/views/menu/components/Task.vue";
 import { useBasketStore } from '@/stores/basket';
 import { isNumber } from 'element-plus/es/utils/types.mjs';
-import { getAllTaskByBasketId } from "@/api/task";
+import { getAllTaskByBasketId,addTask } from "@/api/task";
+import emitter from '@/mitt';
+
 // 获取路由参数
 const route = useRoute();
 const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
@@ -36,7 +38,8 @@ interface Task {
 }
 
 // 后端没有获取到数据时，呈现的默认任务数据
-const tasks = reactive([
+
+const tasks1 = reactive([
   {
     taskId:1,
     taskName:'完成创建Task',
@@ -95,6 +98,112 @@ const tasks = reactive([
 
 ]);
 
+let tasks = tasks1
+function frontInitData() {
+// 初期模拟不同页面渲染数据
+if(route.params.routeKey === 'importance') {
+  tasks = [
+    {
+    taskId:6,
+    taskName:'完成任务管理模块',
+    star:1,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'开始放好伪数据，记得发送请求',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+  {
+    taskId:7,
+    taskName:'完成头脑风暴模块',
+    star:1,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'开始放好伪数据，记得发送请求',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+]
+} else if (route.params.routeKey === 'ddl') {
+  tasks = [
+    {
+    taskId:9,
+    taskName:'30号周六项目提交',
+    star:0,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'开始放好伪数据，记得发送请求',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+]
+}else if (route.params.routeKey === 'goals') {
+  tasks = [
+    {
+    taskId:10,
+    taskName:'完成drain项目',
+    star:0,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'开始放好伪数据，记得发送请求',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+]
+} else if (route.params.routeKey === 'works') {
+  tasks = [
+    {
+    taskId:11,
+    taskName:'录制视频',
+    star:0,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'项目测试通过后',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+]
+} else if (route.params.routeKey === 'thoughts') {
+  tasks = [
+    {
+    taskId:12,
+    taskName:'完成后想好好休息，啥也不干，发发呆',
+    star:0,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'项目测试通过后',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+]
+} else if(route.params.routeKey==='tags') {
+  tasks=[]
+}else if (route.params.routeKey === 'actions') {
+  tasks = [
+    {
+    taskId:13,
+    taskName:'删除任务图标',
+    star:0,
+    isFinish:0,
+    basketId:null,//可以找到对应的basket
+    remark:'开始放好伪数据，记得发送请求',//备注
+    deadline:'',
+    createTime:'',
+    isDrain:1,
+  },
+]
+}
+
+
+}
+
+
 onMounted(()=>{
   console.log('Basket.vue加载了')
   loadTasks(routeKey)
@@ -136,25 +245,30 @@ async function getAllTasks(basketId) {
     console.error('通过basketId获取所有任务失败', error);
   }
 }
-// const loadTasks = (basketId: number) => {
-//   if (!Number.isInteger(basketId) || basketId < 0) {
-//     console.error('Invalid basketId');
-//     tasks.value = [];
-//     return;
-//   }
-//   tasks.value = allTasks[basketId] ?? []; // 使用 Nullish 合并运算符处理数据
-// }
-
-
 // 使用 computed 属性包装 routeKey
 const currentRouteKey = computed(() => routeKey);
 
 // 监听 routeKey 的变化
 watch(currentRouteKey, (newRouteKey) => {
   loadTasks(newRouteKey); // 在路由键变化时加载任务
+  frontInitData()
 });
 
+// 新建任务：
+emitter.on('createNewTask',handleCreateNewTask)
+async function handleCreateNewTask(task) {
+  const res= await addTask(task)
+  try {
+    if(res.status % 2 === 1) {
+      tasks.unshift(res.data)
+    }
+  } catch (error) {
+    console.error('新建任务失败', error);
+  }
 
+  // 只用于初期渲染，后期连接后端删掉：
+  tasks.unshift(task)
+}
 
 </script>
 

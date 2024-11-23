@@ -111,36 +111,6 @@ const currentNewTask = computed(()=>{
 }
 )
 // 侧边栏组件切换
-// 新建任务
-emitter.on('createNewTask',handlecreateNewTask)
-async function handlecreateNewTask (taskName) {
-  let basketId=-1
-  let deadline=''
-  console.log('新建任务触发事件')
-  // const res = await addTask({taskName,basketId,deadline})
-//   try {
-//     if(res.status % 2 == 1) {
-//       const task = res.data
-//       if(currentRouteKey.value === 'ddl') {
-//         emitter.emit('ddlNewTask',task)
-//       } else if (currentRouteKey.value==='goals') {
-//         emitter.emit('goalsNewTask',task)
-//       } else if (currentRouteKey.value==='star') {
-//         emitter.emit('starNewTask',task)
-//       } else {
-//         emitter.emit('basketNewTask',task)
-//       }
-
-//     }
-//   } catch (error) {
-//     console.error('通过basketId获取所有任务失败', error);
-//   }
-//   if (newTask) {
-//     taskList.unshift(task); // 将输入框的值添加到数组中
-//     console.log('已把新的对象添加到数组中')
-//   }
-
-};
 onMounted(()=>{
 
 })
