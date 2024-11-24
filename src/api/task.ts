@@ -26,6 +26,18 @@ export const addTask = (task) =>{
 }
 
 
+export const deleteTask = (deleteTask) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/delete',
+      method:'POST',
+      data:{
+        taskId:deleteTask.taskId,
+        basketId:deleteTask.basketId
+      }
+  })
+}
+
 
 
 // --

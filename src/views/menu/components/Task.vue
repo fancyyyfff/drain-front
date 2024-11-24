@@ -3,23 +3,49 @@
   <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
+  <div class="moveTo-warp" @click.stop>
+    <el-dropdown>
+    <span class="el-dropdown-link shine">
+      moveTo
+      <el-icon class="el-icon--right">
+        <arrow-down />
+      </el-icon>
+    </span>
+
+      <template #dropdown >
+      <el-dropdown-menu >
+        <template v-for="moveItem in moveItems" :key="moveItem.name">
+          <el-dropdown-item >{{ moveItem.name }}</el-dropdown-item>
+        </template>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+
+  </div>
+
+
+
+  <ion-icon name="trash-outline" class="delete-icon" @click="toDeleteTask" @click.stop></ion-icon>
   <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
+
 </div>
 </template>
 
+
 <script setup lang="ts" name="">
-import { ref,reactive,computed } from 'vue'
-// import { defineProps } from 'vue';
+import { ref,reactive,computed,watch } from 'vue'
 import emitter from "@/mitt";
-import { getTask,updateTaskName,updateTaskFinish } from "@/api/task";
+import { deleteTask,getTask,updateTaskName,updateTaskFinish } from "@/api/task";
 import Tick from '@/components/Tick.vue';
 // import { tourStepEmits } from 'element-plus/lib/components/index.js';
 import Star from "@/components/Star.vue";
 import { useTaskStore } from '@/stores/task';
 import { useSideBarStore } from "@/stores/ui";
+import { ArrowDown } from '@element-plus/icons-vue'
+import { useRoute } from "vue-router";
 const sideBarStore = useSideBarStore()
 const taskStore = useTaskStore();
-
+const route = useRoute()
  // 使用 defineProps 来接收来自父组件的 task 对象
  const {task} = defineProps({
   task: {
@@ -28,9 +54,14 @@ const taskStore = useTaskStore();
   }
 })
 
+console.log('当前的task ',task)
 const finish = ref(false);
 const drawer = ref(false)
 
+function openSideBar() {
+  emitter.emit('toggleSidebar',task)
+
+}
 // // 需要过滤DDL、多任务列表
 // const openSideBar = ()=>{
 //   if(taskStore.currentRoute==='schedule') {
@@ -100,6 +131,19 @@ async function handleTaskChange (isChecked:boolean)  {
   // }
 }
 
+const moveItems = [
+  {
+    name:'马上行动',
+  },
+  {
+    name:'DDL',
+  }
+]
+// 移动，并剔除当前的移动项目
+// watch(route.params.routeKey,(newRouteKey)=>{
+
+
+// })
 
 // 控制星星
 const item = ref({
@@ -107,38 +151,49 @@ const item = ref({
   // ... other item data
 });
 
-// 右键出现菜单
-// 右键菜单
-const showMenu = ref(false);
-const contextMenuX = ref(0);
-const contextMenuY = ref(0);
-
-const contextMenuOptions = reactive([
-  { label: '移动到组件 A', value: 'componentA' },
-  { label: '移动到组件 B', value: 'componentB' },
-  { label: '删除', value: 'delete' },
-]);
-
-const showContextMenu = (event:Event) => {
-  event.preventDefault(); // 阻止默认的右键菜单
-  showMenu.value = true;
-  console.log('这是展示右键菜单的选项')
-  // contextMenuX.value = event.clientX;
-  // contextMenuY.value = event.clientY;
-};
-
+async function toDeleteTask() {
+  emitter.emit('deleteTask',task.taskId)
+  const taskDeleted = {
+        taskId:task.taskId,
+        basketId:task.basketId
+      }
+      // 前端模拟，后期删除：
+  try {
+    const res = await deleteTask(taskDeleted)
+    if(res.status === 2015) {
+      emitter.emit('deleteTask',task.taskId)
+      alert('删除成功')
+    }else {
+      alert('删除失败，请检查网络')
+    }
+  } catch (error) {
+    console.error('删除任务失败', error);
+  }
+}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .task-wrap {
       display: flex;
       position: relative;
       width: 96%;
       height: 50px;
       padding:0 20px 0 20px;
-    background: rgba(130, 127, 127, 0.2); /* 半透明白色背景 */
+      background: rgba(130, 127, 127, 0.2); /* 半透明白色背景 */
       border-radius: 10px;
       align-items: center;
+
+      /* 移动项目的位置 */
+      .moveTo-warp {
+        position: absolute;
+        right: 13%;
+      }
+
+      /* 删除图标的位置 */
+      .delete-icon {
+        position: absolute;
+        right: 10%;
+      }
 
       .task-text {
         font-size: 1.5rem;
@@ -146,4 +201,27 @@ const showContextMenu = (event:Event) => {
         margin-left:4%;
       }
 }
+/* 改变el组件的样式 */
+.el-dropdown-link.shine {
+  outline: none; /* 移除聚焦时的外框 */
+  border: none; /* 移除边框 */
+}
+
+.el-dropdown-link.shine:focus,
+.el-dropdown-link.shine:hover,
+.el-dropdown-link.shine:active {
+  outline: none; /* 鼠标悬停或点击时 */
+  border: none; /* 同时移除边框 */
+  box-shadow: none; /* 移除阴影效果 */
+}
+
+.example-showcase,.el-dropdown-link {
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  border: none;
+  background:none;
+}
+
 </style>
