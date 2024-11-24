@@ -343,6 +343,9 @@ emitter.on('deleteTask',handleDeleteTask)
 onUnmounted(() => {
   emitter.off('deleteTask', handleDeleteTask); // 组件销毁时解绑事件
 });
+
+// 移动任务v                    v v  bbbb
+// emitter.on('moveTask',)
 </script>
 
 <style scoped>

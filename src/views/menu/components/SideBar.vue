@@ -22,9 +22,9 @@
          <div class="sidebar-main-content">
 
            <div class="detail-wrap shine" >
-             <Tick v-model:checked="finish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
-             <input class="task-input" :style="textStyle" v-model="task.taskName"/>
-             <Star v-model:starred="item.isStarred" star-color="#efe299" :size="'1.5rem'" @click.stop />
+             <Tick v-model:checked="taskStore.task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
+             <input class="task-input" :style="textStyle" v-model="taskStore.task.taskName"/>
+             <Star v-model:starred="taskStore.task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
            </div>
 
            <!-- 提醒插槽，由DDL的组件定义 -->
@@ -46,7 +46,7 @@
                    @focus="onFocus"
                    @blur="onBlur"
                    ref="editableDiv"
-                >{{ task.remark }}</div>
+                >{{ taskStore.task.remark }}</div>
            </div>
 
            <!-- 底部 -->
@@ -55,7 +55,7 @@
              <span class="add-tag">#</span>
              <input type="text" placeholder="添加标签" class="shine tag-input" v-model="tagValue" @keydown.enter="addTag">
            </div>
-           <div class="sidebar-create">创建于2024年11月1日</div>
+           <div class="sidebar-create">创建于{{ taskStore.task.createTime }}</div>
          </footer>
      </aside>
  </template>
@@ -69,9 +69,10 @@
  import Star from "@/components/Star.vue";
  import Tick from '@/components/Tick.vue';
  import { useSideBarStore } from "@/stores/ui";
+ import { useTaskStore } from "@/stores/task";
 
  const sideBarStore = useSideBarStore()
-
+ const taskStore = useTaskStore()
  // const sidebarOpen = ref(false); // 控制侧边栏的状态
 
  // 切换侧边栏状态

@@ -48,6 +48,10 @@ export const useTaskStore = defineStore('taskStore', {
     setRemark(remark) {
       this.task.remark = remark;
     },
+    // 传入整个task
+    setTask(task) {
+      this.task= task
+    },
     // 与后端同步,更新当前的task
     async loadTask(taskId) {
       try {
