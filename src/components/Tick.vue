@@ -14,6 +14,7 @@
 </template>
 
 <script lang="ts" setup>
+import { updateTaskFinish } from '@/api/task';
 import { ref, computed, withDefaults } from 'vue';
 
 // 以下属性都是可选的
@@ -42,8 +43,20 @@ const emit = defineEmits<{
 // 切换选中的状态
 const isChecked = ref(props.defaultChecked);
 
-const toggleTick = () => {
+async function toggleTick  () {
+  // 切换前先发送请求
+  try {
+    const res = await updateTaskFinish(taskId)
+    if(res.status===2019) {
+      isChecked.value = !isChecked.value;
+
+    }
+  } catch (error) {
+    console.error('通过basketId获取所有任务失败', error);
+  }
+  // 后期删掉：
   isChecked.value = !isChecked.value;
+
   emit('update:checked', isChecked.value);
 };
 

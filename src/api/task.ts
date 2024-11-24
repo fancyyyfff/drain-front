@@ -25,6 +25,16 @@ export const addTask = (task) =>{
   })
 }
 
+export const updateTaskFinish = (taskId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/finished',
+      method:'POST',
+      data:{
+        taskId
+      }
+  })
+}
 
 export const deleteTask = (deleteTask) =>{
   // const { id } = data
@@ -104,18 +114,6 @@ export const updateTaskName = (taskId:number) =>{
     method:'POST',
     data:{
       taskId
-    }
-})
-}
-// 修改元素的选中状态
-export const updateTaskFinish = (taskId:number,finish:number) =>{
-
-  return instance({
-    url:'/task/updateTaskName',
-    method:'POST',
-    data:{
-      taskId,
-      finish
     }
 })
 }
