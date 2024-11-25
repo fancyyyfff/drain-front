@@ -1,6 +1,6 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
-  <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click="" @click.stop/>
+  <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange"@click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
   <div class="moveTo-warp" @click.stop>
@@ -59,8 +59,9 @@ const finish = ref(false);
 const drawer = ref(false)
 
 function openSideBar() {
-  
-  emitter.emit('toggleSidebar',task)
+
+  // emitter.emit('toggleSidebar',task)
+  sideBarStore.toggleSidebar()
 
 }
 // // 需要过滤DDL、多任务列表

@@ -107,6 +107,7 @@ onUnmounted(() => {
 // 设置选中任务
 const selectTask = (task) => {
   taskStore.setTask(task);
+  console.log('pinia当中目前的task是',taskStore.task);
 };
 
 </script>

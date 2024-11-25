@@ -87,11 +87,11 @@
  //   toggleSidebar()
  // }
 
- emitter.on('toggleSidebar',sideBarStore.toggleSidebar)
+//  emitter.on('toggleSidebar',sideBarStore.toggleSidebar)
 
- onBeforeUnmount(() => {
-   emitter.off('toggleSidebar', sideBarStore.toggleSidebar); // 清除监听
- });
+//  onBeforeUnmount(() => {
+//    emitter.off('toggleSidebar', sideBarStore.toggleSidebar); // 清除监听
+//  });
 
  // div实现的文本编辑框，在其中添加占位的内容
  // const editableDiv = ref(null);
@@ -178,17 +178,18 @@
  // 完成与否的文字变化效果切换
  const textStyle = computed(() => {
    return {
-     'text-decoration': finish.value ? 'line-through' : 'none',
-     'color': finish.value ?  'gray':'white'
+     'text-decoration': taskStore.task.isFinish===1 ? 'line-through' : 'none',
+     'color': taskStore.task.isFinish ===1 ?  'gray':'white'
    };
  });
- const finish = ref(false);
+//  const finish = ref(false);
  async function handleTaskChange (isChecked:boolean)  {
-   finish.value=isChecked
+  //  finish.value=isChecked
+  // taskStore.task.isFinish=isChecked
    // == 完成的任务放到最后面：
-   if(finish.value===true) {
-     console.log('需要把当前任务的id放到页面渲染数组的最后面')
-   }
+  //  if(finish.value===true) {
+  //    console.log('需要把当前任务的id放到页面渲染数组的最后面')
+  //  }
    // === 发送请求更改任务的完成状态
    // == 获取当前元素的taskId
    // try {

@@ -10,13 +10,14 @@ export const useSideBarStore = defineStore('sideBar', {
     sidebarOpen: false,
   }),
   actions: {
-    toggleSidebar(task) {
-      // 首先清空，放置数据混合
+    toggleSidebar() {
+      // // 首先清空，放置数据混合
       taskStore.resetTask()
-      // 放置数据到pinia当中
-      taskStore.setTask(task)
+      console.log('清空task后的star状态',taskStore.task.star);
+      // // 放置数据到pinia当中
+      // taskStore.setTask(task)
       this.sidebarOpen = !this.sidebarOpen;
-      console.log('在pinia当中点击了ddl组件后的sideBar的状态：',this.sidebarOpen)
+
     },
   },
 });

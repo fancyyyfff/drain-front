@@ -15,8 +15,11 @@
 
 <script lang="ts" setup>
 import { updateTaskFinish } from '@/api/task';
-import { ref, computed, withDefaults } from 'vue';
+import { useTaskStore } from '@/stores/task';
+import Task from '@/views/menu/components/Task.vue';
+import { ref, computed, withDefaults,watch } from 'vue';
 
+const taskStore = useTaskStore()
 // 以下属性都是可选的
 interface Props {
   iconName?: string;
@@ -49,7 +52,6 @@ async function toggleTick  () {
     const res = await updateTaskFinish(taskId)
     if(res.status===2019) {
       isChecked.value = !isChecked.value;
-
     }
   } catch (error) {
     console.error('通过basketId获取所有任务失败', error);
@@ -59,7 +61,10 @@ async function toggleTick  () {
 
   emit('update:checked', isChecked.value);
 };
-
+const taskIsFinish = computed(() => taskStore.task.isFinish);
+watch(taskIsFinish,(newFinsh)=>{
+  isChecked.value = !isChecked.value;
+})
 
 </script>
 

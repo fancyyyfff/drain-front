@@ -204,7 +204,7 @@ export const useTaskStore = defineStore('taskStore', {
         this.tasks = [
           {
           taskId:12,
-          taskName:'完成后想好好休息，啥也不干，发发呆',
+          taskName:'总结过去,展望未来',
           star:0,
           isFinish:0,
           basketId:12,//可以找到对应的basket
