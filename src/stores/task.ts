@@ -1,14 +1,9 @@
 import { defineStore } from 'pinia';
 import { getTask,getAllTaskByBasketId,addTask } from "@/api/task";
 import type { Task } from "@/types/type";
-import { useRoute } from "vue-router";
-
 
 // 主要用于控制全局共享组件的状态
 // 方便与sidebar共享信息
-
-const route= useRoute()
-
 
 export const useTaskStore = defineStore('taskStore', {
   state: () => ({
@@ -113,7 +108,7 @@ export const useTaskStore = defineStore('taskStore', {
       this.tasks.unshift(task);
 
     },
-    
+
     // ——加载从后端获取到的所有tasks：
     async loadAllTasks(basketId) {
       try {
@@ -135,10 +130,10 @@ export const useTaskStore = defineStore('taskStore', {
     },
 
     // —— 对tasks的操作，前端模拟数据：
-    frontInitData() {
+    frontInitData(routeKey) {
       // 后端没有获取到数据时，呈现的默认任务数据
       // 初期模拟不同页面渲染数据
-      if(route.params.routeKey === 'importance') {
+      if(routeKey === 'importance') {
         this.tasks = [
           {
           taskId:6,
@@ -163,7 +158,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (route.params.routeKey === 'ddl') {
+      } else if (routeKey === 'ddl') {
         this.tasks = [
           {
           taskId:9,
@@ -177,7 +172,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      }else if (route.params.routeKey === 'goals') {
+      }else if (routeKey === 'goals') {
         this.tasks = [
           {
           taskId:10,
@@ -191,7 +186,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (route.params.routeKey === 'works') {
+      } else if (routeKey === 'works') {
         this.tasks = [
           {
           taskId:11,
@@ -205,7 +200,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (route.params.routeKey === 'thoughts') {
+      } else if (routeKey === 'thoughts') {
         this.tasks = [
           {
           taskId:12,
@@ -219,9 +214,9 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if(route.params.routeKey==='tags') {
+      } else if(routeKey==='tags') {
         this.tasks=[]
-      }else if (route.params.routeKey === 'actions') {
+      }else if (routeKey === 'actions') {
         this.tasks = [
           {
           taskId:13,

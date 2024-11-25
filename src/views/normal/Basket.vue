@@ -18,6 +18,7 @@ import { getAllTaskByBasketId,addTask } from "@/api/task";
 import emitter from '@/mitt';
 import { useTaskStore } from "@/stores/task";
 import type { Task } from "@/types/type";
+import pinia from '@/stores';
 
 // 获取路由参数
 const route = useRoute();
@@ -31,8 +32,7 @@ onMounted(()=>{
   console.log('Basket.vue加载了')
   loadTasks(route.params.routeKey)
   // 后期删掉：
-  taskStore.frontInitData()
-
+  taskStore.frontInitData(route.params.routeKey)
 })
 // 加载任务
 // const loadTasks = (basketId:number) => {
@@ -50,8 +50,6 @@ function loadTasks(routeKey) {
   basketIdsArray.forEach((basketId) => {
     // 已把taskStroe中的tasks更新了
   taskStore.loadAllTasks(basketId)
-  console.log('pinia中加载的tasks是',taskStore.tasks);
-
   });
 
 };
@@ -63,10 +61,13 @@ const currentRouteKey = computed(() => routeKey);
 watch(currentRouteKey, (newRouteKey) => {
   //先清空pinia中的tasks
   taskStore.tasks=[]
+  taskStore.resetTask()
   loadTasks(newRouteKey); // 在路由键变化时加载任务
   // 后期不要：
-  taskStore.frontInitData()
+  taskStore.frontInitData(newRouteKey)
+  console.log('pinia中加载的tasks是',taskStore.tasks);
 });
+
 // 新建任务：
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {

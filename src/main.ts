@@ -11,8 +11,9 @@ import Message from "@/components/Message.vue";
 
 const app = createApp(App)
 
-app.use(pinia)
 app.use(router)
+app.use(pinia)
+
 // 全局注册组件自定义的消息弹窗
 app.component('Message', Message);
 
