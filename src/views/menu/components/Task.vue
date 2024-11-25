@@ -59,7 +59,7 @@ const finish = ref(false);
 const drawer = ref(false)
 
 function openSideBar() {
-
+  
   emitter.emit('toggleSidebar',task)
 
 }

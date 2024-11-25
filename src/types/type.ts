@@ -27,6 +27,18 @@ export interface Manage {
   confirmPassword?:string;
 }
 
+export interface Task {
+  taskId: number;
+  taskName: string;       // taskName 为字符串
+  star: number;           // star 为数字
+  isFinish: 0 | 1 | -1;        // isFinish 为字面量类型 0 或 1
+  basketId: number | null; // basketId 可以是数字或 null
+  remark: string;         // remark 为字符串
+  deadline: string;       // deadline 为字符串
+  createTime: string;     // createTime 为字符串
+  isDrain: 0 | 1 | -1;         // isDrain 为字面量类型 0 或 1
+}
+
 // 可访问项目首页
 export interface Global {
   status:1006,//未登录

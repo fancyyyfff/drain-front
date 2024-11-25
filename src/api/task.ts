@@ -48,6 +48,16 @@ export const deleteTask = (deleteTask) =>{
   })
 }
 
+export const getTask = (taskId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/get',
+      method:'POST',
+      data:{
+        taskId
+      }
+  })
+}
 
 
 // --
@@ -95,16 +105,6 @@ export const addTagList = (tagList:[]) =>{
 })
 }
 
-export const getTask = (taskId:number) =>{
-
-  return instance({
-    url:'/task/getTask',
-    method:'POST',
-    data:{
-      taskId
-    }
-})
-}
 
 // 修改任务名
 export const updateTaskName = (taskId:number) =>{

@@ -22,9 +22,9 @@
          <div class="sidebar-main-content">
 
            <div class="detail-wrap shine" >
-             <Tick v-model:checked="taskStore.task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
+             <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
              <input class="task-input" :style="textStyle" v-model="taskStore.task.taskName"/>
-             <Star v-model:starred="taskStore.task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
+             <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
            </div>
 
            <!-- 提醒插槽，由DDL的组件定义 -->
@@ -46,7 +46,7 @@
                    @focus="onFocus"
                    @blur="onBlur"
                    ref="editableDiv"
-                >{{ taskStore.task.remark }}</div>
+                >{{ task.remark }}</div>
            </div>
 
            <!-- 底部 -->
@@ -55,7 +55,7 @@
              <span class="add-tag">#</span>
              <input type="text" placeholder="添加标签" class="shine tag-input" v-model="tagValue" @keydown.enter="addTag">
            </div>
-           <div class="sidebar-create">创建于{{ taskStore.task.createTime }}</div>
+           <div class="sidebar-create">创建于{{ task.createTime }}</div>
          </footer>
      </aside>
  </template>
@@ -70,9 +70,12 @@
  import Tick from '@/components/Tick.vue';
  import { useSideBarStore } from "@/stores/ui";
  import { useTaskStore } from "@/stores/task";
+ import type { Task } from "@/types/type";
 
  const sideBarStore = useSideBarStore()
  const taskStore = useTaskStore()
+
+ const task = computed(() => taskStore.task);
  // const sidebarOpen = ref(false); // 控制侧边栏的状态
 
  // 切换侧边栏状态
@@ -103,16 +106,8 @@
    }
  })
 
- interface Task {
-   taskName:string,
-   star:number,
-   finish:number,
-   remark:string,
-   // === 是否有写附件？
-   // attachment:string,
- }
 
- let task = reactive<Task>({taskName:'获取任务名',star:0,finish:0,remark:'备注'})
+//  let task = reactive<Task>({taskName:'获取任务名',star:0,finish:0,remark:'备注'})
  // ==检测sideBar值的变化，获取后端的数据渲染:
  // ===
  watchEffect(() => {
@@ -171,7 +166,6 @@
  function addAttachment() {
    // ==
    console.log('添加附件逻辑')
-
  }
 
  // == 控制星星
