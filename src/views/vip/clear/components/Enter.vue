@@ -10,6 +10,7 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
+
 </script>
 
 <style scoped>

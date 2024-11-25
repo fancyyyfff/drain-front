@@ -186,7 +186,7 @@ export const useTaskStore = defineStore('taskStore', {
            // 清空当前任务数据
             this.tasks.splice(0, this.tasks.length);
             // 把tasks存在store当中
-            
+
             if(routeKey==='works') {
               this.tasks.unshift(...res.data)
             }else {
