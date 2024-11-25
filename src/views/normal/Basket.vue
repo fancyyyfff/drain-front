@@ -49,7 +49,7 @@ function loadTasks(routeKey) {
     // 遍历 basketIds
   basketIdsArray.forEach((basketId) => {
     // 已把taskStroe中的tasks更新了
-  taskStore.loadAllTasks(basketId)
+  taskStore.loadAllTasks(basketId,currentRouteKey.value)
   });
 
 };

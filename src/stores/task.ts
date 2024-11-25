@@ -176,7 +176,7 @@ export const useTaskStore = defineStore('taskStore', {
     },
    // —— 对tasks的操作，
     // ——加载从后端获取到的所有tasks：
-    async loadAllTasks(basketId) {
+    async loadAllTasks(basketId,routeKey) {
       try {
         const res = await getAllTaskByBasketId(basketId)
         // if(res.status % 2 ==1) {
@@ -186,8 +186,12 @@ export const useTaskStore = defineStore('taskStore', {
            // 清空当前任务数据
             this.tasks.splice(0, this.tasks.length);
             // 把tasks存在store当中
-            this.tasks.push(...res.data)
-
+            
+            if(routeKey==='works') {
+              this.tasks.unshift(...res.data)
+            }else {
+              this.tasks.push(...res.data)
+            }
             // tasks.value.push(...res.data); // 将新任务追加到 tasks 中
           }
       } catch (error) {
