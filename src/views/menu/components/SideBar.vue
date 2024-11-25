@@ -22,7 +22,7 @@
          <div class="sidebar-main-content">
 
            <div class="detail-wrap shine" >
-             <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange" @click.stop/>
+             <Tick v-model="task.isFinish" icon-name="checkmark-done" @click.stop/>
              <input class="task-input" :style="textStyle" v-model="taskStore.task.taskName"/>
              <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
            </div>
@@ -96,7 +96,7 @@
  // div实现的文本编辑框，在其中添加占位的内容
  // const editableDiv = ref(null);
  const editableDiv = ref<HTMLDivElement | null>(null);
- const placeholderText = "请输入内容...";
+ const  placeholderText = ref('');
  onMounted(()=>{
    // emitter.on('toggleSidebar',handleToggleSidebar)
    // 初始时，如果没有内容，显示 placeholder
@@ -104,19 +104,26 @@
    if (div && div.innerHTML.trim() === '') {
      div.classList.add('placeholder');
    }
+  //  清空备注的占位：
+  if(task.value.remark) {
+    placeholderText.value=''
+  }else {
+    placeholderText.value='请输入内容...'
+
+  }
  })
 
 
 //  let task = reactive<Task>({taskName:'获取任务名',star:0,finish:0,remark:'备注'})
  // ==检测sideBar值的变化，获取后端的数据渲染:
  // ===
- watchEffect(() => {
-   if (sideBarStore.sidebarOpen) {
-       emitter.emit('getTask')
-       console.log('检测sideBar值的变化，获取后端的数据渲染:')
-       // emitter.on('resTask',(resTask:Task)=>task=resTask)
-   }
- });
+//  watchEffect(() => {
+//    if (sideBarStore.sidebarOpen) {
+//        emitter.emit('getTask')
+//        console.log('检测sideBar值的变化，获取后端的数据渲染:')
+//        // emitter.on('resTask',(resTask:Task)=>task=resTask)
+//    }
+//  });
 
  const onInput = () => {
    const div = editableDiv.value;
@@ -182,8 +189,9 @@
      'color': taskStore.task.isFinish ===1 ?  'gray':'white'
    };
  });
-//  const finish = ref(false);
- async function handleTaskChange (isChecked:boolean)  {
+
+// //  const finish = ref(false);
+//  async function handleTaskChange (isChecked:boolean)  {
   //  finish.value=isChecked
   // taskStore.task.isFinish=isChecked
    // == 完成的任务放到最后面：
@@ -204,7 +212,7 @@
    //   // 捕获意外的异常并处理
    //   console.error('更新任务失败:', err);
    // }
- }
+//  }
 
  // const handleContextMenuSelect = (value:string) => {
  //   showMenu.value = false;

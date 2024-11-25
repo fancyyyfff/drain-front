@@ -36,6 +36,18 @@ export const updateTaskFinish = (taskId) =>{
   })
 }
 
+export const updateTaskDeadline = (taskId,deadline) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/deadline',
+      method:'POST',
+      data:{
+        taskId,
+        deadline
+      }
+  })
+}
+
 export const deleteTask = (deleteTask) =>{
   // const { id } = data
   return instance({
@@ -55,6 +67,18 @@ export const getTask = (taskId) =>{
       method:'POST',
       data:{
         taskId
+      }
+  })
+}
+
+export const updateTaskBasket = (taskId,basketId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/basketId',
+      method:'POST',
+      data:{
+        taskId,
+        basketId
       }
   })
 }

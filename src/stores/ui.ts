@@ -10,9 +10,15 @@ export const useSideBarStore = defineStore('sideBar', {
     sidebarOpen: false,
   }),
   actions: {
-    toggleSidebar() {
-      // // 首先清空，放置数据混合
-      taskStore.resetTask()
+    toggleSidebar(taskId) {
+      // 把当前任务的task传递给deadline
+      if(this.sidebarOpen===true) {
+      taskStore.updateSideBarDeadline(taskId)
+      }else {
+        taskStore.clearSideBarDeadline()
+      }
+      // // // 首先清空，放置数据混合
+      // taskStore.resetTask()
       console.log('清空task后的star状态',taskStore.task.star);
       // // 放置数据到pinia当中
       // taskStore.setTask(task)

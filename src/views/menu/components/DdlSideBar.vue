@@ -1,16 +1,17 @@
 <template>
 
-<DdlSideBar>
+<SideBar>
   <template #ddl>
-    <div>
-      DdlSideBar 放clock
-    </div>
+    <DateTimePicker></DateTimePicker>
   </template>
-</DdlSideBar>
+</SideBar>
 </template>
 
 <script setup lang="ts" name="">
-import DdlSideBar from "@/views/menu/components/DdlSideBar.vue";
+import SideBar from "@/views/menu/components/SideBar.vue";
+import DateTimePicker from "@/components/DateTimePicker.vue";
+import { useTaskStore } from "@/stores/task";
+const taskStore= useTaskStore()
 </script>
 
 <style scoped>

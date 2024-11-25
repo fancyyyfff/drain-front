@@ -1,47 +1,49 @@
 <template>
-  <div class="demo-datetime-picker">
-
-    <div class="block">
-      <span class="demonstration">提醒我</span>
-      <div class="demonstration">{{ clock }}</div>
+ <div class="block">
       <el-date-picker
-        v-model="clock"
+        v-model="taskStore.deadline"
         type="datetime"
         placeholder="Pick a Date"
-        format="YYYY/MM/DD hh:mm:ss"
-        value-format="YYYY-MM-DD h:m:s a"
+        format="YYYY-MM-DD HH:mm:ss"
+        date-format="MMM DD, YYYY"
+        time-format="HH:mm"
+        value-format="YYYY-MM-DD HH:mm:ss"
+        @change="handleClockChange"
+        @click.stop
+
       />
     </div>
-
-  </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-const clock = ref('')
+import { computed, ref } from 'vue'
+import { useTaskStore } from "@/stores/task";
+import { updateTaskDeadline } from '@/api/task';
+const taskStore= useTaskStore()
 
-defineExpose([clock])
+console.log("提醒时间是",taskStore.deadline)
+console.log('路由一变化就切换到这里了')
+
+async function handleClockChange() {
+  if(taskStore.deadline) {
+    try {
+      const res = await updateTaskDeadline(taskStore.task.taskId,taskStore.deadline)
+    if(res.status===2003) {
+      // 更新pinia的值
+      updateTaskDeadline(taskStore.task.taskId,taskStore.deadline)
+    }
+    } catch (error) {
+      console.error('修改任务的截至时间失败', error);
+    }
+  }
+}
 </script>
 <style scoped>
-.demo-datetime-picker {
-  display: flex;
-  width: 100%;
-  padding: 0;
-  flex-wrap: wrap;
-}
-.demo-datetime-picker .block {
-  padding: 30px 0;
+.block {
   text-align: center;
-  border-right: solid 1px var(--el-border-color);
-  flex: 1;
 }
-.demo-datetime-picker .block:last-child {
-  border-right: none;
+:deep(.el-date-picker){
+  color: white;
 }
-.demo-datetime-picker .demonstration {
-  display: block;
-  color: var(--el-text-color-secondary);
-  font-size: 14px;
-  margin-bottom: 20px;
-}
+
 </style>

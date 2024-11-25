@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getTask,getAllTaskByBasketId,addTask } from "@/api/task";
+import { getTask,getAllTaskByBasketId,addTask, updateTaskDeadline,deleteTask } from "@/api/task";
 import type { Task } from "@/types/type";
 
 // 主要用于控制全局共享组件的状态
@@ -23,12 +23,33 @@ export const useTaskStore = defineStore('taskStore', {
     // 放置当前页面获取到的所有任务
     tasks:<Task[]>[]
   }),
+  getters: {
+    // 定义一个 Getter，传入 taskId 返回对应任务
+    getTaskById: (state) => {
+      return (taskId: number) => state.tasks.find((task) => task.taskId === taskId);
+    },
+  },
   actions: {
     // 以下可以对taskId进行crud
     // - 仅限前端当前的task:
     // 设置选中的任务
     setSeletedTask(task: Task) {
       this.task = task;
+    },
+    // 清空时间选择器的 deadline
+    clearSideBarDeadline(){
+      this.deadline=''
+
+    },
+    // 从任务中获取截至时间
+     // 更新暂存时间选择器里的 deadline ，渲染SideBar
+     updateSideBarDeadline(taskId: number) {
+      if (taskId) {
+        // 获取到的共有的任务
+        this.deadline = this.task.deadline;
+      } else {
+        console.warn(`任务 ID ${taskId} 不存在`);
+      }
     },
     // 更新任务信息
     updateTask(updatedTask: Task) {
@@ -37,22 +58,42 @@ export const useTaskStore = defineStore('taskStore', {
         this.tasks[index] = updatedTask;
       }
     },
+
+    updateTaskFinish(updatedTask: Task) {
+      const index = this.tasks.findIndex((t) => t.taskId === updatedTask.taskId);
+      if (index !== -1) {
+        this.tasks[index] = updatedTask;
+      }
+    },
+    // 切换选中的isFinish的值：
+    toggleTaskFinish(taskId) {
+      const index = this.tasks.findIndex((t) => t.taskId === taskId);
+      if (index !== -1) {
+        if(this.tasks[index].isFinish===1 && this.task.isFinish===1) {
+          this.tasks[index].isFinish = 0;
+          this.task.isFinish=0;
+        }else if(this.tasks[index].isFinish===0 && this.task.isFinish===0){
+          this.tasks[index].isFinish = 1;
+          this.task.isFinish=1;
+        }
+        }
+    },
     getTask() {
       return this.task;
     },
     // 从后端加载数据
-    async loadTask(taskId) {
-      try {
-        const res = await getTask(this.taskId);
-        if(res.status%2===1) {
-          // -- 打印返回对象
-          this.task = res.data;
-        }
+    // async loadTask(taskId) {
+    //   try {
+    //     const res = await getTask(this.taskId);
+    //     if(res.status%2===1) {
+    //       // -- 打印返回对象
+    //       this.task = res.data;
+    //     }
 
-      } catch (error) {
-        console.error('Failed to load task:', error);
-      }
-    },
+    //   } catch (error) {
+    //     console.error('Failed to load task:', error);
+    //   }
+    // },
     // - 重置任务：
     resetTask() {
       this.task = {
@@ -94,7 +135,7 @@ export const useTaskStore = defineStore('taskStore', {
     // deleteTask() {
     //   this.task.isFinish = -1; // Soft delete
     // },
-    // 删除任务
+    // 删除当前页面渲染的任务，仅前端
     deleteTask(taskId: number) {
       const indexToRemove = this.tasks.findIndex((task) => task.taskId === taskId);
       if (indexToRemove !== -1) {
@@ -103,12 +144,37 @@ export const useTaskStore = defineStore('taskStore', {
         console.warn(`任务 ID ${taskId} 不存在于任务列表中`);
       }
     },
-    // 添加任务：
+    // 在当前页面添加任务：
     addTask(task) {
       this.tasks.unshift(task);
+    },
+    // ——前后联动：
+    // 创建新的task：
+    async createNewTask(task) {
+      const res= await addTask(task)
+      try {
+        if(res.status % 2 === 1) {
+          this.addTask(res.data)
+        }
+      } catch (error) {
+        console.error('新建任务失败', error);
+      }
+    },
+    // 删除指定taskId的任务：
+    async deleteTaskByTaskId(taskId) {
+      try {
+        const res = await deleteTask(taskId)
+        if(res.status === 2015) {
+          // 同时把Pinia的也删掉：
+          this.deleteTask(taskId)
+          return true
+        }
+      } catch (error) {
+        console.error('通过basketId获取所有任务失败', error);
+      }
 
     },
-
+   // —— 对tasks的操作，
     // ——加载从后端获取到的所有tasks：
     async loadAllTasks(basketId) {
       try {
@@ -129,7 +195,11 @@ export const useTaskStore = defineStore('taskStore', {
       }
     },
 
-    // —— 对tasks的操作，前端模拟数据：
+    // 在当前页面中找到特定的task
+
+
+
+    // 前端模拟数据：
     frontInitData(routeKey) {
       // 后端没有获取到数据时，呈现的默认任务数据
       // 初期模拟不同页面渲染数据

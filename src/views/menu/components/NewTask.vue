@@ -11,7 +11,7 @@
                <slot name="right-clock"></slot>
             </div>
           </div>
-
+          
 </template>
 
 <script setup lang="ts" name="">

@@ -19,6 +19,8 @@ const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
 const router = useRouter();
 const basketStore = useBasketStore();
 function handleClick() {
+  // 后期删掉：
+  emitter.emit('openBrainDialog')
   // 从 Store 或组件数据中获取 drainAndAiRouteBasket
   basketStore.fetchAllBaskets()
   const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket

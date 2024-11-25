@@ -52,7 +52,8 @@
 
   </el-container>
       <!-- 放侧边栏 -->
-      <SideBar></SideBar>
+      <!-- <component :is="currentSideBar"/> -->
+       <DdlSideBar></DdlSideBar>
 
 </el-container>
 </div>
@@ -83,6 +84,7 @@ import Navigation from "@/views/menu/components/Navigation.vue";
 import { useTaskStore } from '@/stores/task';
 import { useBasketStore  } from "@/stores/basket";
 import { addTask } from "@/api/task";
+import  DdlSideBar  from "@/views/menu/components/DdlSideBar.vue";
 interface Task {
   taskId: string;
   taskName: string;
@@ -110,6 +112,13 @@ const currentNewTask = computed(()=>{
   return route.params.routeKey==='ddl'?DdlNewTask:NewTask
 }
 )
+
+// 动态计算当前侧边栏组件：
+const currentSideBar = computed(()=>{
+  console.log("侧边栏routeKey",route.params.routeKey)
+  return route.params.routeKey==='ddl'?DdlSideBar:SideBar
+})
+
 // 侧边栏组件切换
 onMounted(()=>{
 

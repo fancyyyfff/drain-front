@@ -2,14 +2,14 @@
   <div
     class="task-tick"
     :style="{
-      backgroundColor: isChecked ? checkedColor : '',
-      borderColor: isChecked ? checkedColor : borderColor,
+      backgroundColor: taskIsFinish===1 ? checkedColor : '',
+      borderColor: taskIsFinish===1 ? checkedColor : borderColor,
       width: `${size}px`,
       height: `${size}px`,
     }"
     @click="toggleTick"
   >
-    <ion-icon v-if="isChecked" :name="iconName" :color="iconColor"></ion-icon>
+    <ion-icon v-if="taskIsFinish===1" :name="iconName" :color="iconColor"></ion-icon>
   </div>
 </template>
 
@@ -20,6 +20,7 @@ import Task from '@/views/menu/components/Task.vue';
 import { ref, computed, withDefaults,watch } from 'vue';
 
 const taskStore = useTaskStore()
+const {task} =taskStore
 // 以下属性都是可选的
 interface Props {
   iconName?: string;
@@ -38,33 +39,33 @@ const props = withDefaults(defineProps<Props>(), {
   defaultChecked: false,
   size: 18,
 });
-// 当选中时触发的事件，会暴露出去，父组件可重写
-const emit = defineEmits<{
-  (e: 'update:checked', value: boolean): void;
-}>();
+// // 当选中时触发的事件，会暴露出去，父组件可重写
+// const emit = defineEmits<{
+//   (e: 'update:checked', value: boolean): void;
+// }>();
 
-// 切换选中的状态
-const isChecked = ref(props.defaultChecked);
 
 async function toggleTick  () {
+  // 后期删掉：
+  taskStore.toggleTaskFinish(task.taskId)
+  console.log('切换选中的isFinish的值是：',task.isFinish);
+
+
   // 切换前先发送请求
   try {
-    const res = await updateTaskFinish(taskId)
+    const res = await updateTaskFinish(task.taskId)
+    // 点击的时候，先改变状态，接收值
     if(res.status===2019) {
-      isChecked.value = !isChecked.value;
+      // 切换值：
+      taskStore.toggleTaskFinish(task.taskId)
     }
   } catch (error) {
-    console.error('通过basketId获取所有任务失败', error);
+    console.error('更新任务的选中状态失败', error);
   }
-  // 后期删掉：
-  isChecked.value = !isChecked.value;
 
-  emit('update:checked', isChecked.value);
 };
 const taskIsFinish = computed(() => taskStore.task.isFinish);
-watch(taskIsFinish,(newFinsh)=>{
-  isChecked.value = !isChecked.value;
-})
+
 
 </script>
 

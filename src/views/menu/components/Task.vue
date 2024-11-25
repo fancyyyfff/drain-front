@@ -1,6 +1,6 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
-  <Tick v-model:checked="task.isFinish" icon-name="checkmark-done" @update:checked="handleTaskChange"@click.stop/>
+  <Tick v-model="task.isFinish" icon-name="checkmark-done" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
   <div class="moveTo-warp" @click.stop>
@@ -61,7 +61,7 @@ const drawer = ref(false)
 function openSideBar() {
 
   // emitter.emit('toggleSidebar',task)
-  sideBarStore.toggleSidebar()
+  sideBarStore.toggleSidebar(taskStore.task.taskId)
 
 }
 // // 需要过滤DDL、多任务列表
@@ -90,13 +90,13 @@ function addTagSign() {
 // ===获取任务：
 // 如何获取到当前的taskId？首先获取到listId,判断包含与否
 // 不如统一放到pinia
-emitter.on('getTask',fetchTask)
-async function fetchTask() {
-      // const res=await getTask(taskId)
-      // if(res.data.code==1) {
-      //   emitter.emit('resTask',res.data.Task)
-      // }
-}
+// emitter.on('getTask',fetchTask)
+// async function fetchTask() {
+//       // const res=await getTask(taskId)
+//       // if(res.data.code==1) {
+//       //   emitter.emit('resTask',res.data.Task)
+//       // }
+// }
 
 // defineExpose({
 //   openSideBar,

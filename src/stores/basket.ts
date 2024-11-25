@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { getAllRouteBasket } from "@/api/basket"; // 假设接口名为 getUserBaskets
 import { useUserStore } from "@/stores/user";
+import { addTask,updateTaskBasket,getTask } from "@/api/task";
 
 // 定义 Basket 接口（可选）
 interface RouteBasket {
@@ -84,6 +85,7 @@ export const useBasketStore = defineStore("basket", {
   }),
   actions: {
     // - 对baskets的增删改操作
+    // 初始渲染所有的篮子
     async fetchAllBaskets() {
       // 此段接通代码后应当不需要，目前只是为了有数据能够渲染
         // 过滤出 drain 和 ai 的篮子
@@ -112,6 +114,54 @@ export const useBasketStore = defineStore("basket", {
         console.error("获取篮子数据失败：", error);
       }
     },
+    // 如果一个routeKey对应一个basketId:
+    async addTaskToSingleBasket(routeKey,taskId) {
+      const basketIds=this.getBasketIdsByRouteKey(routeKey)
+      // 仅有一个就是当前的这一个
+      const basketId= basketIds[0]
+      try {
+        const task = {taskId:taskId,basketId:basketId}
+        const res = await updateTaskBasket(taskId,basketId)
+        if(res.status%2 ===1) {
+          return true
+        }else {
+          return false
+        }
+      } catch (error) {
+        console.error('修改任务到指定篮子失败', error);
+      }
+    },
+    // 如果一个routeKey对应多个basketId:
+    async addTaskToBaskets(routeKey,taskId){
+      const taskToGet = {taskId:taskId,basketId:''}
+      const res = await getTask(taskId)
+      try {
+        if(res.status%2===1) {
+          const task = res.data
+          if(task.deadline&&routeKey==='importance') {
+            this.addBasketIdToBasketIds(task.basketId,routeKey)
+          }else if(task.star===1&&routeKey==='importance') {
+            this.addBasketIdToBasketIds(task.basketId,routeKey)
+          }
+        }
+      } catch (error) {
+        console.error('添加对象到对应的 basketRoute 失败', error);
+      }
+    },
+    // 更新basketIds
+    addBasketIdToBasketIds(newBasketId,routeKey) {
+      const basketIds = this.getBasketIdsByRouteKey(routeKey)
+      if (basketIds) {
+        // 检查 basketId 是否已经存在
+        if (!basketIds.includes(newBasketId)) {
+          basketIds.push(newBasketId);
+        } else {
+          console.warn(`basketId ${newBasketId} 已存在于 routeKey ${routeKey} 中`);
+        }
+      } else {
+        console.error(`未找到 routeKey 为 ${routeKey} 的 basket`);
+      }
+    },
   },
   getters: {
     // 根据 routeKey 获取对应的 basketIds
@@ -119,6 +169,16 @@ export const useBasketStore = defineStore("basket", {
       const basket = state.routeBaskets.find((b) => b.routeKey === routeKey);
       return basket ? basket.basketIds : [];
     },
+    // 通过routeKey找到对应的routeBasket
+    getBasketByRouteKey:(state)=>(routeKey)=>{
+      // 找到对应的 routeBasket
+      const routeBasket = state.routeBaskets.find(
+        (basket) => basket.routeKey === routeKey
+      );
+      return routeBasket ? routeBasket : {};
+    }
+
+
   },
   // - 退出时的操作：
 });

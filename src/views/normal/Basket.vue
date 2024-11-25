@@ -59,9 +59,10 @@ const currentRouteKey = computed(() => routeKey);
 
 // 监听 routeKey 的变化
 watch(currentRouteKey, (newRouteKey) => {
-  //先清空pinia中的tasks
+  //先清空pinia中的tasks和task对象
   taskStore.tasks=[]
   taskStore.resetTask()
+  taskStore.deadline=''
   loadTasks(newRouteKey); // 在路由键变化时加载任务
   // 后期不要：
   taskStore.frontInitData(newRouteKey)
@@ -71,17 +72,7 @@ watch(currentRouteKey, (newRouteKey) => {
 // 新建任务：
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {
-  const res= await addTask(task)
-  try {
-    if(res.status % 2 === 1) {
-      taskStore.addTask(res.data)
-    }
-  } catch (error) {
-    console.error('新建任务失败', error);
-  }
-
-  // 只用于初期渲染，后期连接后端删掉：
-  taskStore.tasks.unshift(task)
+  taskStore.createNewTask(task)
 }
 
 
