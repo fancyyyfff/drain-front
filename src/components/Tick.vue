@@ -16,11 +16,10 @@
 <script lang="ts" setup>
 import { updateTaskFinish } from '@/api/task';
 import { useTaskStore } from '@/stores/task';
-import Task from '@/views/menu/components/Task.vue';
-import { ref, computed, withDefaults,watch } from 'vue';
+import { computed, withDefaults } from 'vue';
 
 const taskStore = useTaskStore()
-const {task} =taskStore
+
 // 以下属性都是可选的
 interface Props {
   iconName?: string;
@@ -29,6 +28,7 @@ interface Props {
   borderColor?: string;
   defaultChecked?: boolean;
   size?: number;
+  taskId:number
 }
 // 设置了默认值，父组件可以重新定义
 const props = withDefaults(defineProps<Props>(), {
@@ -38,33 +38,36 @@ const props = withDefaults(defineProps<Props>(), {
   borderColor: '#e9e3e3',
   defaultChecked: false,
   size: 18,
+  taskId: -1,
 });
-// // 当选中时触发的事件，会暴露出去，父组件可重写
-// const emit = defineEmits<{
-//   (e: 'update:checked', value: boolean): void;
-// }>();
+
+// 获取对应 taskId 的任务（使用 computed 保持响应式）
+// const task = computed(() => taskStore.getTaskById(props.taskId));
+
+// 获取当前任务的完成状态
+const taskIsFinish = computed(() => {
+  const task = taskStore.getTaskById(props.taskId);
+  return task ? task.isFinish : false;  // 默认返回false，避免undefined错误
+});
 
 
 async function toggleTick  () {
   // 后期删掉：
-  taskStore.toggleTaskFinish(task.taskId)
-  console.log('切换选中的isFinish的值是：',task.isFinish);
+  taskStore.toggleTaskFinish(props.taskId)
 
-
-  // 切换前先发送请求
+  // 切换前 先更新状态，发送请求
   try {
     const res = await updateTaskFinish(task.taskId)
     // 点击的时候，先改变状态，接收值
     if(res.status===2019) {
-      // 切换值：
-      taskStore.toggleTaskFinish(task.taskId)
+      // 切换值，使用传入的taskId
+      taskStore.toggleTaskFinish(taskId)
     }
   } catch (error) {
     console.error('更新任务的选中状态失败', error);
   }
 
 };
-const taskIsFinish = computed(() => taskStore.task.isFinish);
 
 
 </script>

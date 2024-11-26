@@ -24,7 +24,8 @@
          <div class="sidebar-main-content">
 
            <div class="detail-wrap shine" >
-             <Tick v-model="task.isFinish" icon-name="checkmark-done" @click.stop/>
+             <!-- <Tick v-model="task.isFinish" icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/> -->
+             <Tick icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/>
              <input class="task-input" :style="textStyle" v-model="task.taskName"/>
              <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
            </div>
@@ -66,7 +67,7 @@
 
  <script setup lang="ts" name="">
  console.log('sidebar组件挂载')
- import { ref,onMounted,onBeforeUnmount, reactive,watchEffect,computed  } from 'vue';
+ import { ref,onMounted,onBeforeUnmount, reactive,watchEffect,computed,watch  } from 'vue';
  import emitter from "@/mitt";
  import { da } from 'element-plus/es/locales.mjs';
  import { addTagList } from "@/api/task";
@@ -84,17 +85,15 @@ const task = computed(() => {
   if (sideBarStore.sidebarOpen) {
     return taskStore.getTaskById(sideBarStore.taskId);
   }
-  return {};  // 如果 sidebar 关闭，不返回 task
+  return null;  // 如果 sidebar 关闭，不返回 task
 });
 
 //  const task = computed(() => taskStore.getTaskById(sideBarStore.taskId) || {});
 console.log('sideBar的task:',task)
  // div实现的文本编辑框，在其中添加占位的内容
- // const editableDiv = ref(null);
  const editableDiv = ref<HTMLDivElement | null>(null);
  const  placeholderText = ref('');
  onMounted(()=>{
-   // emitter.on('toggleSidebar',handleToggleSidebar)
    // 初始时，如果没有内容，显示 placeholder
    const div = editableDiv.value;
    if (div && div.innerHTML.trim() === '') {
@@ -162,67 +161,11 @@ console.log('sideBar的task:',task)
  // == 控制完成
  // 完成与否的文字变化效果切换
  const textStyle = computed(() => {
-  const isFinish = task.isFinish ?? false; // 如果 task.isFinish 是 null 或 undefined，则使用默认值 false
    return {
-     'text-decoration': task.isFinish ? 'line-through' : 'none',
-     'color': task.isFinish ?  'gray':'white'
+     'text-decoration': task.isFinish===1 ? 'line-through' : 'none',
+     'color': task.isFinish===1 ?  'gray':'white'
    };
  });
-
-// //  const finish = ref(false);
-//  async function handleTaskChange (isChecked:boolean)  {
-  //  finish.value=isChecked
-  // taskStore.task.isFinish=isChecked
-   // == 完成的任务放到最后面：
-  //  if(finish.value===true) {
-  //    console.log('需要把当前任务的id放到页面渲染数组的最后面')
-  //  }
-   // === 发送请求更改任务的完成状态
-   // == 获取当前元素的taskId
-   // try {
-   //   const res = await updateTaskFinish(taskId, !finish.value);
-   //   if (res.code===1) {
-   //     finish.value = !finish.value;
-   //   } else {
-   //     // 处理可能的错误响应
-   //     console.error(`更新失败：${res.message || '未知错误'}`, 'error');
-   //   }
-   // } catch (err) {
-   //   // 捕获意外的异常并处理
-   //   console.error('更新任务失败:', err);
-   // }
-//  }
-
- // const handleContextMenuSelect = (value:string) => {
- //   showMenu.value = false;
-
- //   switch (value) {
- //     case 'componentA':
- //       // 处理移动到组件 A 的逻辑
- //       moveToComponent('A');
- //       break;
- //     case 'componentB':
- //       // 处理移动到组件 B 的逻辑
- //       moveToComponent('B');
- //       break;
- //     case 'delete':
- //       // 处理删除的逻辑
- //       deleteItem();
- //       break;
- //   }
- // };
-
- // const moveToComponent = (componentName:string) => {
- //   //  实现将任务移动到指定组件的逻辑
- //   console.log(`Moving task to ${componentName}`);
- //   // ... your logic to move the task ...
- // };
-
- // const deleteItem = () => {
- //   // 实现删除任务的逻辑
- //   console.log('Deleting task');
- //   // ... your logic to delete the task ...  例如，从数组中移除该任务
- // };
 
  </script>
 
