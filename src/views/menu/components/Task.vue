@@ -59,7 +59,7 @@ const drawer = ref(false)
 function openSideBar() {
 
   // 先让sidebar渲染
-  sideBarStore.render=true;
+  sideBarStore.render=!sideBarStore.render;
   sideBarStore.toggleSidebar(task.taskId)
 
 }

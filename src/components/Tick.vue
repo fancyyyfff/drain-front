@@ -52,6 +52,8 @@ const taskIsFinish = computed(() => {
 
 
 async function toggleTick  () {
+  const task = taskStore.getTaskById(props.taskId);
+    if (!task) return;
   // 后期删掉：
   taskStore.toggleTaskFinish(props.taskId)
 
