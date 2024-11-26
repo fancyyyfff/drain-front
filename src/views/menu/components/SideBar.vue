@@ -60,7 +60,6 @@
            </div>
            <div class="sidebar-create">创建于{{ task.createTime }}</div>
          </footer>
-
      </aside>
     </div>
  </template>
@@ -87,7 +86,7 @@ const task = computed(() => {
   }
   return null;  // 如果 sidebar 关闭，不返回 task
 });
-
+// const task = taskStore.getTaskById(sideBarStore.taskId);
 //  const task = computed(() => taskStore.getTaskById(sideBarStore.taskId) || {});
 console.log('sideBar的task:',task)
  // div实现的文本编辑框，在其中添加占位的内容
@@ -131,6 +130,8 @@ console.log('sideBar的task:',task)
  const onBlur = () => {
    const div = editableDiv.value;
    if(div) div.classList.remove('div-edit-focus');
+  //  修改备注：
+   taskStore.modifyTaskRemark(task.value?.taskId,task.value?.remark)
    // 当失去焦点时，如果没有内容，则显示 placeholder
    if (div && div.innerHTML.trim() === '') {
      div.classList.add('placeholder');

@@ -52,34 +52,39 @@ export const useBasketStore = defineStore("basket", {
         mainTitle: '工作篮',
       },
       {
-        routeKey:"thoughts",
+        routeKey:"entrusts",
         basketIds: [5],
+        mainTitle: '委托他人',
+      },
+      {
+        routeKey:"thoughts",
+        basketIds: [6],
         mainTitle: '以后可能会做',
       },
       {
         routeKey:"tags",
-        basketIds: [6],
+        basketIds: [7],
         mainTitle: '标签',
       },
       {
         routeKey:"drain",
-        basketIds: [7],
+        basketIds: [8],
         mainTitle: '头脑风暴',
       },
       {
         routeKey:"ai",
-        basketIds: [8],
+        basketIds: [9],
         mainTitle: 'ai帮我做计划',
       },
   ],
   drainAndAiRouteBasket: [{
     routeKey:"drain",
-    basketIds: [7],
+    basketIds: [8],
     mainTitle: '头脑风暴',
   },
   {
     routeKey:"ai",
-    basketIds: [8],
+    basketIds: [9],
     mainTitle: 'ai帮我做计划',
   },]
   }),

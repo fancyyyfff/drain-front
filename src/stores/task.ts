@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getTask,getAllTaskByBasketId,addTask, updateTaskDeadline,deleteTask } from "@/api/task";
+import { getTask,getAllTaskByBasketId,addTask, updateTaskDeadline,deleteTask, updateTaskRemark } from "@/api/task";
 import type { Task } from "@/types/type";
 
 // 主要用于控制全局共享组件的状态
@@ -32,30 +32,24 @@ export const useTaskStore = defineStore('taskStore', {
   actions: {
     // 以下可以对taskId进行crud
     // - 仅限前端当前的task:
-    // 设置选中的任务
-    setSeletedTask(task: Task) {
-      this.task = task;
-    },
+
     // 清空时间选择器的 deadline
     clearSideBarDeadline(){
       this.deadline=''
+    },
 
-    },
-    // 从任务中获取截至时间
-     // 更新暂存时间选择器里的 deadline ，渲染SideBar
-     updateSideBarDeadline(taskId: number) {
-      if (taskId) {
-        // 获取到的共有的任务
-        this.deadline = this.task.deadline;
-      } else {
-        console.warn(`任务 ID ${taskId} 不存在`);
-      }
-    },
+    // =======update
     // 更新任务信息
     updateTask(updatedTask: Task) {
       const index = this.tasks.findIndex((t) => t.taskId === updatedTask.taskId);
       if (index !== -1) {
         this.tasks[index] = updatedTask;
+      }
+    },
+    updateTaskRemark(taskId,remark) {
+      const task = this.getTaskById(taskId)
+      if(task) {
+        task.remark=remark
       }
     },
 
@@ -78,63 +72,7 @@ export const useTaskStore = defineStore('taskStore', {
         }
         }
     },
-    getTask() {
-      return this.task;
-    },
-    // 从后端加载数据
-    // async loadTask(taskId) {
-    //   try {
-    //     const res = await getTask(this.taskId);
-    //     if(res.status%2===1) {
-    //       // -- 打印返回对象
-    //       this.task = res.data;
-    //     }
-
-    //   } catch (error) {
-    //     console.error('Failed to load task:', error);
-    //   }
-    // },
-    // - 重置任务：
-    resetTask() {
-      this.task = {
-        taskId: -1,
-        taskName: '',
-        star: 0,
-        isFinish: 0,
-        basketId: null,
-        remark: '',
-        deadline: '',
-        createTime: '',
-        isDrain: 1,
-      };
-    },
-
-    // - 标记完成
-    markTaskAsFinished() {
-      this.task.isFinish = 1;
-    },
-    // 设置备注
-    setRemark(remark) {
-      this.task.remark = remark;
-    },
-    // 传入整个task
-    setTask(task) {
-      this.task= task
-    },
-    // 与后端同步,更新当前的task
-
-    // 设置ddl
-    setDeadline(deadline) {
-      this.task.deadline = deadline;
-    },
-    // 是否被加入到头脑风暴
-    setBrainstormStatus(isDrain) {
-      this.task.isDrain = isDrain ? 1 : 0 ;
-    },
-    // // -1表示要删除这个task，但是只是一种标识，但未删除
-    // deleteTask() {
-    //   this.task.isFinish = -1; // Soft delete
-    // },
+    //  ======delete
     // 删除当前页面渲染的任务，仅前端
     deleteTask(taskId: number) {
       const indexToRemove = this.tasks.findIndex((task) => task.taskId === taskId);
@@ -144,20 +82,38 @@ export const useTaskStore = defineStore('taskStore', {
         console.warn(`任务 ID ${taskId} 不存在于任务列表中`);
       }
     },
+    // =======add
     // 在当前页面添加任务：
     addTask(task) {
       this.tasks.unshift(task);
     },
-    // ——前后联动：
+    // ==========前后联动：
     // 创建新的task：
     async createNewTask(task) {
       const res= await addTask(task)
       try {
-        if(res.status % 2 === 1) {
+        if(res.status % 2 === 2017) {
           this.addTask(res.data)
+
+        }else {
+
         }
       } catch (error) {
         console.error('新建任务失败', error);
+      }
+    },
+    // 更新任务的备注：
+    async modifyTaskRemark(taskId,remark) {
+      // 后期删掉：
+      this.updateTaskRemark(taskId,remark)
+      try {
+        const res = await updateTaskRemark(taskId,remark)
+        if(res.status===2015) {
+          // 修改：
+          this.updateTaskRemark(taskId,remark)
+        }
+      } catch (error) {
+        console.error('更新任务的备注失败', error);
       }
     },
     // 删除指定taskId的任务：
@@ -199,7 +155,62 @@ export const useTaskStore = defineStore('taskStore', {
       }
     },
 
-    // 在当前页面中找到特定的task
+
+// =================对另外一个可复用的task的修改==================：
+     // - 重置任务：
+     resetTask() {
+      this.task = {
+        taskId: -1,
+        taskName: '',
+        star: 0,
+        isFinish: 0,
+        basketId: null,
+        remark: '',
+        deadline: '',
+        createTime: '',
+        isDrain: 1,
+      };
+    },
+
+    // 设置选中的任务
+    setSeletedTask(task: Task) {
+      this.task = task;
+    },
+
+    // - 标记完成
+    markTaskAsFinished() {
+      this.task.isFinish = 1;
+    },
+    // 设置备注
+    setRemark(remark) {
+      this.task.remark = remark;
+    },
+    // 传入整个task
+    setTask(task) {
+      this.task= task
+    },
+    // 与后端同步,更新当前的task
+
+    // 设置ddl
+    setDeadline(deadline) {
+      this.task.deadline = deadline;
+    },
+    // 是否被加入到头脑风暴
+    setBrainstormStatus(isDrain) {
+      this.task.isDrain = isDrain ? 1 : 0 ;
+    },
+     // 更新暂存时间选择器里的 deadline ，渲染SideBar
+     updateSideBarDeadline(taskId: number) {
+      if (taskId) {
+        // 获取到的共有的任务
+        this.deadline = this.task.deadline;
+      } else {
+        console.warn(`任务 ID ${taskId} 不存在`);
+      }
+    },
+    getTask() {
+      return this.task;
+    },
 
     // 前端模拟数据：
     frontInitData(routeKey) {
@@ -302,7 +313,21 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      }else {
+      } else if (routeKey === 'entrusts') {
+        this.tasks = [
+          {
+          taskId:14,
+          taskName:'拿快递',
+          star:0,
+          isFinish:0,
+          basketId:13,//可以找到对应的basket
+          remark:'',//备注
+          deadline:'',
+          createTime:'',
+          isDrain:1,
+        },
+      ]
+      } else {
         this.tasks =[
         {
           taskId:1,
