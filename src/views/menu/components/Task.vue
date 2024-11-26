@@ -33,7 +33,7 @@
 
 
 <script setup lang="ts" name="">
-import { ref,reactive,computed,watch } from 'vue'
+import { ref,reactive,computed,watch, onMounted, onUnmounted } from 'vue'
 import emitter from "@/mitt";
 import { deleteTask,getTask,updateTaskName,updateTaskFinish } from "@/api/task";
 import Tick from '@/components/Tick.vue';
@@ -54,14 +54,19 @@ const route = useRoute()
   }
 })
 
-console.log('当前的task ',task)
+onUnmounted(()=>{
+  // taskStore.resetTask()
+})
+
 const finish = ref(false);
 const drawer = ref(false)
 
 function openSideBar() {
 
+  // 先让sidebar渲染
+  sideBarStore.render=true;
   // emitter.emit('toggleSidebar',task)
-  sideBarStore.toggleSidebar(taskStore.task.taskId)
+  sideBarStore.toggleSidebar(task.taskId)
 
 }
 // // 需要过滤DDL、多任务列表

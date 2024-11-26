@@ -1,6 +1,8 @@
 <template>
+  <div v-if="sideBarStore.render">
   <!-- 侧边栏 -->
-  <aside :class="{ 'sidebar-open': sideBarStore.sidebarOpen }" class="sidebar" >
+  <aside :class="{ 'sidebar-open': sideBarStore.sidebarOpen }" class="sidebar">
+
 
        <header class="sidebar-header">
          <div class="close" @click="sideBarStore.toggleSidebar">
@@ -23,7 +25,7 @@
 
            <div class="detail-wrap shine" >
              <Tick v-model="task.isFinish" icon-name="checkmark-done" @click.stop/>
-             <input class="task-input" :style="textStyle" v-model="taskStore.task.taskName"/>
+             <input class="task-input" :style="textStyle" v-model="task.taskName"/>
              <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
            </div>
 
@@ -57,7 +59,9 @@
            </div>
            <div class="sidebar-create">创建于{{ task.createTime }}</div>
          </footer>
+
      </aside>
+    </div>
  </template>
 
  <script setup lang="ts" name="">
@@ -74,25 +78,17 @@
 
  const sideBarStore = useSideBarStore()
  const taskStore = useTaskStore()
+//  const task=taskStore.getTaskById(sideBarStore.taskId)
+ // 定义一个计算属性来获取 task，只有在 sidebarOpen 为 true 时才获取 task
+const task = computed(() => {
+  if (sideBarStore.sidebarOpen) {
+    return taskStore.getTaskById(sideBarStore.taskId);
+  }
+  return {};  // 如果 sidebar 关闭，不返回 task
+});
 
- const task = computed(() => taskStore.task);
- // const sidebarOpen = ref(false); // 控制侧边栏的状态
-
- // 切换侧边栏状态
- // const toggleSidebar = () => {
- //   sidebarOpen = !sidebarOpen;
- // };
- // const handleToggleSidebar = (data:unknown)=>{
- //   // 先切换状态
- //   toggleSidebar()
- // }
-
-//  emitter.on('toggleSidebar',sideBarStore.toggleSidebar)
-
-//  onBeforeUnmount(() => {
-//    emitter.off('toggleSidebar', sideBarStore.toggleSidebar); // 清除监听
-//  });
-
+//  const task = computed(() => taskStore.getTaskById(sideBarStore.taskId) || {});
+console.log('sideBar的task:',task)
  // div实现的文本编辑框，在其中添加占位的内容
  // const editableDiv = ref(null);
  const editableDiv = ref<HTMLDivElement | null>(null);
@@ -105,25 +101,13 @@
      div.classList.add('placeholder');
    }
   //  清空备注的占位：
-  if(task.value.remark) {
+  if(task && task.remark) {
     placeholderText.value=''
   }else {
     placeholderText.value='请输入内容...'
 
   }
  })
-
-
-//  let task = reactive<Task>({taskName:'获取任务名',star:0,finish:0,remark:'备注'})
- // ==检测sideBar值的变化，获取后端的数据渲染:
- // ===
-//  watchEffect(() => {
-//    if (sideBarStore.sidebarOpen) {
-//        emitter.emit('getTask')
-//        console.log('检测sideBar值的变化，获取后端的数据渲染:')
-//        // emitter.on('resTask',(resTask:Task)=>task=resTask)
-//    }
-//  });
 
  const onInput = () => {
    const div = editableDiv.value;
@@ -160,12 +144,6 @@
  async function addTag() {
    tagList.push(tagValue.value)
    tagValue.value=''
-   // // === 发送请求，添加标签
-   // const res=await addTagList(tagList)
-   // if(res.data.code==1) {
-   //   // 成功就渲染一个标签的符号到Task
-   //   emitter.emit('addTagSign')
-   // }
 
  }
 
@@ -184,9 +162,10 @@
  // == 控制完成
  // 完成与否的文字变化效果切换
  const textStyle = computed(() => {
+  const isFinish = task.isFinish ?? false; // 如果 task.isFinish 是 null 或 undefined，则使用默认值 false
    return {
-     'text-decoration': taskStore.task.isFinish===1 ? 'line-through' : 'none',
-     'color': taskStore.task.isFinish ===1 ?  'gray':'white'
+     'text-decoration': task.isFinish ? 'line-through' : 'none',
+     'color': task.isFinish ?  'gray':'white'
    };
  });
 

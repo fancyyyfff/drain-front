@@ -85,6 +85,7 @@ import { useTaskStore } from '@/stores/task';
 import { useBasketStore  } from "@/stores/basket";
 import { addTask } from "@/api/task";
 import  DdlSideBar  from "@/views/menu/components/DdlSideBar.vue";
+import { useSideBarStore } from '@/stores/ui';
 interface Task {
   taskId: string;
   taskName: string;
@@ -181,6 +182,12 @@ const callAI =()=>{
       alert("ai功能是vip用户独有的哦！欢迎您订阅！");
     }
 }
+
+// 检测路由变化，把sideBar关闭
+watch(() => route.params.routeKey, () => {
+  const sideBarStore=useSideBarStore()
+  sideBarStore.render=false
+});
 
 </script>
 
