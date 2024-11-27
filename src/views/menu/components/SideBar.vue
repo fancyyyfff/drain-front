@@ -1,7 +1,7 @@
 <template>
   <div v-if="sideBarStore.render">
   <!-- 侧边栏 -->
-  <aside :class="{ 'sidebar-open': sideBarStore.sidebarOpen }" class="sidebar">
+  <aside :class="{ 'sidebar-open': sideBarStore.sidebarOpen }" class="sidebar" @click="sideBarStore.toggleSidebar">
 
 
        <header class="sidebar-header">
@@ -25,9 +25,9 @@
 
            <div class="detail-wrap shine" >
              <!-- <Tick v-model="task.isFinish" icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/> -->
-             <Tick icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/>
+             <Tick icon-name="checkmark-done"   :taskId="task.id" v-model:isFinish="task.isFinish"  @click.stop/>
              <input class="task-input" :style="textStyle" v-model="task.taskName"/>
-             <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
+             <Star :taskId="task.id" v-model:star="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
            </div>
 
            <!-- 提醒插槽，由DDL的组件定义 -->
@@ -60,13 +60,11 @@
            </div>
            <div class="sidebar-create">创建于{{ task.createTime }}</div>
          </footer>
-
      </aside>
     </div>
  </template>
 
  <script setup lang="ts" name="">
- console.log('sidebar组件挂载')
  import { ref,onMounted,onBeforeUnmount, reactive,watchEffect,computed,watch  } from 'vue';
  import emitter from "@/mitt";
  import { da } from 'element-plus/es/locales.mjs';
@@ -79,17 +77,8 @@
 
  const sideBarStore = useSideBarStore()
  const taskStore = useTaskStore()
-//  const task=taskStore.getTaskById(sideBarStore.taskId)
- // 定义一个计算属性来获取 task，只有在 sidebarOpen 为 true 时才获取 task
-const task = computed(() => {
-  if (sideBarStore.sidebarOpen) {
-    return taskStore.getTaskById(sideBarStore.taskId);
-  }
-  return null;  // 如果 sidebar 关闭，不返回 task
-});
+ const task = computed(()=>taskStore.task)
 
-//  const task = computed(() => taskStore.getTaskById(sideBarStore.taskId) || {});
-console.log('sideBar的task:',task)
  // div实现的文本编辑框，在其中添加占位的内容
  const editableDiv = ref<HTMLDivElement | null>(null);
  const  placeholderText = ref('');
@@ -100,7 +89,7 @@ console.log('sideBar的task:',task)
      div.classList.add('placeholder');
    }
   //  清空备注的占位：
-  if(task && task.remark) {
+  if(task && task.value.remark) {
     placeholderText.value=''
   }else {
     placeholderText.value='请输入内容...'
@@ -131,6 +120,8 @@ console.log('sideBar的task:',task)
  const onBlur = () => {
    const div = editableDiv.value;
    if(div) div.classList.remove('div-edit-focus');
+  //  修改备注：
+  //  taskStore.modifyTaskRemark(task.value?.taskId,task.value?.remark)
    // 当失去焦点时，如果没有内容，则显示 placeholder
    if (div && div.innerHTML.trim() === '') {
      div.classList.add('placeholder');
@@ -162,8 +153,8 @@ console.log('sideBar的task:',task)
  // 完成与否的文字变化效果切换
  const textStyle = computed(() => {
    return {
-     'text-decoration': task.isFinish===1 ? 'line-through' : 'none',
-     'color': task.isFinish===1 ?  'gray':'white'
+     'text-decoration': task.value.isFinish===1 ? 'line-through' : 'none',
+     'color': task.value.isFinish===1 ?  'gray':'white'
    };
  });
 

@@ -1,6 +1,6 @@
 <template>
 <p>已把</p>
-        <p class="dialog-work-text">获取工作篮的第i项</p>
+        <p class="dialog-work-text">{{ taskStore.task.taskName }}</p>
         <p>添加到“项目”清单</p>
         <p>你可以选择“思考下一步”</p>
         <div class="clear-btn-wrap">
@@ -11,7 +11,8 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
-
+import { useTaskStore } from "@/stores/task";
+const taskStore = useTaskStore()
 </script>
 
 <style scoped>

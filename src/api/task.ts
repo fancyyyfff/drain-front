@@ -3,6 +3,8 @@ import instance from '@/http/index'
 // 目前写定了路由名称和对应的任务列表名称
 // 通过路由名称获取对应任务列表下所有的任务，路由名称是字符串类型
 // 需要结果：数组
+
+// ============get
 export const getAllTaskByBasketId = (basketId:number) =>{
     // const { id } = data
     return instance({
@@ -14,6 +16,19 @@ export const getAllTaskByBasketId = (basketId:number) =>{
     })
 }
 
+
+export const getTask = (taskId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/get',
+      method:'POST',
+      data:{
+        taskId
+      }
+  })
+}
+
+// ============add
 export const addTask = (task) =>{
   // const { id } = data
   return instance({
@@ -25,10 +40,22 @@ export const addTask = (task) =>{
   })
 }
 
+// ============update
 export const updateTaskFinish = (taskId) =>{
   // const { id } = data
   return instance({
       url:'/task/update/finished',
+      method:'POST',
+      data:{
+        taskId
+      }
+  })
+}
+
+export const updateTaskStar = (taskId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/star',
       method:'POST',
       data:{
         taskId
@@ -48,6 +75,31 @@ export const updateTaskDeadline = (taskId,deadline) =>{
   })
 }
 
+export const updateTaskBasket = (taskId,basketId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/basketId',
+      method:'POST',
+      data:{
+        taskId,
+        basketId
+      }
+  })
+}
+
+export const updateTaskRemark  = (taskId,remark) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/remark',
+      method:'POST',
+      data:{
+        taskId,
+        remark
+      }
+  })
+}
+
+// ============ delete
 export const deleteTask = (deleteTask) =>{
   // const { id } = data
   return instance({
@@ -60,28 +112,6 @@ export const deleteTask = (deleteTask) =>{
   })
 }
 
-export const getTask = (taskId) =>{
-  // const { id } = data
-  return instance({
-      url:'/task/get',
-      method:'POST',
-      data:{
-        taskId
-      }
-  })
-}
-
-export const updateTaskBasket = (taskId,basketId) =>{
-  // const { id } = data
-  return instance({
-      url:'/task/update/basketId',
-      method:'POST',
-      data:{
-        taskId,
-        basketId
-      }
-  })
-}
 
 
 // --

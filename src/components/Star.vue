@@ -2,14 +2,16 @@
   <ion-icon :name="isStarred ? 'star' : 'star-outline'" @click="toggleStar" :style="starStyle"></ion-icon>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, computed, defineProps, defineEmits } from 'vue';
-
+import { useTaskStore } from "@/stores/task";
+import { updateTaskStar } from "@/api/task";
+const taskStore = useTaskStore()
 const props = defineProps({
-  initialStarred: {
-    type: Boolean,
-    default: false
-  },
+  // initialStarred: {
+  //   type: Boolean,
+  //   default: false
+  // },
   starColor: {
     type: String,
     default: '#f7db70'
@@ -21,12 +23,21 @@ const props = defineProps({
   size: {
     type: String,
     default: '2rem'
-  }
+  },
+  star: {
+    type: Number,
+    default: 0
+  },
+  taskId: {
+    type: Number,
+    default: -1
+  },
+
 });
 
-const emit = defineEmits(['update:starred']);
+const emit = defineEmits(['update:star']);
 
-const isStarred = ref(props.initialStarred);
+const isStarred = computed(()=>props.star)
 
 const starStyle = computed(() => {
   return {
@@ -37,10 +48,31 @@ const starStyle = computed(() => {
   };
 });
 
-const toggleStar = () => {
-  isStarred.value = !isStarred.value;
-  emit('update:starred', isStarred.value);
+
+async function toggleStar  () {
+  const starId= props.taskId
+  console.log('starId',starId);
+  // 后期删掉：
+ const newIsStarred = isStarred.value === 1 ? 0 : 1;
+  // 通知父组件任务完成状态的变化
+  emit('update:star', newIsStarred);
+
+  // taskStore.toggleTaskStar()
+  // ---
+  // 切换前 发送请求
+  try {
+    const res = await updateTaskStar(props.taskId)
+    // 点击的时候，先改变状态，接收值
+    if(res.status===2013) {
+       // 通知父组件任务完成状态的变化
+       emit('update:star',newIsStarred);
+    }
+  } catch (error) {
+    console.error('更新任务的选中状态失败', error);
+  }
+
 };
+
 </script>
 
 <style lang="scss" scoped>

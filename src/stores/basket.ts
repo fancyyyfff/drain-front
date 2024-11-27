@@ -12,19 +12,6 @@ interface RouteBasket {
 // 主要的作用：获取当前用户下的每个basketId对应的basketName,
 export const useBasketStore = defineStore("basket", {
   state: () => ({
-    // 存储所有篮子数据,每个对象，只包含basketId和basketName
-    // baskets: [] as Basket[],
-    // // 对任务的伪分类，在数据库中不存在，只作为对路由的渲染
-    // // 主要分为
-    // circleBaskets: [] as Basket[],
-    // singleBaskets: [{
-    //   ddlBaskets:[] as Basket[],
-    //   starBaskets:[] as Basket[],
-    //   goalsBaskets:[] as Basket[],
-    //   tagsBaskets:[] as Basket[],
-    //   drainBaskets:[] as Basket[],
-    //   aiBaskets:[] as Basket[],
-    // }],
     routeBaskets:[
       {
         routeKey:"importance",
@@ -52,34 +39,39 @@ export const useBasketStore = defineStore("basket", {
         mainTitle: '工作篮',
       },
       {
-        routeKey:"thoughts",
+        routeKey:"entrusts",
         basketIds: [5],
+        mainTitle: '委托他人',
+      },
+      {
+        routeKey:"thoughts",
+        basketIds: [6],
         mainTitle: '以后可能会做',
       },
       {
         routeKey:"tags",
-        basketIds: [6],
+        basketIds: [7],
         mainTitle: '标签',
       },
       {
         routeKey:"drain",
-        basketIds: [7],
+        basketIds: [8],
         mainTitle: '头脑风暴',
       },
       {
         routeKey:"ai",
-        basketIds: [8],
+        basketIds: [9],
         mainTitle: 'ai帮我做计划',
       },
   ],
   drainAndAiRouteBasket: [{
     routeKey:"drain",
-    basketIds: [7],
+    basketIds: [8],
     mainTitle: '头脑风暴',
   },
   {
     routeKey:"ai",
-    basketIds: [8],
+    basketIds: [9],
     mainTitle: 'ai帮我做计划',
   },]
   }),
