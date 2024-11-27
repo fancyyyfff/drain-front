@@ -12,19 +12,6 @@ interface RouteBasket {
 // 主要的作用：获取当前用户下的每个basketId对应的basketName,
 export const useBasketStore = defineStore("basket", {
   state: () => ({
-    // 存储所有篮子数据,每个对象，只包含basketId和basketName
-    // baskets: [] as Basket[],
-    // // 对任务的伪分类，在数据库中不存在，只作为对路由的渲染
-    // // 主要分为
-    // circleBaskets: [] as Basket[],
-    // singleBaskets: [{
-    //   ddlBaskets:[] as Basket[],
-    //   starBaskets:[] as Basket[],
-    //   goalsBaskets:[] as Basket[],
-    //   tagsBaskets:[] as Basket[],
-    //   drainBaskets:[] as Basket[],
-    //   aiBaskets:[] as Basket[],
-    // }],
     routeBaskets:[
       {
         routeKey:"importance",

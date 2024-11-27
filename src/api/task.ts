@@ -52,6 +52,17 @@ export const updateTaskFinish = (taskId) =>{
   })
 }
 
+export const updateTaskStar = (taskId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/star',
+      method:'POST',
+      data:{
+        taskId
+      }
+  })
+}
+
 export const updateTaskDeadline = (taskId,deadline) =>{
   // const { id } = data
   return instance({

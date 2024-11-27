@@ -2,14 +2,14 @@
   <div
     class="task-tick"
     :style="{
-      backgroundColor: taskIsFinish===1 ? checkedColor : '',
-      borderColor: taskIsFinish===1 ? checkedColor : borderColor,
+      backgroundColor: taskIsFinish ? checkedColor : '',
+      borderColor: taskIsFinish ? checkedColor : borderColor,
       width: `${size}px`,
       height: `${size}px`,
     }"
     @click="toggleTick"
   >
-    <ion-icon v-if="taskIsFinish===1" :name="iconName" :color="iconColor"></ion-icon>
+    <ion-icon v-if="taskIsFinish" :name="iconName" :color="iconColor"></ion-icon>
   </div>
 </template>
 
@@ -17,7 +17,6 @@
 import { updateTaskFinish } from '@/api/task';
 import { useTaskStore } from '@/stores/task';
 import { computed, withDefaults } from 'vue';
-
 const taskStore = useTaskStore()
 
 // 以下属性都是可选的
@@ -28,7 +27,8 @@ interface Props {
   borderColor?: string;
   defaultChecked?: boolean;
   size?: number;
-  taskId:number
+  taskId:number;
+  isFinish: number;
 }
 // 设置了默认值，父组件可以重新定义
 const props = withDefaults(defineProps<Props>(), {
@@ -41,29 +41,25 @@ const props = withDefaults(defineProps<Props>(), {
   taskId: -1,
 });
 
-// 获取对应 taskId 的任务（使用 computed 保持响应式）
-// const task = computed(() => taskStore.getTaskById(props.taskId));
+// 定义事件
+const emit = defineEmits(['update:isFinish']);
 
-// 获取当前任务的完成状态
-const taskIsFinish = computed(() => {
-  const task = taskStore.getTaskById(props.taskId);
-  return task ? task.isFinish : false;  // 默认返回false，避免undefined错误
-});
-
+// 任务完成状态（父组件传递进来的值）
+const taskIsFinish = computed(() => props.isFinish);
 
 async function toggleTick  () {
-  const task = taskStore.getTaskById(props.taskId);
-    if (!task) return;
   // 后期删掉：
-  taskStore.toggleTaskFinish(props.taskId)
-
-  // 切换前 先更新状态，发送请求
+ const newIsFinish = taskIsFinish.value === 1 ? 0 : 1;
+  // 通知父组件任务完成状态的变化
+  emit('update:isFinish', newIsFinish);
+  // taskStore.toggleTaskFinish()
+  // 切换前 发送请求
   try {
-    const res = await updateTaskFinish(task.taskId)
+    const res = await updateTaskFinish(props.taskId)
     // 点击的时候，先改变状态，接收值
     if(res.status===2019) {
-      // 切换值，使用传入的taskId
-      taskStore.toggleTaskFinish(taskId)
+       // 通知父组件任务完成状态的变化
+       emit('update:isFinish',newIsFinish);
     }
   } catch (error) {
     console.error('更新任务的选中状态失败', error);

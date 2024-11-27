@@ -40,8 +40,6 @@ function handleClick() {
       alert("头脑风暴功能是vip用户独有的哦！欢迎您订阅！");
     }
 
-
-
 }
 </script>
 

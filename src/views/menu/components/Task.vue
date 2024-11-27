@@ -1,7 +1,7 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
   <!-- <Tick v-model="task.isFinish" icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/> -->
-  <Tick icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/>
+  <Tick icon-name="checkmark-done"  :taskId="task.id" v-model:isFinish="task.isFinish" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
   <div class="moveTo-warp" @click.stop>
@@ -24,7 +24,7 @@
 
   </div>
   <ion-icon name="trash-outline" class="delete-icon" @click="toDeleteTask" @click.stop></ion-icon>
-  <Star v-model:starred="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
+  <Star :taskId="task.id" v-model:star="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
 
 </div>
 </template>
@@ -41,10 +41,11 @@ import { useTaskStore } from '@/stores/task';
 import { useSideBarStore } from "@/stores/ui";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { useRoute } from "vue-router";
+import type{ Task } from "@/types/type";
+const taskStore=useTaskStore()
 const sideBarStore = useSideBarStore()
-const taskStore = useTaskStore();
 const route = useRoute()
- // 使用 defineProps 来接收来自父组件的 task 对象
+ // 使用 defineProps 来接收来自父组件Basket.vue的 task 对象
 const {task}=defineProps({
   task: {
     type: Object,
@@ -52,19 +53,12 @@ const {task}=defineProps({
   }
 })
 
-
-
-const finish = ref(false);
+// const finish = ref(false);
 const drawer = ref(false)
 
 function openSideBar() {
-
-  // 先让sidebar渲染
-  sideBarStore.render=!sideBarStore.render;
-  sideBarStore.toggleSidebar(task.taskId)
-
+  sideBarStore.toggleSidebar(task)
 }
-
 
 emitter.on('addTagSign',addTagSign)
 // ==
@@ -73,21 +67,28 @@ function addTagSign() {
 }
 
 // 打勾的组件：
+// const textStyle ={
+//     'text-decoration': taskRef.value.isFinish===1? 'line-through' : 'none',
+//     'text-shadow': taskRef.value.isFinish===1 ? 'none':'0 0 2px rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.5)' , // 添加发光效果
+//     'color': taskRef.value.isFinish===1 ?  'gray':'white'
+// }
 
 const textStyle = computed(() => {
+  console.log('task.isFinish:', task.isFinish);  // 调试，确保值正确
   return {
     'text-decoration': task.isFinish===1? 'line-through' : 'none',
     'text-shadow': task.isFinish===1 ? 'none':'0 0 2px rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.5)' , // 添加发光效果
     'color': task.isFinish===1 ?  'gray':'white'
   };
 });
-async function handleTaskChange (isChecked:boolean)  {
-  finish.value=isChecked
-  // == 完成的任务放到最后面：
-  if(finish.value===true) {
-    console.log('需要把当前任务的id放到页面渲染数组的最后面')
-  }
-}
+
+// async function handleTaskChange (isChecked:boolean)  {
+//   finish.value=isChecked
+//   // == 完成的任务放到最后面：
+//   if(finish.value===true) {
+//     console.log('需要把当前任务的id放到页面渲染数组的最后面')
+//   }
+// }
 
 const moveItems = [
   {
@@ -106,12 +107,13 @@ const item = ref({
 });
 
 async function toDeleteTask() {
+  // 后期删掉：
   emitter.emit('deleteTask',task.taskId)
+
   const taskDeleted = {
         taskId:task.taskId,
         basketId:task.basketId
-      }
-      // 前端模拟，后期删除：
+  }
   try {
     const res = await deleteTask(taskDeleted)
     if(res.status === 2015) {
