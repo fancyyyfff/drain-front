@@ -27,9 +27,7 @@ export const login = (user) => {
   return instance({
     url: '/user/login',
     method: 'POST',
-    data:{
-      user
-    }
+    data: user
   });
 };
 

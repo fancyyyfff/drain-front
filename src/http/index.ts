@@ -4,33 +4,13 @@ import { getCookie, clearCookie } from "@/http/cookie";
 
 // 创建 axios 实例
 const instance = axios.create({
-  baseURL: 'http://127.0.0.1:8080', // 后端接口地址
+  baseURL: 'http://localhost:8080', // 后端接口地址
   timeout: 6000, // 请求超时时间
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
-
-// 添加请求拦截器
-instance.interceptors.request.use(
-  (config) => {
-    const tokenName = getCookie('tokenName');
-    const tokenValue = tokenName ? getCookie(tokenName) : null;
-
-    if (tokenName&&tokenValue) {
-      // 如果存在 token，将其附加到请求头
-      // config.headers['Authorization'] = `Bearer ${token}`;
-      // 动态添加请求头
-      config.headers[tokenName] = tokenValue;
-    }
-
-    return config;
-  },
-  (error) => {
-    // 对请求错误做些什么
-    return Promise.reject(error);
-  }
-);
 
 // 添加响应拦截器
 instance.interceptors.response.use(
@@ -47,7 +27,7 @@ instance.interceptors.response.use(
       if (status === 1006) {
         // 提示重新登录
         alert('登录已过期，请重新登录');
-        
+
         clearCookie('tokenName');
         const tokenName = getCookie('tokenName');
         if (tokenName) clearCookie(tokenName);

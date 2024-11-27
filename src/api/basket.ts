@@ -16,9 +16,6 @@ export const getAllRouteBasket = () =>{
   // const { id } = data
   return instance({
       url:'/basket/baskets',
-      method:'GET',
-      data:{
-
-      }
+      method:'POST',
   })
 }

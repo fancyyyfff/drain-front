@@ -4,9 +4,9 @@
  * @param value Cookie 值
  * @param timeout 过期时间（毫秒）
  */
-export function setCookie(name: string, value: string, timeout: number) {
-  const expires = new Date(Date.now() + timeout).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; Secure; SameSite=Strict`;
+export function setCookie(name: string, value: string) {
+  document.cookie = `${name}=${value};path=/;domain: 'localhost';`;
+  console.log(document.cookie)
 }
 
 /**

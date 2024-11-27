@@ -37,6 +37,7 @@ import type { User } from "@/types/type";
 import { useUserStore } from "@/stores/user";
 import { setCookie,getCookie,clearCookie } from "@/http/cookie";
 import  Drain  from "@/views/first/components/Drain.vue";
+import { Domain } from "domain";
 const userInfo =useUserStore()
 const router = useRouter()
 // const username = ref('')
@@ -46,55 +47,16 @@ const user = reactive<User>({
   password:''
 })
 
-interface TokenType {
-  tokenName: string;
-  tokenValue: string;
-  tokenTimeout: number; // 毫秒
-}
-
-// --- 待优化,pinia,token,动态路由,角色判断,权限控制
-// async function toLogin() {
-//   // 小邓想看登录
-//   try{
-//     const res =await login(user)
-//     console.log("登录响应",res)
-//     if(res.data.status==1001) {
-//       const { tokenName, tokenValue, tokenTimeout } = res.data.data
-
-//     setCookie('tokenName', res.data.data.tokenName, res.data.data.tokenTimeout);
-//     setCookie(tokenName, tokenValue, tokenTimeout);
-//     // 保存到pinia
-//     userInfo.userId=res.data.data.userId
-
-//     alert('登录成功')
-
-//     router.push('/menu')
-//     }
-
-//   }catch (error) {
-//     alert('登录失败，请检查用户名或密码');
-//   }
-// // ---
-
-// // 无后端开启代码
-//   // const code =1
-//   // if(code){
-//   //   router.push('/menu')
-//   //   alert('登录成功')
-//   // }else {
-//   //   alert('登录失败')
-//   // }
-// }
 async function toLogin() {
   try {
     const res = await login(user);
     console.log("登录响应", res);
 
     if (res.status === 1001) {
-      const { tokenName, tokenValue, tokenTimeout, loginId } = res.data;
+      const { tokenName, tokenValue} = res.data;
 
       // Set cookies
-      setCookie(tokenName, tokenValue, tokenTimeout);
+      setCookie(tokenName, tokenValue);
 
       alert('登录成功');
       router.push('/menu')
@@ -106,10 +68,6 @@ async function toLogin() {
     console.error('登录请求失败', error);
   }
 }
-
-
-
-
 
 /**
  * 登出逻辑
