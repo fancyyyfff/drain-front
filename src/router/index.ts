@@ -29,25 +29,30 @@ const routes = [
   children:[
     // 任务全部渲染到Basket
     {
-      path:'/basket/:routeKey/:mainTitle',
+      path:'/basket/:basketId/:type/:basketName',
       name:'basket',
+      component:()=>import('@/views/normal/Basket.vue'),
+      props:true
+    },
+    {
+      path:'/basket/:basketName',
+      name:'importance',
       component:()=>import('@/views/normal/Basket.vue'),
       props:true
     },
   ]
 },
  // 两个vip路由：
- {
-  path:'/vip/:routeKey/:mainTitle',
-  name:'drain',
-  component:()=>import('@/views/vip/clear/Clear.vue'),
-  props:true
-},
+//  {
+//   path:'/vip/:basketId/:type/:basketName',
+//   name:'drain',
+//   component:()=>import('@/views/vip/clear/Clear.vue'),
+//   props:true
+// },
 {
-  path:'/vip/:routeKey/:mainTitle',
+  path:'/vip/ai',
   name:'ai',
   component:()=>import('@/views/vip/AI/AI.vue'),
-  props:true
 },
 
 ]

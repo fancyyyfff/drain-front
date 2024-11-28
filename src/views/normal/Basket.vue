@@ -19,39 +19,33 @@ import emitter from '@/mitt';
 import { useTaskStore } from "@/stores/task";
 import type { Task } from "@/types/type";
 import pinia from '@/stores';
+import { emit } from 'process';
 
 // 获取路由参数
 const route = useRoute();
-const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
-console.log('routeKey',routeKey)
-console.log('mainTitle',mainTitle)
+const { basketId,type, basketName } = defineProps(['type', 'basketName','basketId']);
+console.log('type',type)
+console.log('basketName',basketName)
 const basketStore= useBasketStore()
 const taskStore= useTaskStore()
 
 onMounted(()=>{
   console.log('Basket.vue加载了')
-  loadTasks(route.params.routeKey)
+  loadTasks(route.params.basketId)
   // 后期删掉：
-  frontInitData(route.params.routeKey)
-  // taskStore.frontInitData(route.params.routeKey)
+  frontInitData(route.params.basketId)
+  // taskStore.frontInitData(route.params.type)
 })
 
 // 放置数据的地方
 const tasks = ref<Task[]>([])
-function loadTasks(routeKey) {
-  // 使用 Getter 获取对应的 basketIds
-  const basketIds = computed(() =>
-      basketStore.getBasketIdsByRouteKey(routeKey)
-    );
-  const basketIdsArray = basketIds.value; // 获取数组
+// 点击星标任务就让任务变成这个所有的allStar
+emit.on('allStar',handleAllStar)
+function handleAllStar(allStar) {
+  tasks.value=allStar
+}
 
-    // 遍历 basketIds
-  basketIdsArray.forEach((basketId) => {
-    loadAllTasks(basketId)
-  });
-};
-
-async function loadAllTasks(basketId) {
+async function loadTasks(basketId) {
   try {
     const res = await getAllTaskByBasketId(basketId)
     if(res.status===2001) {
@@ -62,16 +56,11 @@ async function loadAllTasks(basketId) {
   }
 }
 
-// 使用 computed 属性包装 routeKey
-const currentRouteKey = computed(() => routeKey);
-
-// 监听 routeKey 的变化
-watch(currentRouteKey, (newRouteKey) => {
-  loadTasks(newRouteKey); // 在路由键变化时加载任务
+// 监听 currentBasketId 的变化
+watch(()=>basketStore.currentBasketId, (newBasketId) => {
+  loadTasks(newBasketId); // 在路由键变化时加载任务
   // 后期不要：
-  // taskStore.frontInitData(newRouteKey)
-  frontInitData(newRouteKey)
-
+  frontInitData(newBasketId)
 });
 
 // 新建任务：
@@ -105,35 +94,10 @@ const selectTask = (task) => {
 };
 
 // 后期删掉：前端模拟渲染当前页面的数据
-function frontInitData(routeKey) {
+function frontInitData(basketId) {
       // 后端没有获取到数据时，呈现的默认任务数据
       // 初期模拟不同页面渲染数据
-      if(routeKey === 'importance') {
-        tasks.value = [
-          {
-          taskId:6,
-          taskName:'完成任务管理模块',
-          star:1,
-          isFinish:0,
-          basketId:6,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-        {
-          taskId:7,
-          taskName:'完成头脑风暴模块',
-          star:1,
-          isFinish:0,
-          basketId:7,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-      ]
-      } else if (routeKey === 'ddl') {
+      if (basketId === 1) {
         tasks.value = [
           {
           taskId:9,
@@ -147,7 +111,7 @@ function frontInitData(routeKey) {
           isDrain:1,
         },
       ]
-      }else if (routeKey === 'goals') {
+      }else if (basketId === 2) {
         tasks.value = [
           {
           taskId:10,
@@ -161,7 +125,33 @@ function frontInitData(routeKey) {
           isDrain:1,
         },
       ]
-      } else if (routeKey === 'works') {
+      }else if(basketId === 1) {
+
+      tasks.value = [
+        {
+        taskId:6,
+        taskName:'完成任务管理模块',
+        star:1,
+        isFinish:0,
+        basketId:6,//可以找到对应的basket
+        remark:'开始放好伪数据，记得发送请求',//备注
+        deadline:'',
+        createTime:'',
+        isDrain:1,
+      },
+      {
+        taskId:7,
+        taskName:'完成头脑风暴模块',
+        star:1,
+        isFinish:0,
+        basketId:7,//可以找到对应的basket
+        remark:'开始放好伪数据，记得发送请求',//备注
+        deadline:'',
+        createTime:'',
+        isDrain:1,
+      },
+      ]
+      } else if (basketId === 4) {
         tasks.value = [
           {
           taskId:11,
@@ -174,8 +164,34 @@ function frontInitData(routeKey) {
           createTime:'',
           isDrain:1,
         },
+        {
+          taskId:11,
+          taskName:'录制视频',
+          star:0,
+          isFinish:0,
+          basketId:11,//可以找到对应的basket
+          remark:'项目测试通过后',//备注
+          deadline:'',
+          createTime:'',
+          isDrain:1,
+        },
       ]
-      } else if (routeKey === 'thoughts') {
+      }
+      else if (basketId === 5) {
+        tasks.value = [
+          {
+          taskId:16,
+          taskName:'路演',
+          star:0,
+          isFinish:0,
+          basketId:13,//可以找到对应的basket
+          remark:'',//备注
+          deadline:'',
+          createTime:'',
+          isDrain:1,
+        },
+      ]
+      }else if (basketId === 6) {
         tasks.value = [
           {
           taskId:12,
@@ -189,38 +205,9 @@ function frontInitData(routeKey) {
           isDrain:1,
         },
       ]
-      } else if(routeKey==='tags') {
-        tasks.value=[]
-      }else if (routeKey === 'actions') {
+      }else {
+        // 星标任务没有basketId
         tasks.value = [
-          {
-          taskId:13,
-          taskName:'删除任务图标',
-          star:0,
-          isFinish:0,
-          basketId:13,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-      ]
-      } else if (routeKey === 'entrusts') {
-        tasks.value = [
-          {
-          taskId:14,
-          taskName:'拿快递',
-          star:0,
-          isFinish:0,
-          basketId:13,//可以找到对应的basket
-          remark:'',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-      ]
-      } else {
-        tasks.value =[
         {
           taskId:1,
           taskName:'完成创建Task',
@@ -254,32 +241,10 @@ function frontInitData(routeKey) {
           createTime:'',
           isDrain:1,
         },
-        {
-          taskId:4,
-          taskName:'实现移动任务',
-          star:0,
-          isFinish:0,
-          basketId:4,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-        {
-          taskId:5,
-          taskName:'实现Task和sideBar数据联动',
-          star:0,
-          isFinish:0,
-          basketId:5,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-
-      ]
+        ]
       }
 }
+
 </script>
 
 <style scoped>

@@ -15,7 +15,8 @@ import emitter from "@/mitt";
 import { useRouter,useRoute } from 'vue-router';
 import { useBasketStore  } from "@/stores/basket";
 
-const { routeKey, mainTitle } = defineProps(['routeKey', 'mainTitle']);
+const { basketId,type, basketName } = defineProps(['type', 'basketName','basketId']);
+
 const router = useRouter();
 const basketStore = useBasketStore();
 function handleClick() {
@@ -25,15 +26,15 @@ function handleClick() {
   basketStore.fetchAllBaskets()
   const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
   const clearBasket = drainAndAiRouteBasket.find(
-      (basket) => basket.routeKey === "clear"
+      (basket) => basket.type === "clear"
     );
     console.log
     if (clearBasket) {
-      const { routeKey, mainTitle } = clearBasket;
+      const { type, basketName } = clearBasket;
       // 通过路由传递参数
       router.push({
         name: "drain",
-        params: { routeKey,mainTitle },
+        params: { type,basketName },
       });
       emitter.emit('openBrainDialog')
     } else {

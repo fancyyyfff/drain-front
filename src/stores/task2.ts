@@ -132,7 +132,7 @@ export const useTaskStore = defineStore('taskStore', {
     },
    // —— 对tasks的操作，
     // ——加载从后端获取到的所有tasks：
-    async loadAllTasks(basketId,routeKey) {
+    async loadAllTasks(basketId,type) {
       try {
         const res = await getAllTaskByBasketId(basketId)
         // if(res.status % 2 ==1) {
@@ -143,7 +143,7 @@ export const useTaskStore = defineStore('taskStore', {
             this.tasks.splice(0, this.tasks.length);
             // 把tasks存在store当中
 
-            if(routeKey==='works') {
+            if(type==='works') {
               this.tasks.unshift(...res.data)
             }else {
               this.tasks.push(...res.data)
@@ -213,10 +213,10 @@ export const useTaskStore = defineStore('taskStore', {
     },
 
     // 前端模拟数据：
-    frontInitData(routeKey) {
+    frontInitData(type) {
       // 后端没有获取到数据时，呈现的默认任务数据
       // 初期模拟不同页面渲染数据
-      if(routeKey === 'importance') {
+      if(type === 'importance') {
         this.tasks = [
           {
           taskId:6,
@@ -241,7 +241,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (routeKey === 'ddl') {
+      } else if (type === 'ddl') {
         this.tasks = [
           {
           taskId:9,
@@ -255,7 +255,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      }else if (routeKey === 'goals') {
+      }else if (type === 'goals') {
         this.tasks = [
           {
           taskId:10,
@@ -269,7 +269,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (routeKey === 'works') {
+      } else if (type === 'works') {
         this.tasks = [
           {
           taskId:11,
@@ -283,7 +283,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (routeKey === 'thoughts') {
+      } else if (type === 'thoughts') {
         this.tasks = [
           {
           taskId:12,
@@ -297,9 +297,9 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if(routeKey==='tags') {
+      } else if(type==='tags') {
         this.tasks=[]
-      }else if (routeKey === 'actions') {
+      }else if (type === 'actions') {
         this.tasks = [
           {
           taskId:13,
@@ -313,7 +313,7 @@ export const useTaskStore = defineStore('taskStore', {
           isDrain:1,
         },
       ]
-      } else if (routeKey === 'entrusts') {
+      } else if (type === 'entrusts') {
         this.tasks = [
           {
           taskId:14,

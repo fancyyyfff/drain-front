@@ -36,7 +36,7 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ route.params.mainTitle  }}</el-header>
+        <el-header class="right-top" >{{ route.params.basketName  }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
         <router-view/>
@@ -86,6 +86,8 @@ import { useBasketStore  } from "@/stores/basket";
 import { addTask } from "@/api/task";
 import  DdlSideBar  from "@/views/menu/components/DdlSideBar.vue";
 import { useSideBarStore } from '@/stores/ui';
+import { useUserStore } from "@/stores/user";
+import { VIP } from "@/const/type";
 interface Task {
   taskId: string;
   taskName: string;
@@ -95,6 +97,7 @@ const router = useRouter();
 const route = useRoute();
 const taskStore = useTaskStore();
 const basketStore = useBasketStore();
+const userStore = useUserStore()
 // // 动态绑定 basketName
 // const basketName = computed(() => {
 //   return basketStore.getBasketNameById(route.params.basketId as number);
@@ -109,15 +112,15 @@ const onClickClear = () => {
 // 新建任务组件切换
 // 动态计算当前的新建任务组件
 const currentNewTask = computed(()=>{
-  console.log("新建任务routeKey",route.params.routeKey)
-  return route.params.routeKey==='ddl'?DdlNewTask:NewTask
+  console.log("新建任务type",route.params.type)
+  return route.params.type==='ddl'?DdlNewTask:NewTask
 }
 )
 
 // 动态计算当前侧边栏组件：
 const currentSideBar = computed(()=>{
-  console.log("侧边栏routeKey",route.params.routeKey)
-  return route.params.routeKey==='ddl'?DdlSideBar:SideBar
+  console.log("侧边栏type",route.params.type)
+  return route.params.type==='ddl'?DdlSideBar:SideBar
 })
 
 // 侧边栏组件切换
@@ -164,19 +167,10 @@ emitter.on('closeAndTips',()=>{
 // ===
 // 呼叫AI
 const callAI =()=>{
-  // 从 Store 或组件数据中获取 drainAndAiRouteBasket
-  basketStore.fetchAllBaskets()
-  const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
-  const aiBasket = drainAndAiRouteBasket.find(
-      (basket) => basket.routeKey === "ai"
-    );
-    console.log
-    if (aiBasket) {
-      const { routeKey, mainTitle } = aiBasket;
-      // 通过路由传递参数
+      const role=userStore.getRole()
+      if(role===VIP){
       router.push({
-        name: "ai",
-        params: { routeKey,mainTitle },
+        name: "ai"
       });
     } else {
       alert("ai功能是vip用户独有的哦！欢迎您订阅！");
@@ -184,7 +178,9 @@ const callAI =()=>{
 }
 
 // 检测路由变化，把sideBar关闭
-watch(() => route.params.routeKey, () => {
+watch(() => route.params.basketId, (newBasketId) => {
+  // 更新全局的basketId
+  basketStore.setCurrentBasketId(newBasketId)
   const sideBarStore=useSideBarStore()
   sideBarStore.render=false
 });

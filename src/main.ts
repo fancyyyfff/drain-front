@@ -7,6 +7,7 @@ import App from './App.vue'
 // import 'element-plus/dist/index.css'
 // import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import "@/assets/css/style.css";
+import "@/const/type"
 import Message from "@/components/Message.vue";
 
 const app = createApp(App)

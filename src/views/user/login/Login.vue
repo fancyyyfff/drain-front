@@ -58,7 +58,9 @@ async function toLogin() {
       // Set cookies
       setCookie(tokenName, tokenValue);
 
-      alert('登录成功');
+      // --调用userInfo接口，判断role：
+      // alert('登录成功');  管理员：欢迎，订阅
+      // // if(role)
       router.push('/menu')
     } else {
       alert('登录失败');

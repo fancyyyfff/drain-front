@@ -1,18 +1,18 @@
 import instance from '@/http/index'
 
 // 返回示例：
-//  routeBaskets:[
+//  basketList:[
 //   {
-//     routeKey:"importance",
+//     type:"importance",
 //     basketIds: [0],
-//     mainTitle: '重要',
+//     basketName: '重要',
 //   },
 //   {
-//     routeKey:"ddl",
+//     type:"ddl",
 //     basketIds: [1],
-//     mainTitle: 'DDL',
+//     basketName: 'DDL',
 //   },]
-export const getAllRouteBasket = () =>{
+export const getAllBaskets = () =>{
   // const { id } = data
   return instance({
       url:'/basket/baskets',

@@ -22,12 +22,12 @@ const taskStore = useTaskStore()
 const basketStore = useBasketStore()
 
 onMounted(()=>{
-  // if(route.params.routeKey!=='works') {
+  // if(route.params.type!=='works') {
   //   router.push('/basket/works/工作篮')
   // }
   taskStore.tasks=[]
   taskStore.resetTask()
-  const basketIds=basketStore.getBasketIdsByRouteKey('works')
+  const basketIds=basketStore.getBasketIdsBytype('works')
   taskStore.loadAllTasks(basketIds[0],"works")
   // 后期删掉
   taskStore.frontInitData('works')

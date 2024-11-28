@@ -1,22 +1,43 @@
 <template>
 <div class="nav-ul">
+    <div class="nav-item" @click="showImportanceView()">
+      {{ importanceName }}
+    </div>
     <!-- 循环渲染每个 basket -->
-    <template  v-for="routeBasket in basketStore.routeBaskets" :key="routeBasket.routeKey">
+    <template  v-for="basket in basketStore.basketList" :key="basket.basketId">
     <div class="nav-item">
       <router-link
         :to="{
           name: 'basket',
           params:{
-            routeKey:routeBasket.routeKey,
-            mainTitle:routeBasket.mainTitle,
+            basketId:basket.basketId,
+            type:basket.type,
+            basketName:basket.basketName,
           }
         }"
         class="nav-link"
       >
-        {{ routeBasket.mainTitle }}
+        {{ basket.basketName }}
       </router-link>
     </div>
     </template>
+
+    <!-- 标签：(后续处理) -->
+     <!-- <div   v-for="tag in basketStore.tags" :key="tag.tagId" class="tags" @click="getAllTags">
+      <router-link
+        :to="{
+          name: 'basket',
+          params:{
+            type:basket.type,
+            basketName:basket.basketName,
+          }
+        }"
+        class="nav-tag shine"
+      >
+        {{ tag.tagName }}
+      </router-link>
+
+     </div> -->
 </div>
 </template>
 
@@ -24,8 +45,11 @@
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useBasketStore } from "@/stores/basket";
-import { onMounted } from 'vue';
-
+import { onMounted,ref } from 'vue';
+import { IMPORTANCE } from '@/const/type';
+import Importance from '@/views/normal/sepcial/importance/Importance.vue';
+import { getAllStar } from "@/api/task";
+import emitter from "@/mitt";
 const basketStore = useBasketStore();
 const router = useRouter();
 // 这个方法会自动从后端获取数据并且更新在pinia中的 baskets
@@ -33,6 +57,39 @@ const router = useRouter();
 onMounted( ()=>{
   basketStore.fetchAllBaskets();
 })
+// interface ImportanceBasket {
+//   type:number;
+//   basketName:string;
+// }
+// const importanceBasket=ref<ImportanceBasket>({type:1,basketName:'重要'})
+const importanceName = ref('重要')
+async function showImportanceView(){
+  // emitter.emit('allStar',allStar)
+      router.push({
+        name: 'importance',
+        params: {
+          basketName: importanceName.value
+        }
+      })
+
+  try {
+    const res = await getAllStar()
+    if(res.status===2006) {
+      emitter.emit('allStar',res.data)
+      router.push({
+        name: 'importance',
+        params: {
+          basketName: importanceName.value
+        }
+      })
+
+    }
+  } catch (error) {
+    console.error('通过basketId获取所有任务失败', error);
+  }
+
+
+}
 </script>
 
 <style scoped>

@@ -22,7 +22,7 @@ const basketStore = useBasketStore()
 const taskName = ref('')
 async function handleOk() {
   if(taskName) {
-    const basketIds=basketStore.getBasketIdsByRouteKey('entrusts')
+    const basketIds=basketStore.getBasketIdsBytype('entrusts')
     const task={basketId:basketIds[0],taskName}
     try {
       const res= await addTask(task)

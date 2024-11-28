@@ -28,6 +28,14 @@ export const getTask = (taskId) =>{
   })
 }
 
+export const getAllStar = () =>{
+  // const { id } = data
+  return instance({
+      url:'/task/star',
+      method:'POST',
+  })
+}
+
 // ============add
 export const addTask = (task) =>{
   // const { id } = data

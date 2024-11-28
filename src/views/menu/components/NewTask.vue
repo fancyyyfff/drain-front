@@ -11,7 +11,7 @@
                <slot name="right-clock"></slot>
             </div>
           </div>
-          
+
 </template>
 
 <script setup lang="ts" name="">
@@ -29,7 +29,7 @@ const showP = ref(true)
 const newTaskInputValue = ref('')
 const taskInput = ref<HTMLInputElement | null>(null);
 
-const currentRouteKey = computed(() => route.params.routeKey as string || '');
+const currenttype = computed(() => route.params.type as string || '');
 // 点击新建任务
 const onClickNew = ()=>{
   showInput.value=true
@@ -45,9 +45,9 @@ function createNewTask (){
   let deadline='' //默认 ''
   const task = {taskName,basketId,deadline}
    // 获取当前路由键，避免依赖计算属性
-   const routeKey = route.params.routeKey as string || '';
+   const type = route.params.type as string || '';
   // 处理ddl的新建任务
-  if( routeKey==='ddl') {
+  if( type==='ddl') {
       if(taskStore.deadline) {
         task.deadline=taskStore.deadline
         emitter.emit('createNewTask',task)
