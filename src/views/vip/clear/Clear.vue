@@ -10,7 +10,7 @@
 
 <script setup lang="ts" name="">
 import { ref,computed } from "vue";
-import Dialog from "@/views/clear/Dialog.vue";
+import Dialog from "@/views/vip/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { useRouter,useRoute } from 'vue-router';
 import { useBasketStore  } from "@/stores/basket";

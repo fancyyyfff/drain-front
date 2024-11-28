@@ -37,8 +37,10 @@ import type { User } from "@/types/type";
 import { useUserStore } from "@/stores/user";
 import { setCookie,getCookie,clearCookie } from "@/http/cookie";
 import  Drain  from "@/views/first/components/Drain.vue";
-import { Domain } from "domain";
-const userInfo =useUserStore()
+import { getUserInfo } from "@/api/user";
+import { MANAGER, NORMAL } from "@/const/type";
+
+const userStore =useUserStore()
 const router = useRouter()
 // const username = ref('')
 // const password = ref('')
@@ -53,15 +55,31 @@ async function toLogin() {
     console.log("登录响应", res);
 
     if (res.status === 1001) {
+
       const { tokenName, tokenValue} = res.data;
 
       // Set cookies
       setCookie(tokenName, tokenValue);
 
       // --调用userInfo接口，判断role：
-      // alert('登录成功');  管理员：欢迎，订阅
-      // // if(role)
-      router.push('/menu')
+      const res1 = await getUserInfo()
+      if(res1.status===1001) {
+        const {userId,username,nickname,role} = res.data
+        const user = {
+          userId:userId,
+          username:username,
+          nickname:nickname,
+          role:role,
+        }
+        userStore.setUser(user)
+        if(role===MANAGER) {
+          router.push('manager')
+        }else {
+          router.push('/menu')
+          alert('登陆成功')
+        }
+
+      }
     } else {
       alert('登录失败');
     }

@@ -12,25 +12,24 @@ interface UserState {
 }
 
 export const useUserStore = defineStore('userStore', {
-  state: (): UserState => ({
-    userId: null,
-    role: 0,
-    userName:null,
-    nickName:null,
+  state: ()=> ({
+    user:{
+      userId: null,
+      role: 0,
+      userName:null,
+      nickName:null,
+    },
+
   }),
   actions: {
+    setUser(user){
+      this.user= user
+    },
     getRole(){
-      return this.role
+      return this.user.role
     },
     setRole(role){
-      this.role = role
-    },
-    // 登录时保存用户数据的方法
-    login(userId: number, role: number,userName:string,nickName:string) {
-      this.userId = userId;
-      this.role = role;
-      this.userName=userName;
-      this.nickName=nickName;
+      this.user.role = role
     },
   },
 });

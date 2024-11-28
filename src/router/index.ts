@@ -55,6 +55,12 @@ const routes = [
   component:()=>import('@/views/vip/AI/AI.vue'),
 },
 
+{
+  path:'/manager',
+  name:'manager',
+  component:()=>import('@/views/manager/Manger.vue'),
+},
+
 ]
 
 const router = createRouter({
