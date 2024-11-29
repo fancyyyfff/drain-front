@@ -157,7 +157,7 @@ function frontInitData(basketId) {
           basketId:1,//可以找到对应的basket
           remark:'开始放好伪数据，记得发送请求',//备注
           deadline:'',
-          createTime:'',
+          createTime:'2024.11.29',
           isDrain:1,
         },
       ]

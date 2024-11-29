@@ -52,8 +52,8 @@
 
   </el-container>
       <!-- 放侧边栏 -->
-      <!-- <component :is="currentSideBar"/> -->
-       <DdlSideBar></DdlSideBar>
+      <component :is="currentSideBar"/>
+       <!-- <DdlSideBar></DdlSideBar> -->
 
 </el-container>
 </div>
@@ -118,10 +118,11 @@ const currentNewTask = computed(()=>{
 }
 )
 
+const currentType= computed(()=>Number(route.params.type))
 // 动态计算当前侧边栏组件：
 const currentSideBar = computed(()=>{
-  console.log("侧边栏type",route.params.type)
-  return route.params.type==='ddl'?DdlSideBar:SideBar
+  console.log("侧边栏type",currentType.value)
+  return currentType.value===DDL?DdlSideBar:SideBar
 })
 
 // 侧边栏组件切换
