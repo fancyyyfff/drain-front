@@ -42,10 +42,17 @@ onMounted(()=>{
 // 放置数据的地方
 const tasks = ref<Task[]>([])
 // 点击星标任务就让任务变成这个所有的allStar
-emitter.on('allStar',handleAllStar)
-function handleAllStar(allStar) {
-  tasks.value=allStar
-}
+// emitter.on('allStar',handleAllStar)
+// function handleAllStar() {
+//   try {
+//     const res = await getAllStar()
+//     if(res.status===2006) {
+//       tasks.value=res.data
+//     }
+//   } catch (error) {
+//     console.error('加载所有星标任务失败', error);
+//   }
+// }
 
 async function loadTasks(basketId) {
   try {
@@ -68,33 +75,33 @@ watch(()=>route.params,async(newParams)=>{
   if (!isNaN(type) && type === IMPORTANCE) {
     console.log('进入到星标任务模块');
     // 后期不要：
-    tasks.value=[
-    {
-        taskId:6,
-        taskName:'完成任务管理模块',
-        star:1,
-        isFinish:0,
-        basketId:3,//可以找到对应的basket
-        remark:'开始放好伪数据，记得发送请求',//备注
-        deadline:'',
-        createTime:'',
-        isDrain:1,
-      },
-      {
-        taskId:7,
-        taskName:'完成头脑风暴模块',
-        star:1,
-        isFinish:0,
-        basketId:3,//可以找到对应的basket
-        remark:'开始放好伪数据，记得发送请求',//备注
-        deadline:'',
-        createTime:'',
-        isDrain:1,
-      },
-    ]
+    // tasks.value=[
+    // {
+    //     taskId:6,
+    //     taskName:'完成任务管理模块',
+    //     star:1,
+    //     isFinish:0,
+    //     basketId:3,//可以找到对应的basket
+    //     remark:'开始放好伪数据，记得发送请求',//备注
+    //     deadline:'',
+    //     createTime:'',
+    //     isDrain:1,
+    //   },
+    //   {
+    //     taskId:7,
+    //     taskName:'完成头脑风暴模块',
+    //     star:1,
+    //     isFinish:0,
+    //     basketId:3,//可以找到对应的basket
+    //     remark:'开始放好伪数据，记得发送请求',//备注
+    //     deadline:'',
+    //     createTime:'',
+    //     isDrain:1,
+    //   },
+    // ]
     try {
       const res = await getAllStar()
-      if(res.status%2===1) {
+      if(res.status===2006) {
         tasks.value = res.data
       }
     } catch (error) {
@@ -103,7 +110,7 @@ watch(()=>route.params,async(newParams)=>{
   }else {
     loadTasks(basketId);
     // 后期不要：
-    frontInitData(basketId)
+    // frontInitData(basketId)
   }
 },
 { immediate: true }) // 在组件挂载时立即执行一次监听逻辑)

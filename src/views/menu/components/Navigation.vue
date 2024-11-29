@@ -64,7 +64,6 @@ onMounted( ()=>{
 // const importanceBasket=ref<ImportanceBasket>({type:1,basketName:'重要'})
 const importanceName = ref('重要')
 async function showImportanceView(){
-  // emitter.emit('allStar',allStar)
       router.push({
         name: 'importance',
         params: {
@@ -73,21 +72,21 @@ async function showImportanceView(){
         }
       })
 
-  try {
-    const res = await getAllStar()
-    if(res.status===2006) {
-      emitter.emit('allStar',res.data)
-      router.push({
-        name: 'importance',
-        params: {
-          basketName: importanceName.value
-        }
-      })
+  // try {
+  //   const res = await getAllStar()
+  //   if(res.status===2006) {
+  //     emitter.emit('allStar',res.data)
+  //     router.push({
+  //       name: 'importance',
+  //       params: {
+  //         basketName: importanceName.value
+  //       }
+  //     })
 
-    }
-  } catch (error) {
-    console.error('通过basketId获取所有任务失败', error);
-  }
+  //   }
+  // } catch (error) {
+  //   console.error('通过basketId获取所有任务失败', error);
+  // }
 
 
 }
