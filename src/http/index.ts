@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router'; // Vue Router
+import router from '@/router'; // Vue Router
 import { getCookie, clearCookie } from "@/http/cookie";
 
 // 创建 axios 实例
@@ -19,7 +19,6 @@ instance.interceptors.response.use(
     return response.data; // 直接返回 data，简化调用时的代码
   },
   (error) => {
-    const router = useRouter(); // 获取 Vue Router 实例
 
     if (error.response) {
       const { status } = error.response;
