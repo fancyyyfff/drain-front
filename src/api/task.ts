@@ -53,9 +53,7 @@ export const addTask = (task) =>{
   return instance({
       url:'/task/add',
       method:'POST',
-      data:{
-        task
-      }
+      data:task //basketId  taskName
   })
 }
 

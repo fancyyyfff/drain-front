@@ -10,33 +10,36 @@
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
 import { onUnmounted,ref } from "vue";
-import { useTaskStore } from "@/stores/task";
-import { useBasketStore } from "@/stores/basket";
-import { useRoute } from "vue-router";
 import { addTask } from "@/api/task";
 
-const route = useRoute()
+import { useTaskStore } from "@/stores/task";
+import { useBasketStore } from "@/stores/basket";
 const taskStore = useTaskStore()
 const basketStore = useBasketStore()
 
 const taskName = ref('')
 async function handleOk() {
   if(taskName) {
-    const basketIds=basketStore.getBasketIdsBytype('entrusts')
-    const task={basketId:basketIds[0],taskName}
+    const task = {
+      basketId:basketStore.basketList[4].basketId,
+      taskName:taskName.value,
+      deadline:''
+    }
     try {
-      const res= await addTask(task)
-      if(res.status % 2 === 2017) {
-        basketStore.addTaskToSingleBasket('entrust',res.data.taskId)
+      const res= await createNewTask(task)
+      if(res.status % 2 === 1) {
+        // 删除进入工作篮的任务
+        const deleteTask = {
+          basketId:basketStore.basketList[3].basketId,
+          taskId:res.data.taskId
+        }
+       await taskStore.deleteDrainTask(deleteTask)
         emitter.emit('closeAndTips')
-        return
       }
     } catch (error) {
       console.error('新建任务失败', error);
     }
-
   }
-
 
 }
 </script>

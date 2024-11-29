@@ -14,33 +14,20 @@ import Dialog from "@/views/vip/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { useRouter,useRoute } from 'vue-router';
 import { useBasketStore  } from "@/stores/basket";
+import { VIP } from "@/const/type";
+import { useUserStore } from "@/stores/user";
 
-const { basketId,type, basketName } = defineProps(['type', 'basketName','basketId']);
+const userStore = useUserStore()
 
-const router = useRouter();
-const basketStore = useBasketStore();
 function handleClick() {
   // 后期删掉：
   emitter.emit('openBrainDialog')
-  // 从 Store 或组件数据中获取 drainAndAiRouteBasket
-  basketStore.fetchAllBaskets()
-  const drainAndAiRouteBasket=basketStore.drainAndAiRouteBasket
-  const clearBasket = drainAndAiRouteBasket.find(
-      (basket) => basket.type === "clear"
-    );
-    console.log
-    if (clearBasket) {
-      const { type, basketName } = clearBasket;
-      // 通过路由传递参数
-      router.push({
-        name: "drain",
-        params: { type,basketName },
-      });
-      emitter.emit('openBrainDialog')
-    } else {
-      alert("头脑风暴功能是vip用户独有的哦！欢迎您订阅！");
-    }
 
+  if(userStore.user.role===VIP) {
+    emitter.emit('openBrainDialog')
+  }else {
+    alert("头脑风暴功能是vip用户独有的哦！欢迎您订阅！");
+  }
 }
 </script>
 

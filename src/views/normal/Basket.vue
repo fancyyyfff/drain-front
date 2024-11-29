@@ -75,30 +75,32 @@ watch(()=>route.params,async(newParams)=>{
   if (!isNaN(type) && type === IMPORTANCE) {
     console.log('进入到星标任务模块');
     // 后期不要：
-    // tasks.value=[
-    // {
-    //     taskId:6,
-    //     taskName:'完成任务管理模块',
-    //     star:1,
-    //     isFinish:0,
-    //     basketId:3,//可以找到对应的basket
-    //     remark:'开始放好伪数据，记得发送请求',//备注
-    //     deadline:'',
-    //     createTime:'',
-    //     isDrain:1,
-    //   },
-    //   {
-    //     taskId:7,
-    //     taskName:'完成头脑风暴模块',
-    //     star:1,
-    //     isFinish:0,
-    //     basketId:3,//可以找到对应的basket
-    //     remark:'开始放好伪数据，记得发送请求',//备注
-    //     deadline:'',
-    //     createTime:'',
-    //     isDrain:1,
-    //   },
-    // ]
+    tasks.value=[
+    {
+        taskId:6,
+        taskName:'完成任务管理模块',
+        star:1,
+        isFinish:0,
+        basketId:3,//可以找到对应的basket
+        remark:'开始放好伪数据，记得发送请求',//备注
+        deadline:'',
+        createTime:'',
+        isDrain:1,
+      },
+      {
+        taskId:7,
+        taskName:'完成头脑风暴模块',
+        star:1,
+        isFinish:0,
+        basketId:3,//可以找到对应的basket
+        remark:'开始放好伪数据，记得发送请求',//备注
+        deadline:'',
+        createTime:'',
+        isDrain:1,
+      },
+    ]
+
+    // 后期保留
     try {
       const res = await getAllStar()
       if(res.status===2006) {
@@ -107,10 +109,13 @@ watch(()=>route.params,async(newParams)=>{
     } catch (error) {
       console.error('获取所有星标任务失败', error);
     }
+
   }else {
+    // 后期保留
     loadTasks(basketId);
+
     // 后期不要：
-    // frontInitData(basketId)
+    frontInitData(basketId)
   }
 },
 { immediate: true }) // 在组件挂载时立即执行一次监听逻辑)

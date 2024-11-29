@@ -1,6 +1,6 @@
 <template>
 <p>思考：</p>
-        <p class="dialog-work-text">{{ taskStore.task.taskName }}</p>
+        <p class="dialog-work-text">{{ taskStore.drainTask.taskName }}</p>
         <p>需要对它采取行动吗？</p>
         <div class="clear-btn-wrap">
           <button @click="emitter.emit('change','noAction')" class="pretty-btn no-btn">否</button>

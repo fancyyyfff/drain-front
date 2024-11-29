@@ -12,8 +12,8 @@
     </el-row>
 
   <div class="text">
-    <div class="name">fancy</div>
-    <div class="phone">12332112345</div>
+    <div class="name">{{ userStore.user.nickName }}</div>
+    <div class="phone">{{ userStore.user.userName }}</div>
   </div>
 
 </div>
@@ -21,7 +21,8 @@
 
 <script setup lang="ts" name="">
 import { reactive, toRefs } from 'vue'
-
+import { useUserStore } from "@/stores/user";
+const userStore= useUserStore()
 const state = reactive({
   circleUrl:
     'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',

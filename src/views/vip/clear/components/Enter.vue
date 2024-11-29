@@ -10,7 +10,40 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
+import type { Task } from "@/types/type";
+import { ref,onMounted } from "vue";
+import { getAllTaskByBasketId } from "@/api/task";
+import { useTaskStore } from "@/stores/task";
+import { useBasketStore } from "@/stores/basket";
+const taskStore = useTaskStore()
+const basketStore = useBasketStore()
+onMounted(async()=>{
 
+  try {
+    const res = await getAllTaskByBasketId(basketStore.basketList[4].basketId as number)
+    if(res.status%2 ===1) {
+      taskStore.setTask(res.data[0])
+      return
+    }
+  } catch (error) {
+    console.error('通过basketId获取所有任务失败', error);
+  }
+
+  const task = <Task>{
+        taskId: 25,
+        taskName: '完成项目核心页面和需求',
+        star: 0,
+        isFinish: 0,
+        basketId: 4,
+        remark: '',
+        deadline: '',
+        createTime: '',
+        isDrain: 1,
+      }
+  // 后期删掉
+  taskStore.setDrainTask(task)
+  console.log('目前工作篮的任务的名字是',taskStore.drainTask.taskName);
+})
 </script>
 
 <style scoped>

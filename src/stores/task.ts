@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import { getTask,getAllTaskByBasketId,addTask, updateTaskDeadline,deleteTask, updateTaskRemark } from "@/api/task";
 import type { Task } from "@/types/type";
-
+import { useBasketStore } from "@/stores/basket";
+const basketStore = useBasketStore()
 // 主要用于控制全局共享组件的状态
 // 方便与sidebar共享信息
 
-export const useTaskStore = defineStore('taskStore', {
+export const useTaskStore = defineStore('taskStore',{
   state: () => ({
     task:<Task>{
       taskId:-1,
@@ -20,6 +21,8 @@ export const useTaskStore = defineStore('taskStore', {
     },
     // 用于放置新建任务时的临时数据
     deadline:'',
+    // 放置当前进入工作篮的一项任务：
+    drainTask:<Task>{},
   }),
   actions: {
     // 清空时间选择器的 deadline
@@ -67,7 +70,7 @@ export const useTaskStore = defineStore('taskStore', {
       this.task.remark = remark;
     },
     // 传入整个task
-    setTask(task) {
+    setTask(task:Task) {
       this.task= task
     },
     // 与后端同步,更新当前的task
@@ -86,6 +89,26 @@ export const useTaskStore = defineStore('taskStore', {
     },
     getTask() {
       return this.task;
+    },
+    // 处理头脑风暴的工作：
+    // 头脑风暴的Task:
+    setDrainTask(drainTask:Task) {
+      this.drainTask = drainTask
+    },
+    resetDrainTask(){
+      this.drainTask=<Task>{}
+    }
+    ,
+    async deleteDrainTask(task){
+      try {
+        const res = await deleteTask(task)
+        if(res.status%2 ===1) {
+          this.resetDrainTask()
+          return true
+        }
+      } catch (error) {
+        console.error('通过basketId获取所有任务失败', error);
+      }
     },
   },
 });

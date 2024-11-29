@@ -63,7 +63,7 @@ onMounted( ()=>{
 // }
 // const importanceBasket=ref<ImportanceBasket>({type:1,basketName:'重要'})
 const importanceName = ref('重要')
-async function showImportanceView(){
+function showImportanceView(){
       router.push({
         name: 'importance',
         params: {
