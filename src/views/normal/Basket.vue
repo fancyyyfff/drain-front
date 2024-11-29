@@ -32,9 +32,9 @@ const taskStore= useTaskStore()
 
 onMounted(()=>{
   console.log('Basket.vue加载了')
-  loadTasks(route.params.basketId)
-  // 后期删掉：
-  frontInitData(route.params.basketId)
+  // loadTasks(route.params.basketId)
+  // // 后期删掉：
+  // frontInitData(route.params.basketId)
   // taskStore.frontInitData(route.params.type)
 })
 
@@ -57,24 +57,49 @@ async function loadTasks(basketId) {
   }
 }
 
-// 监听 currentBasketId 的变化
-// watch(()=>basketStore.currentBasketId, (newBasketId) => {
-//   loadTasks(newBasketId); // 在路由键变化时加载任务
-//   // 后期不要：
-//   frontInitData(newBasketId)
-// });
 
 watch(()=>route.params,async(newParams)=>{
   const type=Number(newParams.type)
+  const basketId = Number(newParams.basketId)
   if (!isNaN(type) && type === IMPORTANCE) {
-    console.log('进入这里了');
-    // try {
-    //   const res = await getAllStar()
-
-    // } catch (error) {
-    //   console.error('通过basketId获取所有任务失败', error);
-    // }
-
+    console.log('进入到星标任务模块');
+    // 后期不要：
+    tasks.value=[
+    {
+        taskId:6,
+        taskName:'完成任务管理模块',
+        star:1,
+        isFinish:0,
+        basketId:3,//可以找到对应的basket
+        remark:'开始放好伪数据，记得发送请求',//备注
+        deadline:'',
+        createTime:'',
+        isDrain:1,
+      },
+      {
+        taskId:7,
+        taskName:'完成头脑风暴模块',
+        star:1,
+        isFinish:0,
+        basketId:3,//可以找到对应的basket
+        remark:'开始放好伪数据，记得发送请求',//备注
+        deadline:'',
+        createTime:'',
+        isDrain:1,
+      },
+    ]
+    try {
+      const res = await getAllStar()
+      if(res.status%2===1) {
+        tasks.value = res.data
+      }
+    } catch (error) {
+      console.error('获取所有星标任务失败', error);
+    }
+  }else {
+    loadTasks(basketId);
+    // 后期不要：
+    frontInitData(basketId)
   }
 },
 { immediate: true }) // 如果你希望在组件挂载时立即执行一次监听逻辑)
@@ -119,7 +144,7 @@ function frontInitData(basketId) {
           taskName:'30号周六项目提交',
           star:0,
           isFinish:0,
-          basketId:9,//可以找到对应的basket
+          basketId:1,//可以找到对应的basket
           remark:'开始放好伪数据，记得发送请求',//备注
           deadline:'',
           createTime:'',
@@ -140,7 +165,7 @@ function frontInitData(basketId) {
           isDrain:1,
         },
       ]
-      }else if(basketId === 1) {
+      }else if(basketId === 3) {
 
       tasks.value = [
         {
@@ -148,7 +173,7 @@ function frontInitData(basketId) {
         taskName:'完成任务管理模块',
         star:1,
         isFinish:0,
-        basketId:6,//可以找到对应的basket
+        basketId:3,//可以找到对应的basket
         remark:'开始放好伪数据，记得发送请求',//备注
         deadline:'',
         createTime:'',
@@ -159,7 +184,7 @@ function frontInitData(basketId) {
         taskName:'完成头脑风暴模块',
         star:1,
         isFinish:0,
-        basketId:7,//可以找到对应的basket
+        basketId:3,//可以找到对应的basket
         remark:'开始放好伪数据，记得发送请求',//备注
         deadline:'',
         createTime:'',
@@ -173,7 +198,7 @@ function frontInitData(basketId) {
           taskName:'录制视频',
           star:0,
           isFinish:0,
-          basketId:11,//可以找到对应的basket
+          basketId:4,//可以找到对应的basket
           remark:'项目测试通过后',//备注
           deadline:'',
           createTime:'',
@@ -184,7 +209,7 @@ function frontInitData(basketId) {
           taskName:'录制视频',
           star:0,
           isFinish:0,
-          basketId:11,//可以找到对应的basket
+          basketId:4,//可以找到对应的basket
           remark:'项目测试通过后',//备注
           deadline:'',
           createTime:'',
@@ -199,7 +224,7 @@ function frontInitData(basketId) {
           taskName:'路演',
           star:0,
           isFinish:0,
-          basketId:13,//可以找到对应的basket
+          basketId:5,//可以找到对应的basket
           remark:'',//备注
           deadline:'',
           createTime:'',
@@ -213,50 +238,13 @@ function frontInitData(basketId) {
           taskName:'总结过去,展望未来',
           star:0,
           isFinish:0,
-          basketId:12,//可以找到对应的basket
+          basketId:6,//可以找到对应的basket
           remark:'项目测试通过后',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
         },
       ]
-      }else {
-        // 星标任务没有basketId
-        tasks.value = [
-        {
-          taskId:1,
-          taskName:'完成创建Task',
-          star:0,
-          isFinish:0,
-          basketId:1,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,//是否可以被加入到头脑风暴
-        },
-        {
-          taskId:2,
-          taskName:'实现删除任务',
-          star:0,
-          isFinish:0,
-          basketId:2,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-        {
-          taskId:3,
-          taskName:'实现移动任务',
-          star:0,
-          isFinish:0,
-          basketId:3,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
-          createTime:'',
-          isDrain:1,
-        },
-        ]
       }
 }
 
