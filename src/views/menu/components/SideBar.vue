@@ -1,7 +1,7 @@
 <template>
   <div v-if="sideBarStore.render">
   <!-- 侧边栏 -->
-  <aside :class="{ 'sidebar-open': sideBarStore.sidebarOpen }" class="sidebar" @click="sideBarStore.toggleSidebar">
+  <aside :class="{ 'sidebar-open': sideBarStore.sidebarOpen }" class="sidebar">
 
 
        <header class="sidebar-header">
