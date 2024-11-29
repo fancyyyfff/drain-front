@@ -3,13 +3,7 @@ import { getAllBaskets } from "@/api/basket"; // 假设接口名为 getUserBaske
 import { useUserStore } from "@/stores/user";
 import { addTask,updateTaskBasket,getTask } from "@/api/task";
 import { IMPORTANCE } from "@/const/type";
-
-// 定义 Basket 接口（可选）
-interface RouteBasket {
-  type:number;
-  basketId: number|null;
-  basketName: string|null;
-}
+import type { Basket } from "@/types/type";
 // 主要的作用：获取当前用户下的每个basketId对应的basketName,
 export const useBasketStore = defineStore("basket", {
   state: () => ({
@@ -45,6 +39,39 @@ export const useBasketStore = defineStore("basket", {
         basketName: '以后可能会做',
       },
   ],
+  // 移动项目
+  moveItems:<Basket[]>[
+    {
+      type:2,
+      basketId: 1,
+      basketName: '截至日期',
+    },
+    {
+      type:3,
+      basketId: 2,
+      basketName: '多步骤任务',
+    },
+    {
+      type:0,
+      basketId: 3,
+      basketName: '马上行动',
+    },
+    {
+      type:0,
+      basketId: 4,
+      basketName: '工作篮',
+    },
+    {
+      type:0,
+      basketId: 5,
+      basketName: '委托他人',
+    },
+    {
+      type:0,
+      basketId: 6,
+      basketName: '以后可能会做',
+    },
+  ],
   // 当前的basketId，随路由变化而变化
   currentBasketId:-1,
   }),
@@ -55,11 +82,16 @@ export const useBasketStore = defineStore("basket", {
     // 设置currentBasketId
     setCurrentBasketId(currentBasketId){
       this.currentBasketId=currentBasketId
+      this.updateMoveItems()
     },
     // 前端模拟：获取所有任务:
     getBasketList(){
       return this.basketList
 
+    },
+    // 过滤出currentBasketId的
+    updateMoveItems() {
+      this.moveItems = this.basketList.filter(item => item.basketId !== this.currentBasketId);
     },
     // - 对baskets的增删改操作
     // 初始渲染所有的篮子
@@ -80,6 +112,10 @@ export const useBasketStore = defineStore("basket", {
 
   },
   getters: {
+    // 获取moveItems，供Vue组件使用
+    getMoveItems(state) {
+      return state.moveItems;
+    },
     // 根据 type 获取对应的 basketId
     getbasketIdBytype: (state) => (type) => {
       const basket = state.basketList.find((b) => b.type === type);

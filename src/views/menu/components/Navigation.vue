@@ -117,7 +117,7 @@ async function showImportanceView(){
 }
 
 /* 设置鼠标悬停时的样式 */
-.nav-link:hover {
+.nav-item:hover {
   background-color: rgba(163, 163, 116, 0.451);
 }
 

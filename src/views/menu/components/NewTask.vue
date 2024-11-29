@@ -6,7 +6,7 @@
             </div>
             <div class="new-task-input-wrap" v-if="showInput">
               <div class="task-tick"></div>
-               <input type="text" v-model="newTaskInputValue" class="taskInput dialog-input" ref="taskInput" @keyup.enter="createNewTask"
+               <input type="text" v-model="newTaskInputValue" class="taskInput dialog-input" ref="taskInput" @keyup.enter="toCreateNewTask"
                @blur="closeInput" @input="sendSlotClock">
                <slot name="right-clock"></slot>
             </div>
@@ -16,12 +16,15 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
-import { inputEmits } from "element-plus";
-import { fa } from "element-plus/es/locales.mjs";
 import { ref,watch,nextTick,computed } from "vue";
 import { useRoute } from "vue-router";
 import { useTaskStore } from "@/stores/task";
+import { IMPORTANCE,DDL } from '@/const/type';
+import { useBasketStore } from '@/stores/basket';
+import { createNewTask } from "@/api/task";
+import dayjs from 'dayjs';
 
+const basketStore= useBasketStore()
 const taskStore= useTaskStore()
 const route = useRoute()
 const showInput = ref(false)
@@ -29,40 +32,46 @@ const showP = ref(true)
 const newTaskInputValue = ref('')
 const taskInput = ref<HTMLInputElement | null>(null);
 
-const currenttype = computed(() => route.params.type as string || '');
+const currentType = computed(() => Number(route.params.type));
+const currentDeadline = computed(()=>taskStore.deadline)
+const currentBasketId = computed(()=>basketStore.currentBasketId)
+
 // 点击新建任务
 const onClickNew = ()=>{
   showInput.value=true
   showP.value=false
 }
 
-function createNewTask (){
+async function toCreateNewTask (){
   if(newTaskInputValue.value.trim()===''){
     return
   }
   let taskName=newTaskInputValue.value
-  let basketId=-1
-  let deadline='' //默认 ''
-  const task = {taskName,basketId,deadline}
-   // 获取当前路由键，避免依赖计算属性
-   const type = route.params.type as string || '';
+  let deadline=currentDeadline.value
   // 处理ddl的新建任务
-  if( type==='ddl') {
-      if(taskStore.deadline) {
-        task.deadline=taskStore.deadline
-        emitter.emit('createNewTask',task)
-        // 清空，实现复用
-        taskStore.deadline=''
-        newTaskInputValue.value = ''; // 清空输入框
-        return
+  if( currentType.value===DDL) {
+      if(deadline) {
+        deadline=currentDeadline.value
       }else {
-        alert('DDL清单必须要有截至时间设定哦！')
-        console.error('DDL清单添加任务时没有截至时间设定')
-        return
+        const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+        console.log("currentDateTime",currentDateTime);
+        deadline=currentDateTime
       }
-    }else {
-        emitter.emit('createNewTask',task)
+      
+      // 清空，实现复用
+      taskStore.clearSideBarDeadline()
+  }
+  const task = {taskName:newTaskInputValue.value,basketId:currentBasketId,deadline:deadline}
+  try {
+    const res = await createNewTask(task)
+    if(res.status %2===1) {
+      emitter.emit('createNewTask',res.data)
     }
+  } catch (error) {
+    console.error('通过basketId获取所有任务失败', error);
+  }
+  // 后期删掉：
+  emitter.emit('createNewTask',task)
 
   newTaskInputValue.value = ''; // 清空输入框
 }

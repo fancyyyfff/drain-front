@@ -39,15 +39,10 @@ export interface Task {
   isDrain: 0 | 1 ;         // isDrain 为字面量类型 0 或 1
 }
 
-// 可访问项目首页
-export interface Global {
-  status:1006,//未登录
-
-
-}
 // ====篮子
 export interface Basket {
-
+  type:number;
+  basketId: number|null;
+  basketName: string|null;
 }
-
 

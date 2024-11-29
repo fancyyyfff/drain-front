@@ -87,7 +87,8 @@ import { addTask } from "@/api/task";
 import  DdlSideBar  from "@/views/menu/components/DdlSideBar.vue";
 import { useSideBarStore } from '@/stores/ui';
 import { useUserStore } from "@/stores/user";
-import { VIP } from "@/const/type";
+import { VIP,DDL } from "@/const/type";
+
 interface Task {
   taskId: string;
   taskName: string;
@@ -113,7 +114,7 @@ const onClickClear = () => {
 // 动态计算当前的新建任务组件
 const currentNewTask = computed(()=>{
   console.log("新建任务type",route.params.type)
-  return route.params.type==='ddl'?DdlNewTask:NewTask
+  return Number(route.params.type)===DDL?DdlNewTask:NewTask
 }
 )
 

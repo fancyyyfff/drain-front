@@ -1,7 +1,7 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
   <!-- <Tick v-model="task.isFinish" icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/> -->
-  <Tick icon-name="checkmark-done"  :taskId="task.id" v-model:isFinish="task.isFinish" @click.stop/>
+  <Tick icon-name="checkmark-done"  :taskId="task.taskId" v-model:isFinish="task.isFinish" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
   <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
   <div class="moveTo-warp" @click.stop>
@@ -15,8 +15,8 @@
 
       <template #dropdown >
       <el-dropdown-menu >
-        <template v-for="moveItem in moveItems" :key="moveItem.name">
-          <el-dropdown-item >{{ moveItem.name }}</el-dropdown-item>
+        <template v-for="moveItem in moveItems" :key="moveItem.basketId">
+          <el-dropdown-item @click="toMove">{{ moveItem.basketName }}</el-dropdown-item>
         </template>
       </el-dropdown-menu>
     </template>
@@ -31,9 +31,9 @@
 
 
 <script setup lang="ts" name="">
-import { ref,reactive,computed,watch, onMounted, onUnmounted } from 'vue'
+import { ref,computed,watch,  } from 'vue'
 import emitter from "@/mitt";
-import { deleteTask,getTask,updateTaskName,updateTaskFinish } from "@/api/task";
+import { deleteTask,getTask,updateTaskName,updateTaskFinish,updateTaskBasketId, updateTaskDeadline } from "@/api/task";
 import Tick from '@/components/Tick.vue';
 // import { tourStepEmits } from 'element-plus/lib/components/index.js';
 import Star from "@/components/Star.vue";
@@ -42,16 +42,30 @@ import { useSideBarStore } from "@/stores/ui";
 import { ArrowDown } from '@element-plus/icons-vue'
 import { useRoute } from "vue-router";
 import type{ Task } from "@/types/type";
+import { useBasketStore } from "@/stores/basket";
+import type{ Basket } from "@/types/type";
+import { DDL } from "@/const/type";
+import dayjs from 'dayjs';
+
+const basketStore = useBasketStore()
 const taskStore=useTaskStore()
 const sideBarStore = useSideBarStore()
 const route = useRoute()
  // 使用 defineProps 来接收来自父组件Basket.vue的 task 对象
-const {task}=defineProps({
+const {task,moveItems}=defineProps({
   task: {
     type: Object,
     required: false
+  },
+  moveItems:{
+    type: Array,  // 如果moveItems是一个数组
+    required: true,  // 如果它是必传的，可以设置为true
+    default: () => <Basket[]>[]  // 给moveItems一个默认值，防止没有传值时报错
   }
 })
+
+// 定义自定义事件
+const emit = defineEmits();
 
 // const finish = ref(false);
 const drawer = ref(false)
@@ -82,24 +96,6 @@ const textStyle = computed(() => {
   };
 });
 
-// async function handleTaskChange (isChecked:boolean)  {
-//   finish.value=isChecked
-//   // == 完成的任务放到最后面：
-//   if(finish.value===true) {
-//     console.log('需要把当前任务的id放到页面渲染数组的最后面')
-//   }
-// }
-
-const moveItems = [
-  {
-    name:'马上行动',
-  },
-  {
-    name:'DDL',
-  }
-]
-
-
 // 控制星星
 const item = ref({
   isStarred: false,
@@ -125,6 +121,34 @@ async function toDeleteTask() {
   } catch (error) {
     console.error('删除任务失败', error);
   }
+}
+
+const newBasketId = ref(-1)
+// 移动任务：
+async function toMove() {
+  // 后期删除：
+  emit('deleteTask',task.taskId)
+  // 修改新的
+  try {
+    if(Number(route.params.type)===DDL){
+      const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+      const res1 = await updateTaskDeadline(task.taskId,currentDateTime)
+      if(res1.status % 2 === 0) {
+        alert('移动失败')
+        return
+      }
+    }
+    const res = await updateTaskBasketId(task.taskId,newBasketId.value)
+    if(res.status%2===1) {
+      // 渲染页面
+      emit('deleteTask',task.taskId)
+      alert('移动成功')
+      return
+    }
+  } catch (error) {
+    console.error('通过basketId获取所有任务失败', error);
+  }
+
 }
 </script>
 

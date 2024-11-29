@@ -3,7 +3,7 @@
 <div class="nav-ul">
     <!-- 循环渲染每个 basket,此时tasks使用的是store的，为了与SideBar共享信息 -->
     <div v-for="task in tasks" :key="task.taskId" class="nav-item">
-      <TaskComponet :task></TaskComponet>
+      <TaskComponet :task :moveItems @deleteTask="handleDeleteTask"></TaskComponet>
     </div>
 </div>
 </template>
@@ -19,7 +19,8 @@ import emitter from '@/mitt';
 import { useTaskStore } from "@/stores/task";
 import type { Task } from "@/types/type";
 import pinia from '@/stores';
-import { IMPORTANCE } from '@/const/type';
+import { IMPORTANCE,DDL } from '@/const/type';
+import type{ Basket } from "@/types/type";
 
 
 // 获取路由参数
@@ -57,10 +58,13 @@ async function loadTasks(basketId) {
   }
 }
 
-
+const moveItems = ref<Basket[]>([])
 watch(()=>route.params,async(newParams)=>{
   const type=Number(newParams.type)
   const basketId = Number(newParams.basketId)
+  // 设置当前的basketId的同时更新移动选项
+  basketStore.setCurrentBasketId(basketId)
+  moveItems.value= basketStore.getMoveItems
   if (!isNaN(type) && type === IMPORTANCE) {
     console.log('进入到星标任务模块');
     // 后期不要：
@@ -102,11 +106,17 @@ watch(()=>route.params,async(newParams)=>{
     frontInitData(basketId)
   }
 },
-{ immediate: true }) // 如果你希望在组件挂载时立即执行一次监听逻辑)
+{ immediate: true }) // 在组件挂载时立即执行一次监听逻辑)
+
+const deadline = computed(()=>taskStore.deadline)
+const currentBasketId = computed(()=>basketStore.currentBasketId)
+const currentType= computed(()=>Number(route.params.type))
 // 新建任务：
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {
   // 新建任务逻辑：
+  tasks.value.unshift(task)
+
 }
 
 
@@ -206,7 +216,7 @@ function frontInitData(basketId) {
         },
         {
           taskId:11,
-          taskName:'录制视频',
+          taskName:'路演',
           star:0,
           isFinish:0,
           basketId:4,//可以找到对应的basket
@@ -221,7 +231,7 @@ function frontInitData(basketId) {
         tasks.value = [
           {
           taskId:16,
-          taskName:'路演',
+          taskName:'拿快递',
           star:0,
           isFinish:0,
           basketId:5,//可以找到对应的basket

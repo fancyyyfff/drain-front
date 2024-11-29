@@ -4,6 +4,17 @@ import instance from '@/http/index'
 // 通过路由名称获取对应任务列表下所有的任务，路由名称是字符串类型
 // 需要结果：数组
 
+
+export const createNewTask = (task) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/tasks',
+      method:'GET',
+      data:task,
+  })
+}
+
+
 // ============get
 export const getAllTaskByBasketId = (basketId:number) =>{
     // const { id } = data
@@ -49,6 +60,18 @@ export const addTask = (task) =>{
 }
 
 // ============update
+export const updateTaskBasketId = (taskId,basketId) =>{
+  // const { id } = data
+  return instance({
+      url:'/task/update/basketId',
+      method:'POST',
+      data:{
+        taskId,
+        basketId
+      }
+  })
+}
+
 export const updateTaskFinish = (taskId) =>{
   // const { id } = data
   return instance({
