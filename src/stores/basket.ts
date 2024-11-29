@@ -6,7 +6,7 @@ import { IMPORTANCE } from "@/const/type";
 
 // 定义 Basket 接口（可选）
 interface RouteBasket {
-  type:string|null;
+  type:number;
   basketId: number|null;
   basketName: string|null;
 }

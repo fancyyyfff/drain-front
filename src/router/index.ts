@@ -33,12 +33,20 @@ const routes = [
       name:'basket',
       component:()=>import('@/views/normal/Basket.vue'),
       props:true
+      // props: route => {
+      //   const type = Number(route.params.type);
+      //   return { type: !isNaN(type) ? type : 0 };  // 如果转换失败，给一个默认值
+      // }
     },
     {
-      path:'/basket/:basketName',
+      path:'/basket/:type/:basketName',
       name:'importance',
       component:()=>import('@/views/normal/Basket.vue'),
       props:true
+      // props: route => {
+      //   const type = Number(route.params.type);
+      //   return { type: !isNaN(type) ? type : 0 };  // 如果转换失败，给一个默认值
+      // }
     },
   ]
 },

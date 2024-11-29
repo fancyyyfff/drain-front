@@ -68,6 +68,7 @@ async function showImportanceView(){
       router.push({
         name: 'importance',
         params: {
+          type:IMPORTANCE,
           basketName: importanceName.value
         }
       })

@@ -14,12 +14,13 @@ import { routeLocationKey, useRoute } from 'vue-router';
 import TaskComponet from "@/views/menu/components/Task.vue";
 import { useBasketStore } from '@/stores/basket';
 import { isNumber } from 'element-plus/es/utils/types.mjs';
-import { getAllTaskByBasketId,addTask } from "@/api/task";
+import { getAllTaskByBasketId,addTask, getAllStar } from "@/api/task";
 import emitter from '@/mitt';
 import { useTaskStore } from "@/stores/task";
 import type { Task } from "@/types/type";
 import pinia from '@/stores';
-import { emit } from 'process';
+import { IMPORTANCE } from '@/const/type';
+
 
 // 获取路由参数
 const route = useRoute();
@@ -40,7 +41,7 @@ onMounted(()=>{
 // 放置数据的地方
 const tasks = ref<Task[]>([])
 // 点击星标任务就让任务变成这个所有的allStar
-emit.on('allStar',handleAllStar)
+emitter.on('allStar',handleAllStar)
 function handleAllStar(allStar) {
   tasks.value=allStar
 }
@@ -57,12 +58,26 @@ async function loadTasks(basketId) {
 }
 
 // 监听 currentBasketId 的变化
-watch(()=>basketStore.currentBasketId, (newBasketId) => {
-  loadTasks(newBasketId); // 在路由键变化时加载任务
-  // 后期不要：
-  frontInitData(newBasketId)
-});
+// watch(()=>basketStore.currentBasketId, (newBasketId) => {
+//   loadTasks(newBasketId); // 在路由键变化时加载任务
+//   // 后期不要：
+//   frontInitData(newBasketId)
+// });
 
+watch(()=>route.params,async(newParams)=>{
+  const type=Number(newParams.type)
+  if (!isNaN(type) && type === IMPORTANCE) {
+    console.log('进入这里了');
+    // try {
+    //   const res = await getAllStar()
+
+    // } catch (error) {
+    //   console.error('通过basketId获取所有任务失败', error);
+    // }
+
+  }
+},
+{ immediate: true }) // 如果你希望在组件挂载时立即执行一次监听逻辑)
 // 新建任务：
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {
