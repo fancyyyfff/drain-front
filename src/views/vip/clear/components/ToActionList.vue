@@ -12,7 +12,7 @@ import emitter from "@/mitt";
 
 
 import { ref } from "vue";
-import { createNewTask } from "@/api/task";
+import { addTask } from "@/api/task";
 import { useTaskStore } from "@/stores/task";
 import { useBasketStore } from "@/stores/basket";
 const taskStore = useTaskStore()
@@ -29,7 +29,7 @@ async function handleOk() {
       deadline:''
     }
     try {
-      const res= await createNewTask(task)
+      const res= await addTask(task)
       if(res.status % 2 === 1) {
         // 删除进入工作篮的任务
         const deleteTask = {

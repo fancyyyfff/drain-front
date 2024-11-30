@@ -12,18 +12,18 @@
     </el-row>
 
   <div class="text">
-    <div class="name">{{ userStore.user.nickName }}</div>
-    <div class="phone">{{ userStore.user.userName }}</div>
+    <div class="name">{{ nickname }}</div>
+    <div class="phone">{{ username}}</div>
   </div>
 
 </div>
 </template>
 
 <script setup lang="ts" name="">
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs,ref, onMounted } from 'vue'
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
-import { logout } from "@/api/user";
+import { logout,getUserInfo } from "@/api/user";
 
 const router = useRouter()
 const userStore= useUserStore()
@@ -33,18 +33,38 @@ const state = reactive({
 
 })
 
+const username = ref('');
+const nickname = ref('');
+
+onMounted(async() => {
+  try{
+    const res = await getUserInfo()
+    if(res.status%2===1)  {
+      nickname.value= res.data.nickname
+      username.value= res.data.username
+    }
+
+  }catch(error){
+    console.error('获取用户信息失败',error)
+  }
+
+})
+
+
+
 async function toLogout() {
   userStore.resetUser()
   try {
     const res = await logout()
     if(res.status%2 ===1) {
+      alert('退出登录成功')
       router.push('login')
     }
   } catch (error) {
-    console.error('通过basketId获取所有任务失败', error);
+    console.error('退出登录失败', error);
   }
-      // 后期删掉`
-      router.push('login')
+  // // 后期删掉`
+  // router.push('login')
 }
 const { circleUrl} = toRefs(state)
 

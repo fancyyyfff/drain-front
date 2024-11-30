@@ -19,10 +19,11 @@ import emitter from "@/mitt";
 import { ref,watch,nextTick,computed } from "vue";
 import { useRoute } from "vue-router";
 import { useTaskStore } from "@/stores/task";
-import { IMPORTANCE,DDL } from '@/const/type';
+import { DDL } from '@/const/type';
 import { useBasketStore } from '@/stores/basket';
-import { createNewTask } from "@/api/task";
+import { addTask } from "@/api/task";
 import dayjs from 'dayjs';
+import type { Task } from "@/types/type";
 
 const basketStore= useBasketStore()
 const taskStore= useTaskStore()
@@ -46,32 +47,29 @@ async function toCreateNewTask (){
   if(newTaskInputValue.value.trim()===''){
     return
   }
-  let taskName=newTaskInputValue.value
+  const taskName=newTaskInputValue.value
   let deadline=currentDeadline.value
   // 处理ddl的新建任务
   if( currentType.value===DDL) {
-      if(deadline) {
-        deadline=currentDeadline.value
-      }else {
-        const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
-        console.log("currentDateTime",currentDateTime);
-        deadline=currentDateTime
-      }
-      
-      // 清空，实现复用
-      taskStore.clearSideBarDeadline()
+    if(!deadline) {
+      const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
+      console.log("currentDateTime",currentDateTime);
+      deadline=currentDateTime
+    }
+
+    // 清空，实现复用
+    taskStore.clearSideBarDeadline()
   }
-  const task = {taskName:newTaskInputValue.value,basketId:currentBasketId,deadline:deadline}
+  const task = {taskName, basketId:currentBasketId.value, deadline:deadline}
   try {
-    const res = await createNewTask(task)
-    if(res.status %2===1) {
-      emitter.emit('createNewTask',res.data)
+    const res = await addTask(task)
+    if(res.status % 2===1) {
+
+      emitter.emit('createNewTask', task)
     }
   } catch (error) {
     console.error('通过basketId获取所有任务失败', error);
   }
-  // 后期删掉：
-  emitter.emit('createNewTask',task)
 
   newTaskInputValue.value = ''; // 清空输入框
 }

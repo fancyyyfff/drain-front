@@ -194,14 +194,6 @@ const callAI =()=>{
     }
 }
 
-// // 检测路由变化，把sideBar关闭
-// watch(() => route.params, (newRoute) => {
-//   // 更新全局的basketId
-//   basketStore.setCurrentBasketId(newBasketId)
-//   const sideBarStore=useSideBarStore()
-//   sideBarStore.render=false
-// });
-
 </script>
 
 <style lang="scss" scoped>

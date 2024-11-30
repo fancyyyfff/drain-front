@@ -10,11 +10,10 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
-import type{ Basket } from "@/types/type";
 import dayjs from 'dayjs';
 import DateTimePicker from "@/components/DateTimePicker.vue";
 import { ref,computed } from "vue";
-import { addTask, createNewTask } from "@/api/task";
+import { addTask } from "@/api/task";
 import { useTaskStore } from "@/stores/task";
 import { useBasketStore } from "@/stores/basket";
 const taskStore = useTaskStore()
@@ -44,7 +43,7 @@ async function handleOk() {
       deadline:deadline
     }
     try {
-      const res= await createNewTask(task)
+      const res= await addTask(task)
       if(res.status % 2 === 1) {
         // 删除进入工作篮的任务
         const deleteTask = {

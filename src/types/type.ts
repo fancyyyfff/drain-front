@@ -28,15 +28,15 @@ export interface Manage {
 }
 
 export interface Task {
-  taskId: number;
-  taskName: string;       // taskName 为字符串
-  star: number;           // star 为数字
-  isFinish: 0 | 1 ;        // isFinish 为字面量类型 0 或 1
+  taskId: number|null;
+  taskName: string|null;       // taskName 为字符串
+  star: number|null;           // star 为数字
+  isFinish: number|null;        // isFinish 为字面量类型 0 或 1
   basketId: number | null; // basketId 可以是数字或 null
-  remark: string;         // remark 为字符串
-  deadline: string;       // deadline 为字符串
-  createTime: string;     // createTime 为字符串
-  isDrain: 0 | 1 ;         // isDrain 为字面量类型 0 或 1
+  remark: string|null;         // remark 为字符串
+  deadline: string|null;       // deadline 为字符串
+  createTime: string|null;     // createTime 为字符串
+  isDrain: number|null;         // isDrain 为字面量类型 0 或 1
 }
 
 // ====篮子

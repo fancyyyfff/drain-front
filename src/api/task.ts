@@ -5,16 +5,6 @@ import instance from '@/http/index'
 // 需要结果：数组
 
 
-export const createNewTask = (task) =>{
-  // const { id } = data
-  return instance({
-      url:'/task/tasks',
-      method:'GET',
-      data:task,
-  })
-}
-
-
 // ============get
 export const getAllTaskByBasketId = (basketId:number) =>{
     // const { id } = data
@@ -155,7 +145,7 @@ export const getDDLTask = () =>{
 })
 }
 
-export const getImportanTask = () =>{
+export const getImportantTask = () =>{
 
   return instance({
     url:'/task/getImportanTask',

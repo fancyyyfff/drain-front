@@ -13,11 +13,10 @@ interface UserState {
 
 export const useUserStore = defineStore('userStore', {
   state: ()=> ({
-    user:<UserState>{
-      userId: null,
+    user:<UserState><unknown>{
       role: 0,
-      userName:null,
-      nickName:null,
+      username: null,
+      nickname: null,
     },
 
   }),

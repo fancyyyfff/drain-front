@@ -34,13 +34,10 @@ import { reactive, ref } from "vue";
 import { login } from "@/api/user";
 import { useRouter } from "vue-router";
 import type { User } from "@/types/type";
-import { useUserStore } from "@/stores/user";
 import { setCookie,getCookie,clearCookie } from "@/http/cookie";
 import  Drain  from "@/views/first/components/Drain.vue";
 import { getUserInfo } from "@/api/user";
-import { MANAGER, NORMAL } from "@/const/type";
 
-const userStore =useUserStore()
 const router = useRouter()
 // const username = ref('')
 // const password = ref('')
@@ -51,7 +48,7 @@ const user = reactive<User>({
 
 async function toLogin() {
   try {
-    const res = await login(user);
+    let res = await login(user);
     console.log("登录响应", res);
 
     if (res.status === 1001) {
@@ -62,18 +59,13 @@ async function toLogin() {
       setCookie(tokenName, tokenValue);
 
       // --调用userInfo接口，判断role：
-      const res1 = await getUserInfo()
-      if(res1.status===1001) {
-        const {userId,username,nickname,role} = res.data
-        const user = {
-          userId:userId,
-          username:username,
-          nickname:nickname,
-          role:role,
-        }
-        userStore.setUser(user)
-        if(role===MANAGER) {
-          router.push('manager')
+      res = await getUserInfo()
+      if(res.status===1001) {
+        const {nickname , role} = res.data
+
+        if(role===99) {
+          router.push('/manager')
+          alert('欢迎管理员' + nickname + '登录')
         }else {
           router.push('/menu')
           alert('登陆成功')

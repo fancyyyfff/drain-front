@@ -9,7 +9,7 @@
 
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
-import { onUnmounted,ref } from "vue";
+import { ref } from "vue";
 import { addTask } from "@/api/task";
 
 import { useTaskStore } from "@/stores/task";
@@ -28,7 +28,7 @@ async function handleOk() {
       deadline:''
     }
     try {
-      const res= await createNewTask(task)
+      const res= await addTask(task)
       if(res.status % 2 === 1) {
         // 删除进入工作篮的任务
         const deleteTask = {
