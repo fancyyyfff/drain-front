@@ -1,7 +1,7 @@
 <template>
 <div class="user-wrap">
   <!-- 头像 -->
-   <el-row class="demo-avatar demo-basic" @click="logout">
+   <el-row class="demo-avatar demo-basic" @click="toLogout">
     <el-col :span="12">
       <div class="demo-basic--circle">
         <div class="block">
@@ -22,6 +22,10 @@
 <script setup lang="ts" name="">
 import { reactive, toRefs } from 'vue'
 import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+import { logout } from "@/api/user";
+
+const router = useRouter()
 const userStore= useUserStore()
 const state = reactive({
   circleUrl:
@@ -29,10 +33,18 @@ const state = reactive({
 
 })
 
-function logout() {
-  
-
-
+async function toLogout() {
+  userStore.resetUser()
+  try {
+    const res = await logout()
+    if(res.status%2 ===1) {
+      router.push('login')
+    }
+  } catch (error) {
+    console.error('通过basketId获取所有任务失败', error);
+  }
+      // 后期删掉`
+      router.push('login')
 }
 const { circleUrl} = toRefs(state)
 

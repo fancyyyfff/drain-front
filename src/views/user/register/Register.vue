@@ -24,14 +24,14 @@
     <div class="login-main-item">
       <span class="title">密码</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input"  placeholder="请输入密码" v-model="user.password">
+        <input type="password" class=" user-input password-input"  placeholder="请输入密码" v-model="user.password">
       </div>
     </div>
 
     <div class="login-main-item">
       <span class="title">确认密码</span>
         <div class="input-wrap shine">
-        <input type="text" class=" user-input password-input" placeholder="请再次输入密码" v-model="confirmPassword">
+        <input type="password" class=" user-input password-input" placeholder="请再次输入密码" v-model="confirmPassword">
       </div>
     </div>
 

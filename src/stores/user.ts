@@ -13,7 +13,7 @@ interface UserState {
 
 export const useUserStore = defineStore('userStore', {
   state: ()=> ({
-    user:{
+    user:<UserState>{
       userId: null,
       role: 0,
       userName:null,
@@ -31,6 +31,9 @@ export const useUserStore = defineStore('userStore', {
     setRole(role){
       this.user.role = role
     },
-    
+    resetUser(){
+      this.user=<UserState>{}
+    },
+
   },
 });

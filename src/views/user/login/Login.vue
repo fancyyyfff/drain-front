@@ -78,7 +78,6 @@ async function toLogin() {
           router.push('/menu')
           alert('登陆成功')
         }
-
       }
     } else {
       alert('登录失败');
