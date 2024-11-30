@@ -66,7 +66,7 @@ const routes = [
 {
   path:'/manager',
   name:'manager',
-  component:()=>import('@/views/manager/Manger.vue'),
+  component:()=>import('@/views/manager/Menu.vue'),
 },
 
 ]

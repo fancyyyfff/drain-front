@@ -12,6 +12,7 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "animejs": "^3.2.2",
     "axios": "^1.7.7",
     "clear-brain": "file:",
     "dayjs": "^1.11.13",

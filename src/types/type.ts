@@ -46,3 +46,21 @@ export interface Basket {
   basketName: string|null;
 }
 
+
+// == 管理员页面
+export interface ManageUser {
+  username: string|null;
+  nickname: string|null;
+  createTime: string|null;
+  email:string|null;
+  role:number;
+}
+
+export interface Subscribe {
+  subscribeId:number;
+  userId: number|null;
+  createTime: string|null;
+  deadline:string|null;
+  isFinish:boolean|null;
+  count:number|null;
+}
