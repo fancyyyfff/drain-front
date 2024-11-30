@@ -52,7 +52,6 @@ const currentComponent =ref(components.enter)
 emitter.on('change',(componentName)=>{
   if(typeof componentName === 'string' && componentName in components){
     currentComponent.value=components[componentName as keyof typeof components]
-
   }
 })
 

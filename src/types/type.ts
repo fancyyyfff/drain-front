@@ -27,16 +27,17 @@ export interface Manage {
   confirmPassword?:string;
 }
 
+// 获取到的Task类型
 export interface Task {
-  taskId: number|null;
-  taskName: string|null;       // taskName 为字符串
-  star: number|null;           // star 为数字
-  isFinish: number|null;        // isFinish 为字面量类型 0 或 1
-  basketId: number | null; // basketId 可以是数字或 null
-  remark: string|null;         // remark 为字符串
-  deadline: string|null;       // deadline 为字符串
-  createTime: string|null;     // createTime 为字符串
-  isDrain: number|null;         // isDrain 为字面量类型 0 或 1
+  taskId: number;
+  taskName: string | null;
+  star: number | null;
+  isFinish: number | null;
+  basketId: number|null;
+  remark: string | null;
+  deadline: string | null;
+  createTime: string | null;
+  isDrain: number | null;
 }
 
 // ====篮子

@@ -15,12 +15,10 @@ import { useBasketStore } from '@/stores/basket';
 import { getAllTaskByBasketId,addTask, getAllStar } from "@/api/task";
 import emitter from '@/mitt';
 import { useTaskStore } from "@/stores/task";
-import type { Task } from "@/types/type";
 import pinia from '@/stores';
 import { IMPORTANCE,DDL } from '@/const/type';
-import type{ Basket } from "@/types/type";
-
-
+import type{ Basket,Task } from "@/types/type";
+import { resToTasks } from "@/hooks/useTask";
 // 获取路由参数
 const route = useRoute();
 const { type, basketName } = defineProps(['type', 'basketName','basketId']);
@@ -30,15 +28,19 @@ const basketStore= useBasketStore()
 const taskStore= useTaskStore()
 
 // 放置数据的地方
-const tasks = ref<Task[]>([])
+// 一定是
+const {tasks,setTasksData} =resToTasks()
+// const tasks = ref<Task[]>([])
+
 async function loadTasks(basketId) {
   try {
     const res = await getAllTaskByBasketId(basketId)
     if(res.status===2001) {
-      tasks.value = res.data
+      // 直接设置返回数据的值存储在tasks当中，处理了undefind和null
+      setTasksData(res.data)
     }
   } catch (error) {
-    console.error('通过basketId获取所有任务失败', error);
+    console.error('渲染数据出错了', error);
   }
 }
 
@@ -72,21 +74,11 @@ watch(()=>route.params,async(newParams)=>{
         isDrain:1,
       },
     ]
-
-    const basketId = Number(newParams.basketId)
-    if(basketId) {
-        // 设置当前的basketId的同时更新移动选项
-        basketStore.setCurrentBasketId(basketId)
-    }else {
-      // 星标任务：
-      basketStore.setCurrentBasketId(-1)
-    }
-    moveItems.value= basketStore.getMoveItems
     // 后期保留
     try {
       const res = await getAllStar()
       if(res.status%2===1) {
-        tasks.value = res.data
+        setTasksData(res.data)
       }
 
     } catch (error) {
@@ -106,10 +98,6 @@ watch(()=>route.params,async(newParams)=>{
 },
 { immediate: true }) // 在组件挂载时立即执行一次监听逻辑)
 
-const deadline = computed(()=>taskStore.deadline)
-// const currentBasketId = computed(()=>basketStore.currentBasketId)
-const currentBasketId = computed(()=>route.params.basketId)
-const currentType= computed(()=>Number(route.params.type))
 // 新建任务：
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {
@@ -117,7 +105,6 @@ async function handleCreateNewTask(task) {
   tasks.value.unshift(task)
 
 }
-
 
 // 删除任务
 function handleDeleteTask(taskId) {
@@ -132,11 +119,6 @@ emitter.on('deleteTask',handleDeleteTask)
 onUnmounted(() => {
   emitter.off('deleteTask', handleDeleteTask); // 组件销毁时解绑事件
 });
-
-// 移动任务v                    v v  bbbb
-// emitter.on('moveTask',)
-
-// 设置选中任务
 
 // 后期删掉：前端模拟渲染当前页面的数据
 
