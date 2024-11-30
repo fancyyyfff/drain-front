@@ -1,14 +1,14 @@
 <template>
   <div class="manager-warp">
     <h1  style="text-align: center;">订单管理</h1>
-  <el-table style="width: 100%" class="shine table-warp">
+  <el-table  :data="tableData" style="width: 100%" class="shine table-warp">
     <el-table-column type="index" width="50" />
     <el-table-column label="订阅号" prop="subscribeId" />
     <el-table-column label="用户Id" prop="userId" />
     <el-table-column label="订阅时间" prop="createTime" />
     <el-table-column label="订阅截至" prop="deadline" />
     <el-table-column label="是否完成" prop="isFinish" />
-    <el-table-column label="数量" prop="count" />
+    <el-table-column label="金额（元）" prop="count" />
     <el-table-column align="right">
     </el-table-column>
   </el-table>
