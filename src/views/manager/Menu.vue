@@ -36,7 +36,7 @@
 
 <script setup lang="ts" name="">
 import { useRouter,useRoute } from 'vue-router';
-import { ref,reactive, onMounted,watch,computed } from "vue";
+import { ref,shallowRef } from "vue";
 import UserInfo from "@/views/menu/components/UserInfo.vue";
 import { Search } from '@element-plus/icons-vue'
 import emitter from "@/mitt";
@@ -63,16 +63,15 @@ const components={
   'manageUser':MangeUser,
   'subscribe':Subscribe,
 }
-const currentComponent = ref(components.manageUser)
-emitter.on('changeComponents',changeComponents)
-function changeComponents(component) {
-  if(component==='manageUser') {
-    currentComponent.value=components.manageUser
-  }else {
-    currentComponent.value=components.subscribe
-  }
+const currentComponent = shallowRef(components.manageUser);
 
-}
+emitter.on('changeComponents', (componentName) => {
+  if (componentName === 'manageUser') {
+        currentComponent.value = components.manageUser
+      } else if (componentName === 'subscribe') {
+        currentComponent.value = components.subscribe
+      }
+});
 
 </script>
 
