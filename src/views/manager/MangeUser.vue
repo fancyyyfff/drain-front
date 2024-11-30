@@ -1,17 +1,17 @@
 <template>
   <div class="manager-warp">
     <h1  style="text-align: center;">用户管理</h1>
-  <el-table style="width: 100%" class="shine table-warp">
+  <el-table :data="tableData" style="width: 100%" class="shine table-warp">
     <el-table-column type="index" width="50" />
     <el-table-column label="用户名" prop="username" />
     <el-table-column label="用户昵称" prop="nickname" />
-    <el-table-column label="注册时间" prop="createTime" />
+    <el-table-column label="注册时间" prop="createdTime" />
     <el-table-column label="邮箱" prop="email" />
     <el-table-column label="角色" prop="role" />
     <el-table-column align="right">
     </el-table-column>
   </el-table>
-</div>
+  </div>
 </template>
 
 <script lang="ts" setup>
