@@ -25,6 +25,9 @@ const inputDeadline = ref('')
 const taskName = ref('')
 let deadline = inputDeadline.value
 async function handleOk() {
+
+  emitter.emit('closeAndTips')
+
   if(taskName) {
     if(deadline) {
         deadline=currentDeadline.value

@@ -224,7 +224,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:1,
           isFinish:0,
           basketId:6,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -235,7 +235,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:1,
           isFinish:0,
           basketId:7,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -249,7 +249,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:9,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -263,7 +263,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:10,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -307,7 +307,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:13,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -335,7 +335,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:1,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,//是否可以被加入到头脑风暴
@@ -346,7 +346,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:2,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -357,7 +357,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:3,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -368,7 +368,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:4,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -379,7 +379,7 @@ export const useTaskStore = defineStore('taskStore', {
           star:0,
           isFinish:0,
           basketId:5,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,

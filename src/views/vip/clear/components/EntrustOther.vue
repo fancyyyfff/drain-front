@@ -19,6 +19,8 @@ const basketStore = useBasketStore()
 
 const taskName = ref('')
 async function handleOk() {
+  emitter.emit('closeAndTips')
+
   if(taskName) {
     const task = {
       basketId:basketStore.basketList[4].basketId,

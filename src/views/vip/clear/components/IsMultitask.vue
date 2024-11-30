@@ -7,7 +7,6 @@
           <button @click="handleProject" class="pretty-btn yes-btn">是</button>
         </div>
 </template>
-emitter.emit('change','project')
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
 
@@ -18,6 +17,9 @@ const taskStore = useTaskStore()
 const basketStore = useBasketStore()
 
 async function handleProject() {
+  // 后期删掉
+  emitter.emit('change','project')
+
     const task = {
       basketId:basketStore.basketList[1].basketId,
       taskName:taskStore.drainTask.taskName,

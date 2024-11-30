@@ -26,7 +26,8 @@ function handleClick() {
   if(userStore.user.role===VIP) {
     emitter.emit('openBrainDialog')
   }else {
-    alert("头脑风暴功能是vip用户独有的哦！欢迎您订阅！");
+    emitter.emit('openOrderMessage')
+    // alert("头脑风暴功能是vip用户独有的哦！欢迎您订阅！");
   }
 }
 </script>

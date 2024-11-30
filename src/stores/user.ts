@@ -31,5 +31,6 @@ export const useUserStore = defineStore('userStore', {
     setRole(role){
       this.user.role = role
     },
+    
   },
 });

@@ -38,3 +38,10 @@ export const getUserInfo = () => {
     method: 'GET',
   });
 };
+
+export const logout = () => {
+  return instance({
+    url: '/user/logout',
+    method: 'POST',
+  });
+};

@@ -1,7 +1,7 @@
 <template>
 <div class="user-wrap">
   <!-- 头像 -->
-   <el-row class="demo-avatar demo-basic">
+   <el-row class="demo-avatar demo-basic" @click="logout">
     <el-col :span="12">
       <div class="demo-basic--circle">
         <div class="block">
@@ -29,6 +29,11 @@ const state = reactive({
 
 })
 
+function logout() {
+  
+
+
+}
 const { circleUrl} = toRefs(state)
 
 </script>

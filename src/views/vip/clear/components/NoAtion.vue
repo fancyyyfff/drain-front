@@ -17,6 +17,8 @@ const taskStore = useTaskStore()
 const basketStore = useBasketStore()
 
 async function handleThought() {
+  emitter.emit('change','thought')
+  
   const task = {
       basketId:basketStore.basketList[5].basketId,
       taskName:taskStore.drainTask.taskName,

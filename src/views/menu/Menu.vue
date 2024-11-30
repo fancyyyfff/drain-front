@@ -162,8 +162,24 @@ emitter.on('openBrainDialog',()=>{
 emitter.on('closeBrainDialog',closeDialog)
 
 emitter.on('closeAndTips',()=>{
+
   closeDialog()
-  successTips()
+  // successTips()
+  // ElMessage({
+  //   dangerouslyUseHTMLString: true,
+  //   // message: '<strong>This is <i>HTML</i> string</strong>',
+  //   message: ' <p>恭喜你！<br><br>又为你大脑减轻了负担！<br><br> 以更轻盈的姿态继续前进吧！</p>',
+  //   type: 'success',
+  //   plain: true,
+  // })
+  ElMessage({
+    message: '恭喜你！又为你大脑减轻了负担！以更轻盈的姿态继续前进吧！',
+    grouping: true,
+    type: 'success',
+  })
+  // alert('恭喜你！又为你大脑减轻了负担！以更轻盈的姿态继续前进吧！')
+
+
 })
 
 // ===
@@ -175,7 +191,8 @@ const callAI =()=>{
         name: "ai"
       });
     } else {
-      alert("ai功能是vip用户独有的哦！欢迎您订阅！");
+    emitter.emit('openOrderMessage')
+      // alert("ai功能是vip用户独有的哦！欢迎您订阅！");
     }
 }
 

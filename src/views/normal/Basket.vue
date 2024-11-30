@@ -82,7 +82,7 @@ watch(()=>route.params,async(newParams)=>{
         star:1,
         isFinish:0,
         basketId:3,//可以找到对应的basket
-        remark:'开始放好伪数据，记得发送请求',//备注
+        remark:'添加备注',//备注
         deadline:'',
         createTime:'',
         isDrain:1,
@@ -93,7 +93,7 @@ watch(()=>route.params,async(newParams)=>{
         star:1,
         isFinish:0,
         basketId:3,//可以找到对应的basket
-        remark:'开始放好伪数据，记得发送请求',//备注
+        remark:'添加备注',//备注
         deadline:'',
         createTime:'',
         isDrain:1,
@@ -167,8 +167,8 @@ function frontInitData(basketId) {
           star:0,
           isFinish:0,
           basketId:1,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
-          deadline:'',
+          remark:'添加备注',//备注
+          deadline:'2024-11-30 16:30:00',
           createTime:'2024.11.29',
           isDrain:1,
         },
@@ -180,8 +180,8 @@ function frontInitData(basketId) {
           taskName:'完成drain项目',
           star:0,
           isFinish:0,
-          basketId:10,//可以找到对应的basket
-          remark:'开始放好伪数据，记得发送请求',//备注
+          basketId:2,//可以找到对应的basket
+          remark:'添加备注',//备注
           deadline:'',
           createTime:'',
           isDrain:1,
@@ -196,7 +196,7 @@ function frontInitData(basketId) {
         star:1,
         isFinish:0,
         basketId:3,//可以找到对应的basket
-        remark:'开始放好伪数据，记得发送请求',//备注
+        remark:'添加备注',//备注
         deadline:'',
         createTime:'',
         isDrain:1,
@@ -207,7 +207,7 @@ function frontInitData(basketId) {
         star:1,
         isFinish:0,
         basketId:3,//可以找到对应的basket
-        remark:'开始放好伪数据，记得发送请求',//备注
+        remark:'添加备注',//备注
         deadline:'',
         createTime:'',
         isDrain:1,
@@ -215,6 +215,17 @@ function frontInitData(basketId) {
       ]
       } else if (basketId === 4) {
         tasks.value = [
+        {
+        taskId: 25,
+        taskName: '完成项目核心页面和需求',
+        star: 0,
+        isFinish: 0,
+        basketId: 4,
+        remark: '添加备注',
+        deadline: '',
+        createTime: '',
+        isDrain: 1,
+        },
           {
           taskId:11,
           taskName:'录制视频',
