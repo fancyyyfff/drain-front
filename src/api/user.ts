@@ -48,13 +48,22 @@ export const logout = () => {
 
 // 升级用户角色
 
-export const updateUserRole = (userId,role) => {
+export const updateUserRole = (role) => {
   return instance({
     url: '/user/updateUserRole',
     method: 'POST',
     data:{
-      userId,
       role
+    }
+  });
+};
+
+export const subscribe = (count) => {
+  return instance({
+    url: '/user/subscribe',
+    method: 'POST',
+    data:{
+      count
     }
   });
 };
