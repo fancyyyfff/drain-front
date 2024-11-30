@@ -5,7 +5,6 @@
               </div>
               <div class="brain-text" >头脑风暴</div>
 </div>
-
 </template>
 
 <script setup lang="ts" name="">
@@ -16,14 +15,13 @@ import { useRouter,useRoute } from 'vue-router';
 import { useBasketStore  } from "@/stores/basket";
 import { VIP } from "@/const/type";
 import { useUserStore } from "@/stores/user";
-
 const userStore = useUserStore()
-
+const role = computed(()=>userStore.getRole())
 function handleClick() {
   // 后期删掉：
-  emitter.emit('openBrainDialog')
+  // emitter.emit('openBrainDialog')
 
-  if(userStore.user.role===VIP) {
+  if(role.value===VIP) {
     emitter.emit('openBrainDialog')
   }else {
     emitter.emit('openOrderMessage')

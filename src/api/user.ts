@@ -45,3 +45,16 @@ export const logout = () => {
     method: 'POST',
   });
 };
+
+// 升级用户角色
+
+export const updateUserRole = (userId,role) => {
+  return instance({
+    url: '/user/updateUserRole',
+    method: 'POST',
+    data:{
+      userId,
+      role
+    }
+  });
+};

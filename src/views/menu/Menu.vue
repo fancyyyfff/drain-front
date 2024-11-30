@@ -61,6 +61,8 @@
 <!-- 弹窗: -->
 <Dialog v-if="brainDialogVisible"></Dialog>
 
+<OrderMessage v-show="OrderMessageVisible"/>
+
 </template>
 
 <script setup lang="ts" name="">
@@ -76,9 +78,6 @@ import Clear from "@/views/vip/clear/Clear.vue";
 import Dialog from "@/views/vip/clear/Dialog.vue";
 import emitter from "@/mitt";
 import { ElMessage, tabNavEmits } from 'element-plus'
-import { v4 as uuidv4 } from 'uuid';
-import { getDDLTask,getImportanTask,getGoalsTask } from "@/api/task";
-import type { RefSymbol } from '@vue/reactivity';
 import _ from 'lodash';
 import Navigation from "@/views/menu/components/Navigation.vue";
 import { useTaskStore } from '@/stores/task';
@@ -88,6 +87,7 @@ import  DdlSideBar  from "@/views/menu/components/DdlSideBar.vue";
 import { useSideBarStore } from '@/stores/ui';
 import { useUserStore } from "@/stores/user";
 import { VIP,DDL } from "@/const/type";
+import OrderMessage from "@/views/vip/components/OrderMessage.vue";
 
 interface Task {
   taskId: string;
@@ -138,6 +138,12 @@ const changeBackColor = ()=>{
   isClicked.value=!isClicked.value
 }
 
+// ===订阅盒子的弹窗
+const OrderMessageVisible =ref(false)
+function openOrderMessage() {
+  OrderMessageVisible.value=true
+}
+emitter.on('openOrderMessage',openOrderMessage)
 // ===
 // 头脑风暴的弹窗
 const brainDialogVisible =ref(false)
@@ -164,44 +170,37 @@ emitter.on('closeBrainDialog',closeDialog)
 emitter.on('closeAndTips',()=>{
 
   closeDialog()
-  // successTips()
+  successTips()
   // ElMessage({
-  //   dangerouslyUseHTMLString: true,
-  //   // message: '<strong>This is <i>HTML</i> string</strong>',
-  //   message: ' <p>恭喜你！<br><br>又为你大脑减轻了负担！<br><br> 以更轻盈的姿态继续前进吧！</p>',
+  //   message: '恭喜你！又为你大脑减轻了负担！以更轻盈的姿态继续前进吧！',
+  //   grouping: true,
   //   type: 'success',
-  //   plain: true,
   // })
-  ElMessage({
-    message: '恭喜你！又为你大脑减轻了负担！以更轻盈的姿态继续前进吧！',
-    grouping: true,
-    type: 'success',
-  })
-  // alert('恭喜你！又为你大脑减轻了负担！以更轻盈的姿态继续前进吧！')
 
 })
 
+const role = computed(()=>userStore.getRole())
 // ===
 // 呼叫AI
 const callAI =()=>{
-      const role=userStore.getRole()
-      if(role===VIP){
+      if(role.value===VIP){
       router.push({
         name: "ai"
       });
     } else {
-    emitter.emit('openOrderMessage')
+      openOrderMessage()
+      // emitter.on('openOrderMessage',openOrderMessage)
       // alert("ai功能是vip用户独有的哦！欢迎您订阅！");
     }
 }
 
-// 检测路由变化，把sideBar关闭
-watch(() => route.params.basketId, (newBasketId) => {
-  // 更新全局的basketId
-  basketStore.setCurrentBasketId(newBasketId)
-  const sideBarStore=useSideBarStore()
-  sideBarStore.render=false
-});
+// // 检测路由变化，把sideBar关闭
+// watch(() => route.params, (newRoute) => {
+//   // 更新全局的basketId
+//   basketStore.setCurrentBasketId(newBasketId)
+//   const sideBarStore=useSideBarStore()
+//   sideBarStore.render=false
+// });
 
 </script>
 
