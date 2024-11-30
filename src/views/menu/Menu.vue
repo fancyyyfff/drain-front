@@ -61,7 +61,7 @@
 <!-- 弹窗: -->
 <Dialog v-if="brainDialogVisible"></Dialog>
 
-<OrderMessage v-show="OrderMessageVisible"/>
+<OrderMessage v-if="OrderMessageVisible"/>
 
 </template>
 
@@ -99,10 +99,6 @@ const route = useRoute();
 const taskStore = useTaskStore();
 const basketStore = useBasketStore();
 const userStore = useUserStore()
-// // 动态绑定 basketName
-// const basketName = computed(() => {
-//   return basketStore.getBasketNameById(route.params.basketId as number);
-// });
 
 const searchText=ref('')
 
@@ -182,7 +178,8 @@ emitter.on('closeAndTips',()=>{
 const role = computed(()=>userStore.getRole())
 // ===
 // 呼叫AI
-const callAI =()=>{
+function callAI (){
+  console.log('进入到AI页面');
       if(role.value===VIP){
       router.push({
         name: "ai"

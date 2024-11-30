@@ -1,7 +1,6 @@
 <template>
 <!-- 主要用于渲染对应basketId下的所有子任务 -->
 <div class="nav-ul">
-    <!-- 循环渲染每个 basket,此时tasks使用的是store的，为了与SideBar共享信息 -->
     <div v-for="task in tasks" :key="task.taskId" class="nav-item">
       <TaskComponet :task :moveItems @deleteTask="handleDeleteTask"></TaskComponet>
     </div>
@@ -30,29 +29,8 @@ console.log('basketName',basketName)
 const basketStore= useBasketStore()
 const taskStore= useTaskStore()
 
-onMounted(()=>{
-  console.log('Basket.vue加载了')
-  // loadTasks(route.params.basketId)
-  // // 后期删掉：
-  // frontInitData(route.params.basketId)
-  // taskStore.frontInitData(route.params.type)
-})
-
 // 放置数据的地方
 const tasks = ref<Task[]>([])
-// 点击星标任务就让任务变成这个所有的allStar
-// emitter.on('allStar',handleAllStar)
-// function handleAllStar() {
-//   try {
-//     const res = await getAllStar()
-//     if(res.status===2006) {
-//       tasks.value=res.data
-//     }
-//   } catch (error) {
-//     console.error('加载所有星标任务失败', error);
-//   }
-// }
-
 async function loadTasks(basketId) {
   try {
     const res = await getAllTaskByBasketId(basketId)
@@ -95,6 +73,15 @@ watch(()=>route.params,async(newParams)=>{
       },
     ]
 
+    const basketId = Number(newParams.basketId)
+    if(basketId) {
+        // 设置当前的basketId的同时更新移动选项
+        basketStore.setCurrentBasketId(basketId)
+    }else {
+      // 星标任务：
+      basketStore.setCurrentBasketId(-1)
+    }
+    moveItems.value= basketStore.getMoveItems
     // 后期保留
     try {
       const res = await getAllStar()
@@ -105,7 +92,6 @@ watch(()=>route.params,async(newParams)=>{
     } catch (error) {
       console.error('获取所有星标任务失败', error);
     }
-
   }else {
     const basketId = Number(newParams.basketId)
     // 设置当前的basketId的同时更新移动选项
@@ -120,6 +106,10 @@ watch(()=>route.params,async(newParams)=>{
 },
 { immediate: true }) // 在组件挂载时立即执行一次监听逻辑)
 
+const deadline = computed(()=>taskStore.deadline)
+// const currentBasketId = computed(()=>basketStore.currentBasketId)
+const currentBasketId = computed(()=>route.params.basketId)
+const currentType= computed(()=>Number(route.params.type))
 // 新建任务：
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {
