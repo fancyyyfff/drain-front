@@ -16,7 +16,7 @@
       <template #dropdown >
       <el-dropdown-menu >
         <template v-for="moveItem in moveItems" :key="moveItem.basketId">
-          <el-dropdown-item @click="toMove">{{ moveItem.basketName }}</el-dropdown-item>
+          <el-dropdown-item :moveItem="moveItem" @click="toMove(moveItem)">{{ moveItem.basketName }}</el-dropdown-item>
         </template>
       </el-dropdown-menu>
     </template>
@@ -44,7 +44,7 @@ import { useRoute } from "vue-router";
 import type{ Task } from "@/types/type";
 import { useBasketStore } from "@/stores/basket";
 import type{ Basket } from "@/types/type";
-import { DDL } from "@/const/type";
+import { DDL, IMPORTANCE } from "@/const/type";
 import dayjs from 'dayjs';
 
 const basketStore = useBasketStore()
@@ -104,7 +104,7 @@ const item = ref({
 
 async function toDeleteTask() {
   // 后期删掉：
-  emitter.emit('deleteTask',task.taskId)
+  // emitter.emit('deleteTask',task.taskId)
 
   const taskDeleted = {
         taskId:task.taskId,
@@ -123,14 +123,13 @@ async function toDeleteTask() {
   }
 }
 
-const newBasketId = ref(-1)
-// 移动任务：
-async function toMove() {
+async function toMove(moveItem:Basket) {
+  let basketId = -1;  // IMPORTANCE 的basketId软赋值为-1
   // 后期删除：
-  emit('deleteTask',task.taskId)
-  // 修改新的
+  // emit('deleteTask',task.taskId)
   try {
-    if(Number(route.params.type)===DDL){
+    // 如果移动到DDL，就自动为任务添加当前时间，再执行移动
+    if(moveItem.type===DDL){
       const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
       const res1 = await updateTaskDeadline(task.taskId,currentDateTime)
       if(res1.status % 2 === 0) {
@@ -138,15 +137,21 @@ async function toMove() {
         return
       }
     }
-    const res = await updateTaskBasketId(task.taskId,newBasketId.value)
+
+    if(moveItem.type!==IMPORTANCE) {
+      basketId=moveItem.basketId as number
+    }
+
+    const res = await updateTaskBasketId(task.taskId,basketId)
     if(res.status%2===1) {
       // 渲染页面
       emit('deleteTask',task.taskId)
       alert('移动成功')
       return
     }
+
   } catch (error) {
-    console.error('通过basketId获取所有任务失败', error);
+    console.error('移动任务出错', error);
   }
 
 }

@@ -44,7 +44,7 @@ export interface Task {
 export interface Basket {
   type:number;
   basketId: number|null;
-  basketName: string|null;
+  basketName: string;
 }
 
 

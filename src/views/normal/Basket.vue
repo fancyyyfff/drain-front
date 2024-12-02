@@ -19,6 +19,7 @@ import pinia from '@/stores';
 import { IMPORTANCE,DDL } from '@/const/type';
 import type{ Basket,Task } from "@/types/type";
 import { resToTasks } from "@/hooks/useTask";
+
 // 获取路由参数
 const route = useRoute();
 const { type, basketName } = defineProps(['type', 'basketName','basketId']);
@@ -44,6 +45,7 @@ async function loadTasks(basketId) {
   }
 }
 
+// 检测路由变化：星标任务的渲染、当前basketId的设置、
 const moveItems = ref<Basket[]>([])
 watch(()=>route.params,async(newParams)=>{
   const type=Number(newParams.type)
@@ -98,12 +100,10 @@ watch(()=>route.params,async(newParams)=>{
 },
 { immediate: true }) // 在组件挂载时立即执行一次监听逻辑)
 
-// 新建任务：
+// 新建任务的渲染
 emitter.on('createNewTask',handleCreateNewTask)
 async function handleCreateNewTask(task) {
-  // 新建任务逻辑：
   tasks.value.unshift(task)
-
 }
 
 // 删除任务

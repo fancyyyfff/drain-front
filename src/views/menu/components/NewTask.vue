@@ -60,7 +60,9 @@ async function toCreateNewTask (){
     // 清空，实现复用
     taskStore.clearSideBarDeadline()
   }
-  const task = {taskName, basketId:currentBasketId.value, deadline:deadline}
+  // 如果是 IMPORTANCE ，currentBasketId应当为-1
+  const task = {taskName:taskName, basketId:currentBasketId.value, deadline:deadline}
+
   try {
     const res = await addTask(task)
     if(res.status % 2===1) {
