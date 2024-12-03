@@ -5,69 +5,69 @@ import type { Basket } from "@/types/type";
 export const useBasketStore = defineStore("basket", {
   state: () => ({
     basketList:[
-      {
-        type:2,
-        basketId: 1,
-        basketName: '截至日期',
-      },
-      {
-        type:3,
-        basketId: 2,
-        basketName: '多步骤任务',
-      },
-      {
-        type:0,
-        basketId: 3,
-        basketName: '马上行动',
-      },
-      {
-        type:0,
-        basketId: 4,
-        basketName: '工作篮',
-      },
-      {
-        type:0,
-        basketId: 5,
-        basketName: '委托他人',
-      },
-      {
-        type:0,
-        basketId: 6,
-        basketName: '以后可能会做',
-      },
+      // {
+      //   type:2,
+      //   basketId: 1,
+      //   basketName: '截至日期',
+      // },
+      // {
+      //   type:3,
+      //   basketId: 2,
+      //   basketName: '多步骤任务',
+      // },
+      // {
+      //   type:0,
+      //   basketId: 3,
+      //   basketName: '马上行动',
+      // },
+      // {
+      //   type:0,
+      //   basketId: 4,
+      //   basketName: '工作篮',
+      // },
+      // {
+      //   type:0,
+      //   basketId: 5,
+      //   basketName: '委托他人',
+      // },
+      // {
+      //   type:0,
+      //   basketId: 6,
+      //   basketName: '以后可能会做',
+      // },
   ] as Basket[],
   // 移动项目
   moveItems:<Basket[]>[
-    {
-      type:2,
-      basketId: 1,
-      basketName: '截至日期',
-    },
-    {
-      type:3,
-      basketId: 2,
-      basketName: '多步骤任务',
-    },
-    {
-      type:0,
-      basketId: 3,
-      basketName: '马上行动',
-    },
-    {
-      type:0,
-      basketId: 4,
-      basketName: '工作篮',
-    },
-    {
-      type:0,
-      basketId: 5,
-      basketName: '委托他人',
-    },
-    {
-      type:0,
-      basketId: 6,
-      basketName: '以后可能会做',
-    },
+    // {
+    //   type:2,
+    //   basketId: 1,
+    //   basketName: '截至日期',
+    // },
+    // {
+    //   type:3,
+    //   basketId: 2,
+    //   basketName: '多步骤任务',
+    // },
+    // {
+    //   type:0,
+    //   basketId: 3,
+    //   basketName: '马上行动',
+    // },
+    // {
+    //   type:0,
+    //   basketId: 4,
+    //   basketName: '工作篮',
+    // },
+    // {
+    //   type:0,
+    //   basketId: 5,
+    //   basketName: '委托他人',
+    // },
+    // {
+    //   type:0,
+    //   basketId: 6,
+    //   basketName: '以后可能会做',
+    // },
   ] as Basket[],
     // basketList: [] as Basket[], // 移动项目
     // moveItems: [] as Basket[],

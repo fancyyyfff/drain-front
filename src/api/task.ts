@@ -9,8 +9,8 @@ import instance from '@/http/index'
 export const getAllTaskByBasketId = (basketId:number) =>{
     // const { id } = data
     return instance({
-        url:'/task/tasks',
-        method:'GET',
+        url:'/task/getAllTaskByBasketId',
+        method:'POST',
         data:{
           basketId
         }
@@ -18,7 +18,7 @@ export const getAllTaskByBasketId = (basketId:number) =>{
 }
 
 
-export const getTask = (taskId) =>{
+export const getTask = (taskId:number) =>{
   // const { id } = data
   return instance({
       url:'/task/get',
@@ -85,7 +85,7 @@ export const updateTaskStar = (taskId) =>{
 export const updateTaskDeadline = (taskId,deadline) =>{
   // const { id } = data
   return instance({
-      url:'/task/update/deadline',
+      url:'/task/update/ddl',
       method:'POST',
       data:{
         taskId,

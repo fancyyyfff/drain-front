@@ -1,6 +1,7 @@
 // =====列表类型：
-export  const IMPORTANCE = 1
-export  const DDL = 2
+export const IMPORTANCE = 0
+export const DEFAULT = 1
+export const DDL = 2
 export const GOALS = 3
 // export const TAGS = 4
 

@@ -82,7 +82,7 @@ export const useTaskStore = defineStore('taskStore',{
      updateSideBarDeadline(taskId: number) {
       if (taskId) {
         // 获取到的共有的任务
-        this.deadline = this.task.deadline;
+        this.deadline = this.task.deadline ||'';
       } else {
         console.warn(`任务 ID ${taskId} 不存在`);
       }

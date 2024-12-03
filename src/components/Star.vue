@@ -50,12 +50,10 @@ const starStyle = computed(() => {
 
 
 async function toggleStar  () {
-  const starId= props.taskId
-  console.log('starId',starId);
+  const newIsStarred = isStarred.value === 1 ? 0 : 1;
   // 后期删掉：
- const newIsStarred = isStarred.value === 1 ? 0 : 1;
-  // 通知父组件任务完成状态的变化
-  emit('update:star', newIsStarred);
+//   // 通知父组件任务完成状态的变化
+//   emit('update:star', newIsStarred);
 
   // taskStore.toggleTaskStar()
   // ---

@@ -36,9 +36,12 @@ const {tasks,setTasksData} =resToTasks()
 async function loadTasks(basketId) {
   try {
     const res = await getAllTaskByBasketId(basketId)
-    if(res.status===2001) {
-      // 直接设置返回数据的值存储在tasks当中，处理了undefind和null
-      setTasksData(res.data)
+    if(res.status === 2001) {
+      if (res.data) {
+        setTasksData(res.data)
+      }else {
+        console.log('没有数据')
+      }
     }
   } catch (error) {
     console.error('渲染数据出错了', error);
@@ -52,30 +55,30 @@ watch(()=>route.params,async(newParams)=>{
   if (!isNaN(type) && type === IMPORTANCE) {
     console.log('进入到星标任务模块');
     // 后期不要：
-    tasks.value=[
-    {
-        taskId:6,
-        taskName:'完成任务管理模块',
-        star:1,
-        isFinish:0,
-        basketId:3,//可以找到对应的basket
-        remark:'添加备注',//备注
-        deadline:'',
-        createTime:'',
-        isDrain:1,
-      },
-      {
-        taskId:7,
-        taskName:'完成头脑风暴模块',
-        star:1,
-        isFinish:0,
-        basketId:3,//可以找到对应的basket
-        remark:'添加备注',//备注
-        deadline:'',
-        createTime:'',
-        isDrain:1,
-      },
-    ]
+    // tasks.value=[
+    // {
+    //     taskId:6,
+    //     taskName:'完成任务管理模块',
+    //     star:1,
+    //     isFinish:0,
+    //     basketId:3,//可以找到对应的basket
+    //     remark:'添加备注',//备注
+    //     deadline:'',
+    //     createTime:'',
+    //     isDrain:1,
+    //   },
+    //   {
+    //     taskId:7,
+    //     taskName:'完成头脑风暴模块',
+    //     star:1,
+    //     isFinish:0,
+    //     basketId:3,//可以找到对应的basket
+    //     remark:'添加备注',//备注
+    //     deadline:'',
+    //     createTime:'',
+    //     isDrain:1,
+    //   },
+    // ]
     // 后期保留
     try {
       const res = await getAllStar()

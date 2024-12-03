@@ -67,8 +67,7 @@
  <script setup lang="ts" name="">
  import { ref,onMounted,onBeforeUnmount, reactive,watchEffect,computed,watch  } from 'vue';
  import emitter from "@/mitt";
- import { da } from 'element-plus/es/locales.mjs';
- import { addTagList } from "@/api/task";
+ import { updateTaskRemark } from "@/api/task";
  import Star from "@/components/Star.vue";
  import Tick from '@/components/Tick.vue';
  import { useSideBarStore } from "@/stores/ui";
@@ -117,7 +116,7 @@
    }
  };
 
- const onBlur = () => {
+ const onBlur = async () => {
    const div = editableDiv.value;
    if(div) div.classList.remove('div-edit-focus');
   //  修改备注：
@@ -126,6 +125,21 @@
    if (div && div.innerHTML.trim() === '') {
      div.classList.add('placeholder');
    }
+   try {
+    const res = await updateTaskRemark(task.value?.taskId,div.innerHTML.trim())
+    taskStore.setRemark(div.innerHTML.trim())
+    if(res.status % 2 === 1) {
+      console.log(res.message);
+    }else {
+      ElMessage({
+        message: res.data.message,
+        type: 'error',
+      })
+    }
+   } catch (error) {
+    console.log(error);
+   }
+
  };
 
  // 添加标签：

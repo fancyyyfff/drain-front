@@ -21,10 +21,10 @@ export const useSideBarStore = defineStore('sideBar', {
       // 打开前先放置对象
       if(!this.sidebarOpen) {
         taskStore.setTask(task)
-        // taskStore.updateSideBarDeadline(task.taskId)
+        taskStore.updateSideBarDeadline(task.taskId)
       }else {
         taskStore.resetTask()
-        // taskStore.clearSideBarDeadline()
+        taskStore.clearSideBarDeadline()
       }
       // // 最后再打开
       this.sidebarOpen = !this.sidebarOpen;

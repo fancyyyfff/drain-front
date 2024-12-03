@@ -49,11 +49,6 @@ export function resToTasks() {
   const tasks = ref<Task[]>([]);  // 用数组代替单个任务
 
   function setTasksData(returnTasks: Task[]) {
-    // 必填字段校验
-    if (!returnTasks || returnTasks.length === 0) {
-      console.error('获取到渲染数据不能为空');
-      return;
-    }
     // 使用 handleNullValues 函数处理空值
     tasks.value = handleNullValues(returnTasks, defaultTaskValues) as Task[];
   }

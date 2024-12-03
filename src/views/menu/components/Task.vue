@@ -24,7 +24,7 @@
 
   </div>
   <ion-icon name="trash-outline" class="delete-icon" @click="toDeleteTask" @click.stop></ion-icon>
-  <Star :taskId="task.id" v-model:star="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
+  <Star :taskId="task.taskId" v-model:star="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
 
 </div>
 </template>
