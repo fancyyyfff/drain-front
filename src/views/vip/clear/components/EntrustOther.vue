@@ -19,9 +19,9 @@ const basketStore = useBasketStore()
 
 const taskName = ref('')
 async function handleOk() {
-  emitter.emit('closeAndTips')
+  // emitter.emit('closeAndTips')
 
-  if(taskName) {
+  if(taskName.value) {
     const task = {
       basketId:basketStore.basketList[4].basketId,
       taskName:taskName.value,

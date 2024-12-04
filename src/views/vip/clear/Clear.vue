@@ -8,20 +8,14 @@
 </template>
 
 <script setup lang="ts" name="">
-import { ref,computed } from "vue";
-import Dialog from "@/views/vip/clear/Dialog.vue";
 import emitter from "@/mitt";
-import { useRouter,useRoute } from 'vue-router';
-import { useBasketStore  } from "@/stores/basket";
-import { VIP } from "@/const/type";
-import { useUserStore } from "@/stores/user";
-const userStore = useUserStore()
-const role = computed(()=>userStore.getRole())
-function handleClick() {
+import { check } from "@/api/user";
+async function handleClick() {
   // 后期删掉：
   // emitter.emit('openBrainDialog')
 
-  if(role.value===VIP) {
+  const res = await check()
+  if(res.status % 2 === 1) {
     emitter.emit('openBrainDialog')
   }else {
     emitter.emit('openOrderMessage')

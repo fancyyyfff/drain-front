@@ -3,8 +3,8 @@ import { useBasketStore } from "@/stores/basket";
 const routes = [
   {
     path:'/',
-    // redirect:'/first'  //开始跳转的路径
-    redirect:'/menu'
+    redirect:'/first'  //开始跳转的路径
+    // redirect:'/menu'
   },
   {
     path:'/first',

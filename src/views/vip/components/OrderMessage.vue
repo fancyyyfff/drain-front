@@ -19,7 +19,7 @@
 import { ref } from 'vue'
 import  emitter from "@/mitt";
 import { useUserStore } from "@/stores/user";
-import { updateUserRole,subscribe } from "@/api/user";
+import { subscribe } from "@/api/user";
 import { VIP } from "@/const/type";
 
 const showInput= ref(false)
@@ -41,11 +41,8 @@ async function handleOrder() {
   try {
     const res= await subscribe(count.value)
     if(res.status%2===1) {
-      const res1 = await updateUserRole(userStore.user.role)
-      if(res1.status%2===1) {
-        userStore.setRole(VIP)
-        emitter.emit('openBrainDialog')
-      }
+      userStore.setRole(VIP)
+      emitter.emit('openBrainDialog')
     }
   } catch (error) {
     console.error('更新用户角色失败', error);

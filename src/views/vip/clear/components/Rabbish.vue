@@ -22,7 +22,7 @@ onMounted(async()=>{
         }
   // 删除任务
   taskStore.resetDrainTask()
-  return
+  // return
   await taskStore.deleteDrainTask(deleteTask)
 })
 </script>

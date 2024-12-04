@@ -99,16 +99,5 @@ export const useTaskStore = defineStore('taskStore',{
       this.drainTask=<Task>{}
     }
     ,
-    async deleteDrainTask(task){
-      try {
-        const res = await deleteTask(task)
-        if(res.status%2 ===1) {
-          this.resetDrainTask()
-          return true
-        }
-      } catch (error) {
-        console.error('通过basketId获取所有任务失败', error);
-      }
-    },
   },
 });

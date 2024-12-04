@@ -42,14 +42,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useBasketStore } from "@/stores/basket";
 import { onMounted,ref } from 'vue';
 import { IMPORTANCE } from '@/const/type';
-import Importance from '@/views/normal/sepcial/importance/Importance.vue';
-import { getAllStar } from "@/api/task";
-import emitter from "@/mitt";
 const basketStore = useBasketStore();
 const router = useRouter();
 // 这个方法会自动从后端获取数据并且更新在pinia中的 baskets

@@ -46,24 +46,19 @@ export const logout = () => {
   });
 };
 
-// 升级用户角色
-
-export const updateUserRole = (role) => {
+export const subscribe = (count:number) => {
   return instance({
-    url: '/user/updateUserRole',
-    method: 'POST',
-    data:{
-      role
-    }
-  });
-};
-
-export const subscribe = (count) => {
-  return instance({
-    url: '/user/subscribe',
+    url: '/subscribe/add',
     method: 'POST',
     data:{
       count
     }
   });
 };
+
+export const check = () => {
+  return instance({
+    url: '/user/check',
+    method: 'GET',
+  });
+}

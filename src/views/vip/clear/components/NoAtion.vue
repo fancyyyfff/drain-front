@@ -10,34 +10,27 @@
 <script setup lang="ts" name="">
 import emitter from "@/mitt";
 
-import { addTask } from "@/api/task";
+import { addTask, updateTaskBasketId } from "@/api/task";
 import { useTaskStore } from "@/stores/task";
 import { useBasketStore } from "@/stores/basket";
 const taskStore = useTaskStore()
 const basketStore = useBasketStore()
 
 async function handleThought() {
-  emitter.emit('change','thought')
+  // emitter.emit('change','thought')
 
-  const task = {
-      basketId:basketStore.basketList[5].basketId,
-      taskName:taskStore.drainTask.taskName,
-      deadline:''
+  const basketId = basketStore.basketList[4].basketId
+  const taskId = taskStore.drainTask.taskId
+
+  try {
+    const res= await updateTaskBasketId(taskId,basketId)
+    if(res.status % 2 === 1) {
+      taskStore.resetTask()
+      emitter.emit('change','thought')
     }
-    try {
-      const res= await addTask(task)
-      if(res.status % 2 === 1) {
-        // 删除进入工作篮的任务
-        const deleteTask = {
-          basketId:basketStore.basketList[3].basketId,
-          taskId:res.data.taskId
-        }
-       await taskStore.deleteDrainTask(deleteTask)
-       emitter.emit('change','thought')
-      }
-    } catch (error) {
-      console.error('新建任务失败', error);
-    }
+  } catch (error) {
+    console.error('新建任务失败', error);
+  }
 }
 
 </script>
