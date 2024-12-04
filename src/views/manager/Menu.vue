@@ -22,6 +22,7 @@
   <el-container class="right">
 
         <el-header class="right-top" >{{ route.params.basketName  }}</el-header>
+        <el-input >{{ price }}</el-input>
         <!-- 主题内容 -->
       <el-main class="right-main">
         <component :is="currentComponent"></component>
@@ -47,6 +48,7 @@ import { useBasketStore  } from "@/stores/basket";
 import { useUserStore } from "@/stores/user";
 import Subscribe from "@/views/manager/Subscribe.vue";
 import MangeUser from "@/views/manager/MangeUser.vue";
+import Enter from '../vip/clear/components/Enter.vue';
 interface Task {
   taskId: string;
   taskName: string;
@@ -57,7 +59,7 @@ const route = useRoute();
 const taskStore = useTaskStore();
 const basketStore = useBasketStore();
 const userStore = useUserStore()
-
+const price = ref(-1)
 const searchText=ref('')
 const components={
   'manageUser':MangeUser,
@@ -72,6 +74,7 @@ emitter.on('changeComponents', (componentName) => {
         currentComponent.value = components.subscribe
       }
 });
+
 
 </script>
 
