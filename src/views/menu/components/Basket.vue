@@ -15,7 +15,7 @@ import { useBasketStore } from '@/stores/basket';
 import { getAllTaskByBasketId,addTask, getAllStar } from "@/api/task";
 import emitter from '@/mitt';
 import { useTaskStore } from "@/stores/task";
-import pinia from '@/stores';
+import pinia from '@/stores';``
 import { IMPORTANCE,DDL } from '@/const/type';
 import type{ Basket,Task } from "@/types/type";
 import { resToTasks } from "@/hooks/useTask";
@@ -28,12 +28,9 @@ console.log('basketName',basketName)
 const basketStore= useBasketStore()
 const taskStore= useTaskStore()
 
-// 放置数据的地方
-// 一定是
 const {tasks,setTasksData} =resToTasks()
-// const tasks = ref<Task[]>([])
 
-async function loadTasks(basketId) {
+async function loadTasks(basketId:number) {
   try {
     const res = await getAllTaskByBasketId(basketId)
     if(res.status === 2001) {
@@ -48,58 +45,30 @@ async function loadTasks(basketId) {
   }
 }
 
-// 检测路由变化：星标任务的渲染、当前basketId的设置、
-const moveItems = ref<Basket[]>([])
-watch(()=>route.params,async(newParams)=>{
-  const type=Number(newParams.type)
-  if (!isNaN(type) && type === IMPORTANCE) {
-    console.log('进入到星标任务模块');
-    // 后期不要：
-    // tasks.value=[
-    // {
-    //     taskId:6,
-    //     taskName:'完成任务管理模块',
-    //     star:1,
-    //     isFinish:0,
-    //     basketId:3,//可以找到对应的basket
-    //     remark:'添加备注',//备注
-    //     deadline:'',
-    //     createTime:'',
-    //     isDrain:1,
-    //   },
-    //   {
-    //     taskId:7,
-    //     taskName:'完成头脑风暴模块',
-    //     star:1,
-    //     isFinish:0,
-    //     basketId:3,//可以找到对应的basket
-    //     remark:'添加备注',//备注
-    //     deadline:'',
-    //     createTime:'',
-    //     isDrain:1,
-    //   },
-    // ]
-    // 后期保留
-    try {
+// 星标任务加载
+emitter.on('showImportanceTask', async()=>{
+  try {
       const res = await getAllStar()
       if(res.status%2===1) {
         setTasksData(res.data)
       }
-
     } catch (error) {
       console.error('获取所有星标任务失败', error);
     }
-  }else {
+})
+
+// 检测路由变化：星标任务的渲染、当前basketId的设置、
+const moveItems = ref<Basket[]>([])
+watch(()=>route.params,async(newParams)=>{
+    const type=Number(newParams.type)
     const basketId = Number(newParams.basketId)
     // 设置当前的basketId的同时更新移动选项
     basketStore.setCurrentBasketId(basketId)
     moveItems.value= basketStore.getMoveItems
     // 后期保留
     loadTasks(basketId);
-
     // 后期不要：
     // frontInitData(basketId)
-  }
 },
 { immediate: true }) // 在组件挂载时立即执行一次监听逻辑)
 
@@ -123,7 +92,6 @@ onUnmounted(() => {
   emitter.off('deleteTask', handleDeleteTask); // 组件销毁时解绑事件
 });
 
-// 后期删掉：前端模拟渲染当前页面的数据
 
 </script>
 

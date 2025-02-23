@@ -3,8 +3,8 @@ import { useBasketStore } from "@/stores/basket";
 const routes = [
   {
     path:'/',
-    redirect:'/first'  //开始跳转的路径
-    // redirect:'/menu'
+    // redirect:'/first'  //开始跳转的路径
+    redirect:'/menu'
   },
   {
     path:'/first',
@@ -29,34 +29,19 @@ const routes = [
   children:[
     // 任务全部渲染到Basket
     {
-      path:'/basket/:basketId/:type/:basketName',
+      path:'/basket/:basketId/:t/:type',
       name:'basket',
-      component:()=>import('@/views/normal/Basket.vue'),
+      component:()=>import('@/views/menu/components/Basket.vue'),
       props:true
-      // props: route => {
-      //   const type = Number(route.params.type);
-      //   return { type: !isNaN(type) ? type : 0 };  // 如果转换失败，给一个默认值
-      // }
     },
-    {
-      path:'/basket/:type/:basketName',
-      name:'importance',
-      component:()=>import('@/views/normal/Basket.vue'),
-      props:true
-      // props: route => {
-      //   const type = Number(route.params.type);
-      //   return { type: !isNaN(type) ? type : 0 };  // 如果转换失败，给一个默认值
-      // }
-    },
+    // {
+    //   path:'/basket/:basketId/:type/:basketName',
+    //   name:'basket',
+    //   component:()=>import('@/views/normal/Basket.vue'),
+    //   props:true
+    // },
   ]
 },
- // 两个vip路由：
-//  {
-//   path:'/vip/:basketId/:type/:basketName',
-//   name:'drain',
-//   component:()=>import('@/views/vip/clear/Clear.vue'),
-//   props:true
-// },
 {
   path:'/vip/ai',
   name:'ai',

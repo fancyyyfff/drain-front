@@ -1,9 +1,9 @@
 <template>
 <div class="task-wrap shine" @click="openSideBar">
   <!-- <Tick v-model="task.isFinish" icon-name="checkmark-done"  :taskId="task.taskId" @click.stop/> -->
-  <Tick icon-name="checkmark-done"  :taskId="task.taskId" v-model:isFinish="task.isFinish" @click.stop/>
+  <Tick v-if="task" icon-name="checkmark-done"  :taskId="task.taskId" v-model:isFinish="task.isFinish" @click.stop/>
   <!-- <p class="task-text">{{taskValue}}</p> -->
-  <p class="task-text" :style="textStyle" >{{ task.taskName }}</p>
+  <p v-if="task" class="task-text" :style="textStyle" >{{ task.taskName }}</p>
   <div class="moveTo-warp" @click.stop>
     <el-dropdown>
     <span class="el-dropdown-link shine">
@@ -24,7 +24,7 @@
 
   </div>
   <ion-icon name="trash-outline" class="delete-icon" @click="toDeleteTask" @click.stop></ion-icon>
-  <Star :taskId="task.taskId" v-model:star="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
+  <Star v-if="task" :taskId="task.taskId" v-model:star="task.star" star-color="#efe299" :size="'1.5rem'" @click.stop />
 
 </div>
 </template>
@@ -43,9 +43,9 @@ import { ArrowDown } from '@element-plus/icons-vue'
 import { useRoute } from "vue-router";
 import type{ Task } from "@/types/type";
 import { useBasketStore } from "@/stores/basket";
-import type{ Basket } from "@/types/type";
 import { DDL, IMPORTANCE } from "@/const/type";
 import dayjs from 'dayjs';
+import type{ Basket } from "@/types/type";
 
 const basketStore = useBasketStore()
 const taskStore=useTaskStore()
@@ -88,11 +88,11 @@ function addTagSign() {
 // }
 
 const textStyle = computed(() => {
-  console.log('task.isFinish:', task.isFinish);  // 调试，确保值正确
+  console.log('task.isFinish:', task?.isFinish);  // 调试，确保值正确
   return {
-    'text-decoration': task.isFinish===1? 'line-through' : 'none',
-    'text-shadow': task.isFinish===1 ? 'none':'0 0 2px rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.5)' , // 添加发光效果
-    'color': task.isFinish===1 ?  'gray':'white'
+    'text-decoration': task?.isFinish===1? 'line-through' : 'none',
+    'text-shadow': task?.isFinish===1 ? 'none':'0 0 2px rgba(255, 255, 255, 0.5), 0 0 2px rgba(255, 255, 255, 0.5)' , // 添加发光效果
+    'color': task?.isFinish===1 ?  'gray':'white'
   };
 });
 
@@ -107,13 +107,13 @@ async function toDeleteTask() {
   // emitter.emit('deleteTask',task.taskId)
 
   const taskDeleted = {
-        taskId:task.taskId,
-        basketId:task.basketId
+        taskId:task?.taskId,
+        basketId:task?.basketId
   }
   try {
     const res = await deleteTask(taskDeleted)
     if(res.status === 2015) {
-      emitter.emit('deleteTask',task.taskId)
+      emitter.emit('deleteTask',task?.taskId)
       alert('删除成功')
     }else {
       alert('删除失败，请检查网络')
@@ -131,7 +131,7 @@ async function toMove(moveItem:Basket) {
     // 如果移动到DDL，就自动为任务添加当前时间，再执行移动
     if(moveItem.type===DDL){
       const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
-      const res1 = await updateTaskDeadline(task.taskId,currentDateTime)
+      const res1 = await updateTaskDeadline(task?.taskId,currentDateTime)
       if(res1.status % 2 === 0) {
         alert('移动失败')
         return
@@ -142,10 +142,10 @@ async function toMove(moveItem:Basket) {
       basketId=moveItem.basketId as number
     }
 
-    const res = await updateTaskBasketId(task.taskId,basketId)
+    const res = await updateTaskBasketId(task?.taskId,basketId)
     if(res.status%2===1) {
       // 渲染页面
-      emit('deleteTask',task.taskId)
+      emit('deleteTask',task?.taskId)
       alert('移动成功')
       return
     }

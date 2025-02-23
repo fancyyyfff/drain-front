@@ -33,9 +33,9 @@ const showP = ref(true)
 const newTaskInputValue = ref('')
 const taskInput = ref<HTMLInputElement | null>(null);
 
-const currentType = computed(() => Number(route.params.type));
-const currentDeadline = computed(()=>taskStore.deadline)
-const currentBasketId = computed(()=>basketStore.currentBasketId)
+// const currentType = computed(() => Number(route.params.type));
+// const currentDeadline = computed(()=>taskStore.deadline)
+// const currentBasketId = computed(()=>basketStore.currentBasketId)
 
 // 点击新建任务
 const onClickNew = ()=>{
@@ -48,25 +48,23 @@ async function toCreateNewTask (){
     return
   }
   const taskName=newTaskInputValue.value
-  let deadline=currentDeadline.value
+  let deadline=taskStore.deadline
   // 处理ddl的新建任务
-  if( currentType.value===DDL) {
+  if( Number(route.params.type) === DDL) {
     if(!deadline) {
       const currentDateTime = dayjs().format('YYYY-MM-DD HH:mm:ss');
       console.log("currentDateTime",currentDateTime);
       deadline=currentDateTime
     }
-
     // 清空，实现复用
     taskStore.clearSideBarDeadline()
   }
   // 如果是 IMPORTANCE ，currentBasketId应当为-1
-  const task = {taskName:taskName, basketId:currentBasketId.value, deadline:deadline}
+  const task = {taskName:taskName, basketId:basketStore.currentBasketId, deadline:deadline}
 
   try {
     const res = await addTask(task)
-    if(res.status % 2===1) {
-
+    if(res.status%2 === 1) {
       emitter.emit('createNewTask', task)
     }
   } catch (error) {

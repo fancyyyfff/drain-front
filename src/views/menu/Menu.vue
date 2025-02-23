@@ -36,11 +36,10 @@
 <!-- 右边的内容 -->
   <el-container class="right">
 
-        <el-header class="right-top" >{{ route.params.basketName  }}</el-header>
+        <el-header class="right-top" >{{ basketStore.title }}</el-header>
         <!-- 主题内容 -->
       <el-main class="right-main">
         <router-view/>
-        <!-- </router-view> -->
       </el-main>
         <el-footer class="right-footer">
           <!-- <div class="footer">

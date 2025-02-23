@@ -1,40 +1,41 @@
 import { defineStore } from "pinia";
 import { getAllBaskets } from "@/api/basket";
 import type { Basket } from "@/types/type";
+import { title } from "process";
 // 主要的作用：获取当前用户下所有列表，用于一开始的渲染
 export const useBasketStore = defineStore("basket", {
   state: () => ({
     basketList:[
-      // {
-      //   type:2,
-      //   basketId: 1,
-      //   basketName: '截至日期',
-      // },
-      // {
-      //   type:3,
-      //   basketId: 2,
-      //   basketName: '多步骤任务',
-      // },
-      // {
-      //   type:0,
-      //   basketId: 3,
-      //   basketName: '马上行动',
-      // },
-      // {
-      //   type:0,
-      //   basketId: 4,
-      //   basketName: '工作篮',
-      // },
-      // {
-      //   type:0,
-      //   basketId: 5,
-      //   basketName: '委托他人',
-      // },
-      // {
-      //   type:0,
-      //   basketId: 6,
-      //   basketName: '以后可能会做',
-      // },
+      {
+        type:2,
+        basketId: 1,
+        basketName: '截至日期',
+      },
+      {
+        type:3,
+        basketId: 2,
+        basketName: '多步骤任务',
+      },
+      {
+        type:0,
+        basketId: 3,
+        basketName: '马上行动',
+      },
+      {
+        type:0,
+        basketId: 4,
+        basketName: '工作篮',
+      },
+      {
+        type:0,
+        basketId: 5,
+        basketName: '委托他人',
+      },
+      {
+        type:0,
+        basketId: 6,
+        basketName: '以后可能会做',
+      },
   ] as Basket[],
   // 移动项目
   moveItems:<Basket[]>[
@@ -73,6 +74,7 @@ export const useBasketStore = defineStore("basket", {
     // moveItems: [] as Basket[],
     // 当前的basketId，随路由变化而变化
     currentBasketId: -1,
+    title:'',
   }),
   actions: {
     getCurrentBasketId(){
@@ -89,7 +91,6 @@ export const useBasketStore = defineStore("basket", {
     // 前端模拟：获取所有任务:
     getBasketList(){
       return this.basketList
-
     },
     // 过滤出currentBasketId的
     updateMoveItems() {

@@ -1,7 +1,7 @@
 <template>
 <div class="nav-ul">
-    <div class="nav-item" @click="showImportanceView()">
-      {{ importanceName }}
+    <div class="nav-item" @click="handleImportance()">
+      重要
     </div>
     <!-- 循环渲染每个 basket -->
     <template  v-for="basket in basketStore.basketList" :key="basket.basketId">
@@ -11,11 +11,12 @@
           name: 'basket',
           params:{
             basketId:basket.basketId,
+            t:'t',
             type:basket.type,
-            basketName:basket.basketName,
           }
         }"
         class="nav-link"
+        @click="basketStore.title = basket.basketName"
       >
         {{ basket.basketName }}
       </router-link>
@@ -45,46 +46,22 @@
 import { useRouter } from 'vue-router';
 import { useBasketStore } from "@/stores/basket";
 import { onMounted,ref } from 'vue';
-import { IMPORTANCE } from '@/const/type';
+import { DEFAULT, IMPORTANCE } from '@/const/type';
+import { getImportantTask } from "@/api/task";
+import emitter from "@/mitt";
+
 const basketStore = useBasketStore();
 const router = useRouter();
-// 这个方法会自动从后端获取数据并且更新在pinia中的 baskets
-// 从而实现baskets在前后端数据都同时更新
+
 onMounted( ()=>{
   basketStore.fetchAllBaskets();
 })
-// interface ImportanceBasket {
-//   type:number;
-//   basketName:string;
-// }
-// const importanceBasket=ref<ImportanceBasket>({type:1,basketName:'重要'})
-const importanceName = ref('重要')
-function showImportanceView(){
-      router.push({
-        name: 'importance',
-        params: {
-          type:IMPORTANCE,
-          basketName: importanceName.value
-        }
-      })
 
-  // try {
-  //   const res = await getAllStar()
-  //   if(res.status===2006) {
-  //     emitter.emit('allStar',res.data)
-  //     router.push({
-  //       name: 'importance',
-  //       params: {
-  //         basketName: importanceName.value
-  //       }
-  //     })
-
-  //   }
-  // } catch (error) {
-  //   console.error('通过basketId获取所有任务失败', error);
-  // }
-
+function handleImportance(){
+  basketStore.title = '重要'
+  emitter.emit('showImportanceTask')
 }
+
 </script>
 
 <style scoped>
