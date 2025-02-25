@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { getAllBaskets } from "@/api/basket";
 import type { Basket } from "@/types/type";
-import { title } from "process";
 // 主要的作用：获取当前用户下所有列表，用于一开始的渲染
 export const useBasketStore = defineStore("basket", {
   state: () => ({

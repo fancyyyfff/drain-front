@@ -42,7 +42,7 @@ const onClickNew = ()=>{
   showInput.value=true
   showP.value=false
 }
-
+// 重要任务添加应当自动加星标
 async function toCreateNewTask (){
   if(newTaskInputValue.value.trim()===''){
     return
@@ -61,6 +61,9 @@ async function toCreateNewTask (){
   }
   // 如果是 IMPORTANCE ，currentBasketId应当为-1
   const task = {taskName:taskName, basketId:basketStore.currentBasketId, deadline:deadline}
+
+// 后期删掉：
+  emitter.emit('createNewTask', task)
 
   try {
     const res = await addTask(task)

@@ -31,6 +31,7 @@ const taskStore= useTaskStore()
 const {tasks,setTasksData} =resToTasks()
 
 async function loadTasks(basketId:number) {
+
   try {
     const res = await getAllTaskByBasketId(basketId)
     if(res.status === 2001) {
@@ -47,6 +48,7 @@ async function loadTasks(basketId:number) {
 
 // 星标任务加载
 emitter.on('showImportanceTask', async()=>{
+  tasks.value = []
   try {
       const res = await getAllStar()
       if(res.status%2===1) {
@@ -66,6 +68,7 @@ watch(()=>route.params,async(newParams)=>{
     basketStore.setCurrentBasketId(basketId)
     moveItems.value= basketStore.getMoveItems
     // 后期保留
+    tasks.value = []
     loadTasks(basketId);
     // 后期不要：
     // frontInitData(basketId)

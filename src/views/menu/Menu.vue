@@ -311,9 +311,10 @@ color: white;
 // 右边主体
 .right {
   position: relative;
-  // background-image: linear-gradient(to top,#aea99b 0.1%,#aa9e7d 99.9%);
-  background-image: linear-gradient(to right,rgba(197, 197, 167, 0.7) 0.05%,rgba(212, 211, 221, 0.5) 99.95%);
-  // box-shadow: var(--shine-shadow);
+  // background-image: linear-gradient(to right,rgba(197, 197, 167, 0.7) 0.05%,rgba(212, 211, 221, 0.5) 99.95%);
+  box-shadow: var(--shine-shadow);
+  // background-image: linear-gradient(to top,#e8cbc0 0.1%,#636fa4 99.9%);
+
 }
 .right-main {
     display: flex;

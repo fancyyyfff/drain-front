@@ -1,7 +1,7 @@
 <template>
 <div class="nav-ul">
     <div class="nav-item" @click="handleImportance()">
-      重要
+      <p class="nav-text">重要</p>
     </div>
     <!-- 循环渲染每个 basket -->
     <template  v-for="basket in basketStore.basketList" :key="basket.basketId">
@@ -18,7 +18,7 @@
         class="nav-link"
         @click="basketStore.title = basket.basketName"
       >
-        {{ basket.basketName }}
+      <p class="nav-text">{{ basket.basketName }}</p>
       </router-link>
     </div>
     </template>
@@ -64,7 +64,7 @@ function handleImportance(){
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 /* 以下是原来菜单页的可能样式，可以参考以下 */
 .nav-ul {
@@ -73,13 +73,19 @@ function handleImportance(){
   flex-direction: column;
   align-items: flex-end;
   margin: 0;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .nav-item {
-  width: 90%;
+  width: 100%;
   height: 45px;
   border: 50% 0 0 50%;
+}
+.nav-text {
+  padding-left: 20%;
+  text-align: left;
+  line-height: 100%;
+  height: 100%;
 }
 
 .nav-link {
@@ -89,7 +95,8 @@ function handleImportance(){
 
 /* 设置鼠标悬停时的样式 */
 .nav-item:hover {
-  background-color: rgba(163, 163, 116, 0.451);
+  /* background-color: rgba(163, 163, 116, 0.451); */
+  background-color: var(--theme-color);
 }
 
 </style>
